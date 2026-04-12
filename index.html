@@ -415,8 +415,7 @@ footer{background:#08132a;padding:1.65rem 5%;text-align:center;border-top:1px so
   </div>
   <div class="apbody">
     <div class="apside">
-      <div class="apmi on" onclick="goTab('t-cfg')" data-t="t-cfg"><i class="fas fa-plug"></i><span>الإعداد</span></div>
-      <div class="apmi" onclick="goTab('t-hero')" data-t="t-hero"><i class="fas fa-home"></i><span>البداية</span></div>
+      <div class="apmi on" onclick="goTab('t-hero')" data-t="t-hero"><i class="fas fa-home"></i><span>البداية</span></div>
       <div class="apmi" onclick="goTab('t-photo')" data-t="t-photo"><i class="fas fa-camera"></i><span>الصورة</span></div>
       <div class="apmi" onclick="goTab('t-about')" data-t="t-about"><i class="fas fa-user"></i><span>نبذة</span></div>
       <div class="apmi" onclick="goTab('t-edu')" data-t="t-edu"><i class="fas fa-graduation-cap"></i><span>التعليم</span></div>
@@ -430,31 +429,8 @@ footer{background:#08132a;padding:1.65rem 5%;text-align:center;border-top:1px so
     </div>
     <div class="apcont">
 
-      <!-- CONFIG TAB -->
-      <div class="apsec on" id="t-cfg">
-        <h3><i class="fas fa-plug"></i> إعداد Supabase</h3>
-        <div class="cfgbox">
-          <h4><i class="fas fa-exclamation-triangle"></i> أدخل بيانات Supabase أولاً</h4>
-          <div class="fg"><label>🔗 Project URL</label><input id="cfg-url" type="text" placeholder="https://xxxx.supabase.co"></div>
-          <div class="fg"><label>🔑 Anon/Public Key</label><input id="cfg-key" type="text" placeholder="eyJhbGci..."></div>
-          <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.5rem">
-            <button class="abtn absv" onclick="saveConfig()"><i class="fas fa-save"></i> حفظ الإعدادات</button>
-            <button class="abtn" style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.1)" onclick="testConn()"><i class="fas fa-wifi"></i> اختبار الاتصال</button>
-          </div>
-          <div id="cfgStatus" style="margin-top:.65rem;font-size:.8rem"></div>
-        </div>
-        <div class="ibox">
-          <i class="fas fa-info-circle"></i> <strong style="color:var(--gold)">كيف تحصل على هذه البيانات؟</strong><br>
-          ١. افتح مشروعك في <strong style="color:var(--gold)">supabase.com</strong><br>
-          ٢. اضغط <strong>Settings → API</strong> من القائمة<br>
-          ٣. انسخ <strong>Project URL</strong> و <strong>anon/public key</strong><br>
-          <br>
-          <i class="fas fa-shield-alt" style="color:var(--gold)"></i> نستخدم <strong>anon key</strong> (وليس service_role) لأنه آمن في المتصفح مع تفعيل RLS.
-        </div>
-      </div>
-
       <!-- HERO -->
-      <div class="apsec" id="t-hero">
+      <div class="apsec on" id="t-hero">
         <h3><i class="fas fa-home"></i> قسم البداية</h3>
         <div class="fg"><label>الاسم الكامل</label><input id="f-name" type="text"></div>
         <div class="fg"><label>المسمى الوظيفي</label><textarea id="f-title" rows="2"></textarea></div>
@@ -560,8 +536,12 @@ footer{background:#08132a;padding:1.65rem 5%;text-align:center;border-top:1px so
 // ═══════════════════════════════════════════════════
 //  ⚙️ CONFIG — يُعدَّل من لوحة التحكم (الإعداد)
 // ═══════════════════════════════════════════════════
-let SB_URL = '';
-let SB_KEY = '';
+// ══════════════════════════════════════════
+//  ضع بيانات Supabase هنا مرة واحدة فقط
+//  وبعدها يعمل من أي جهاز أو متصفح
+// ══════════════════════════════════════════
+const SB_URL = 'https://cufyaruypnpjwacivcmr.supabase.co';  // مثال: https://abcxyz.supabase.co
+const SB_KEY = 'sb_publishable_BbeeB0aixp9Lc6Yfxz6VZw_8aZcQU--';    // مثال: eyJhbGci...
 const BUCKET = 'cv-assets';
 const PHOTO_PATH = 'profile/photo.jpg';
 const TABLE = 'cv_data';
@@ -598,35 +578,7 @@ let D = JSON.parse(JSON.stringify(DEF));
 let pendingPhoto = null;
 let photoUrl = null;
 
-// ═══════════════════════════════════════════════════
-//  CONFIG (localStorage)
-// ═══════════════════════════════════════════════════
-function loadConfig(){
-  SB_URL = localStorage.getItem('sb_url')||'';
-  SB_KEY = localStorage.getItem('sb_key')||'';
-}
-function saveConfig(){
-  const u=document.getElementById('cfg-url').value.trim();
-  const k=document.getElementById('cfg-key').value.trim();
-  if(!u||!k){showCfgStatus('أدخل الـ URL والـ Key','err');return;}
-  localStorage.setItem('sb_url',u); localStorage.setItem('sb_key',k);
-  SB_URL=u; SB_KEY=k;
-  showCfgStatus('✓ تم حفظ الإعدادات — اضغط "اختبار الاتصال"','ok');
-}
-function showCfgStatus(msg,type){
-  const el=document.getElementById('cfgStatus');
-  el.className='cfg-status '+(type==='ok'?'cfg-ok':'cfg-no');
-  el.textContent=msg;
-}
-async function testConn(){
-  if(!SB_URL||!SB_KEY){showCfgStatus('أدخل البيانات أولاً واضغط حفظ','err');return;}
-  showCfgStatus('⏳ جاري الاختبار...','');
-  try{
-    const r=await sbGet();
-    showCfgStatus('✓ الاتصال يعمل! يمكنك الآن استخدام لوحة التحكم','ok');
-    toast('الاتصال بـ Supabase يعمل بنجاح ✓');
-  }catch(e){showCfgStatus('✗ فشل الاتصال: '+e.message,'err');}
-}
+// لا يوجد localStorage — البيانات تُحمَّل مباشرة من Supabase
 
 // ═══════════════════════════════════════════════════
 //  SUPABASE HELPERS (anon key + RLS)
@@ -676,9 +628,8 @@ async function sbDelPhoto(){
 //  INIT
 // ═══════════════════════════════════════════════════
 async function init(){
-  loadConfig();
   try{
-    if(SB_URL && SB_KEY){
+    if(SB_URL !== 'ضع_PROJECT_URL_هنا' && SB_KEY !== 'ضع_ANON_KEY_هنا'){
       const [rows, ph] = await Promise.all([sbGet(), sbGetPhoto()]);
       if(rows&&rows.length>0) D=rows[0].content;
       photoUrl=ph;
@@ -770,10 +721,6 @@ document.querySelectorAll('#pinInputs input').forEach((inp,i,arr)=>{
 function openAdmin(){
   $('adminPn').classList.add('on');
   document.body.style.overflow='hidden';
-  // Fill config fields
-  $('cfg-url').value=SB_URL;
-  $('cfg-key').value=SB_KEY;
-  if(SB_URL&&SB_KEY) showCfgStatus('✓ الإعدادات محفوظة','ok');
   loadForms();
 }
 function closeAdmin(){$('adminPn').classList.remove('on');document.body.style.overflow='';}
@@ -799,7 +746,7 @@ function loadForms(){
 
 // ═══ SAVE ALL ═══
 async function saveAll(){
-  if(!SB_URL||!SB_KEY){toast('⚠️ أعدّ Supabase أولاً من تبويب "الإعداد"',true);goTab('t-cfg');return;}
+  if(SB_URL === 'ضع_PROJECT_URL_هنا'){toast('⚠️ أضف بيانات Supabase في الكود أولاً',true);return;}
   const btn=$('saveBtn');btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
   setStat('load','⏳ جاري الحفظ...');
   try{
