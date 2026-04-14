@@ -298,6 +298,59 @@ footer{background:#08132a;padding:1.65rem 5%;text-align:center;border-top:1px so
 /* RESPONSIVE */
 @media(max-width:900px){.hg{grid-template-columns:1fr}.hpw{order:-1}.ag{grid-template-columns:1fr}.sg{grid-template-columns:1fr}.apside{width:160px;min-width:160px}}
 @media(max-width:640px){.nav-links{display:none}.hbg{display:flex}.nav-links.open{display:flex;flex-direction:column;position:fixed;top:64px;right:0;left:0;background:rgba(15,31,61,.98);padding:1.5rem;gap:1.3rem;border-bottom:1px solid rgba(201,168,76,.2)}.sw{padding:60px 5%}.hbtns{flex-direction:column;align-items:flex-start}.con-cards{grid-template-columns:1fr 1fr}.fr{grid-template-columns:1fr}.apside{width:52px;min-width:52px}.apmi span{display:none}}
+
+/* ══ PRINT STYLES ══ */
+@media print{
+  /* إخفاء عناصر لا تُطبع */
+  nav,#ls,#adminOv,#adminPn,#toast,.hbg,.abn{display:none!important}
+
+  /* إعادة ضبط الخلفيات للطباعة */
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{background:#fff!important;color:#000!important;font-size:11pt;direction:rtl}
+
+  /* كل قسم يبدأ في صفحة جديدة */
+  #hero,#about,#education,#experience,#skills,#certs,#volunteer,#achievements,#publications,#contact{
+    page-break-before:always;
+    page-break-inside:avoid;
+  }
+  #hero{page-break-before:auto}
+
+  /* منع القطع داخل البطاقات */
+  .ec,.tc,.cc,.vc,.ach,.sk,.ic,.vi{
+    page-break-inside:avoid;
+    break-inside:avoid;
+  }
+
+  /* منع القطع داخل Timeline */
+  .ti{page-break-inside:avoid;break-inside:avoid}
+
+  /* ضبط الهوامش للطباعة */
+  .sw{padding:20px 5%!important;max-width:100%!important}
+
+  /* Hero section — تصغير للطباعة */
+  #hero{min-height:auto!important;padding:40px 5%!important}
+  .hg{grid-template-columns:1fr 180px!important;gap:1.5rem!important}
+  h1.hn{font-size:1.8rem!important}
+  .ht{font-size:.85rem!important}
+  .hb{font-size:.82rem!important}
+  #hPhotoPh,#hPhoto{width:150px!important;height:150px!important}
+
+  /* شبكات البطاقات */
+  .eg,.cg,.achg,.vg{grid-template-columns:repeat(2,1fr)!important}
+  .sg{grid-template-columns:repeat(2,1fr)!important}
+  .ag{grid-template-columns:1fr 1fr!important;gap:1.5rem!important}
+  .ig{grid-template-columns:1fr 1fr!important}
+
+  /* Contact section */
+  .con-sec{background:#0f1f3d!important;padding:30px 5%!important}
+  .con-cards{grid-template-columns:repeat(2,1fr)!important}
+
+  /* Footer */
+  footer{padding:15px 5%!important}
+
+  /* حجم الصفحة A4 */
+  @page{size:A4 portrait;margin:15mm 10mm}
+}
 </style>
 </head>
 <body>
@@ -423,6 +476,7 @@ footer{background:#08132a;padding:1.65rem 5%;text-align:center;border-top:1px so
     </div>
     <div class="lerr" id="loginErr"></div>
     <button class="bp" onclick="doLogin()" style="width:100%;justify-content:center"><i class="fas fa-unlock-alt"></i> دخول</button>
+    <p style="margin-top:1rem;font-size:.7rem;color:rgba(255,255,255,.2)">الرمز الافتراضي: 1234</p>
   </div>
 </div>
 
@@ -942,29 +996,4 @@ function rVol(){$('volAdm').innerHTML=(D.volunteer||[]).map((v,i)=>`<div class="
 function addVol(){if(!D.volunteer)D.volunteer=[];D.volunteer.push({icon:'fas fa-hands-helping',title:'النشاط التطوعي',org:'الجهة · التاريخ',desc:'وصف النشاط'});rVol();}
 function cVol(){return Array.from(document.querySelectorAll('#volAdm .acard')).map((c,i)=>{const ins=c.querySelectorAll('input'),ta=c.querySelector('textarea');return{icon:D.volunteer[i]?.icon||'fas fa-hands-helping',title:ins[0].value,org:ins[1].value,desc:ta.value}});}
 
-function rAch(){$('achAdm').innerHTML=(D.achievements||[]).map((a,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${a.title}</span><div class="acarddel" onclick="D.achievements.splice(${i},1);rAch()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>الرقم</label><input type="text" value="${a.num}"></div><div class="fg"><label>العنوان</label><input type="text" value="${a.title}"></div></div><div class="fg"><label>الوصف</label><textarea rows="2">${a.desc}</textarea></div><div class="fg"><label>نص الوسم</label><input type="text" value="${a.tag}"></div></div>`).join('');}
-function addAch(){if(!D.achievements)D.achievements=[];D.achievements.push({num:'إنجاز جديد',title:'عنوان الإنجاز',desc:'وصف الإنجاز',tag:'التاريخ والجهة',tagIcon:'fas fa-trophy'});rAch();}
-function cAch(){return Array.from(document.querySelectorAll('#achAdm .acard')).map((c,i)=>{const ins=c.querySelectorAll('input'),ta=c.querySelector('textarea');return{num:ins[0].value,title:ins[1].value,desc:ta.value,tag:ins[2].value,tagIcon:D.achievements[i]?.tagIcon||'fas fa-trophy'}});}
-
-// PIN
-function changePin(){
-  const old=$('f-oldp').value,n=$('f-newp').value,c=$('f-conp').value,msg=$('pinMsg');
-  if(old!==getPin()){msg.style.color='#ef4444';msg.textContent='الرمز الحالي غير صحيح';return;}
-  if(!/^\d{4}$/.test(n)){msg.style.color='#ef4444';msg.textContent='الرمز يجب أن يكون 4 أرقام';return;}
-  if(n!==c){msg.style.color='#ef4444';msg.textContent='الرمزان غير متطابقين';return;}
-  localStorage.setItem('cv_pin',n);D.pin=n;
-  msg.style.color='#22c55e';msg.textContent='✓ تم تغيير الرمز';
-  $('f-oldp').value='';$('f-newp').value='';$('f-conp').value='';
-  setTimeout(()=>msg.textContent='',3000);
-}
-
-// NAV
-function toggleMenu(){$('navLinks').classList.toggle('open');}
-document.querySelectorAll('.nav-links a:not(.abn)').forEach(a=>a.addEventListener('click',()=>$('navLinks').classList.remove('open')));
-window.addEventListener('scroll',()=>{const n=$('navbar');n.style.height=window.scrollY>60?'56px':'64px';n.style.boxShadow=window.scrollY>60?'0 2px 20px rgba(0,0,0,.25)':'none';});
-
-// START
-init();
-</script>
-</body>
-</html>
+function rAch(){$('achAdm').innerHTML=(D.achievements||[]).map((a,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${a.title}</span><div class="acarddel" onclick="D.achievements.splice(${i},1);rAch()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>الرقم</label><input type="text" value="${a.num}"></div><div class="fg"><label>العنوان</label><input type="text" value="${a.title}"></div></di
