@@ -717,8 +717,13 @@ async function init(){
     D=JSON.parse(JSON.stringify(EMPTY));
   }
   clearTimeout(timer);
-  renderSite();
-  document.getElementById('ls').classList.add('out');
+  try {
+    renderSite();
+  } catch(renderErr) {
+    console.error('خطأ في عرض البيانات:', renderErr);
+  } finally {
+    document.getElementById('ls').classList.add('out');
+  }
 }
 
 // ══════════════════════════════════════════
@@ -763,7 +768,7 @@ function renderSite(){
   $('eduGrid').innerHTML=(D.education||[]).map(e=>`<div class="ec rv"><div class="edb"><i class="${e.icon||'fas fa-book'}"></i> ${e.badge}</div><h3>${e.title}</h3><p class="esp">${e.spec}</p><p class="ei"><i class="fas fa-university"></i> ${e.inst}</p><p class="ei"><i class="fas fa-map-marker-alt"></i> ${e.loc}</p><p class="ed2"><i class="fas fa-calendar-alt"></i> ${e.date}</p>${e.notes?`<ul class="en">${e.notes.split('\n').filter(n=>n.trim()).map(n=>`<li>${n}</li>`).join('')}</ul>`:''}</div>`).join('');
 
   // Experience
-  $('expTl').innerHTML=(D.experience||[]).map(e=>`<div class="ti"><div class="tdot"></div><div class="tc"><div class="th2"><span class="tr2">${e.role}</span><span class="tp">${e.period}</span></div><p class="to"><i class="fas fa-school"></i> ${e.org}</p><ul class="tt">${e.tasks.split('\n').filter(t=>t.trim()).map(t=>`<li>${t}</li>`).join('')}</ul></div></div>`).join('');
+  $('expTl').innerHTML=(D.experience||[]).map(e=>`<div class="ti"><div class="tdot"></div><div class="tc"><div class="th2"><span class="tr2">${e.role||''}</span><span class="tp">${e.period||''}</span></div><p class="to"><i class="fas fa-school"></i> ${e.org||''}</p><ul class="tt">${(e.tasks||'').split('\n').filter(t=>t.trim()).map(t=>`<li>${t}</li>`).join('')}</ul></div></div>`).join('');
 
   // Skills
   $('skillsGrid').innerHTML=(D.skills||[]).map(s=>renderSkillGroup(s)).join('');
@@ -996,4 +1001,29 @@ function rVol(){$('volAdm').innerHTML=(D.volunteer||[]).map((v,i)=>`<div class="
 function addVol(){if(!D.volunteer)D.volunteer=[];D.volunteer.push({icon:'fas fa-hands-helping',title:'النشاط التطوعي',org:'الجهة · التاريخ',desc:'وصف النشاط'});rVol();}
 function cVol(){return Array.from(document.querySelectorAll('#volAdm .acard')).map((c,i)=>{const ins=c.querySelectorAll('input'),ta=c.querySelector('textarea');return{icon:D.volunteer[i]?.icon||'fas fa-hands-helping',title:ins[0].value,org:ins[1].value,desc:ta.value}});}
 
-function rAch(){$('achAdm').innerHTML=(D.achievements||[]).map((a,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${a.title}</span><div class="acarddel" onclick="D.achievements.splice(${i},1);rAch()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>الرقم</label><input type="text" value="${a.num}"></div><div class="fg"><label>العنوان</label><input type="text" value="${a.title}"></div></di
+function rAch(){$('achAdm').innerHTML=(D.achievements||[]).map((a,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${a.title}</span><div class="acarddel" onclick="D.achievements.splice(${i},1);rAch()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>الرقم</label><input type="text" value="${a.num}"></div><div class="fg"><label>العنوان</label><input type="text" value="${a.title}"></div></div><div class="fg"><label>الوصف</label><textarea rows="2">${a.desc}</textarea></div><div class="fg"><label>نص الوسم</label><input type="text" value="${a.tag}"></div></div>`).join('');}
+function addAch(){if(!D.achievements)D.achievements=[];D.achievements.push({num:'إنجاز جديد',title:'عنوان الإنجاز',desc:'وصف الإنجاز',tag:'التاريخ والجهة',tagIcon:'fas fa-trophy'});rAch();}
+function cAch(){return Array.from(document.querySelectorAll('#achAdm .acard')).map((c,i)=>{const ins=c.querySelectorAll('input'),ta=c.querySelector('textarea');return{num:ins[0].value,title:ins[1].value,desc:ta.value,tag:ins[2].value,tagIcon:D.achievements[i]?.tagIcon||'fas fa-trophy'}});}
+
+// PIN
+function changePin(){
+  const old=$('f-oldp').value,n=$('f-newp').value,c=$('f-conp').value,msg=$('pinMsg');
+  if(old!==getPin()){msg.style.color='#ef4444';msg.textContent='الرمز الحالي غير صحيح';return;}
+  if(!/^\d{4}$/.test(n)){msg.style.color='#ef4444';msg.textContent='الرمز يجب أن يكون 4 أرقام';return;}
+  if(n!==c){msg.style.color='#ef4444';msg.textContent='الرمزان غير متطابقين';return;}
+  localStorage.setItem('cv_pin',n);D.pin=n;
+  msg.style.color='#22c55e';msg.textContent='✓ تم تغيير الرمز';
+  $('f-oldp').value='';$('f-newp').value='';$('f-conp').value='';
+  setTimeout(()=>msg.textContent='',3000);
+}
+
+// NAV
+function toggleMenu(){$('navLinks').classList.toggle('open');}
+document.querySelectorAll('.nav-links a:not(.abn)').forEach(a=>a.addEventListener('click',()=>$('navLinks').classList.remove('open')));
+window.addEventListener('scroll',()=>{const n=$('navbar');n.style.height=window.scrollY>60?'56px':'64px';n.style.boxShadow=window.scrollY>60?'0 2px 20px rgba(0,0,0,.25)':'none';});
+
+// START
+init();
+</script>
+</body>
+</html>
