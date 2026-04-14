@@ -731,7 +731,6 @@ function renderSite(){
   $('fQuote').textContent=D.quote;
   $('fCopy').textContent='© 2025 جميع الحقوق محفوظة · '+D.name.replace(/\n/g,' ');
   $('s1n').textContent=D.s1n;$('s1l').textContent=D.s1l;$('s2n').textContent=D.s2n;$('s2l').textContent=D.s2l;
-  $('s3n').textContent=D.s3n;$('s3l').textContent=D.s3l;$('s4n').textContent=D.s4n;$('s4l').textContent=D.s4l;
   $('aboutTitle').textContent=D.aboutTitle;$('aboutP1').textContent=D.aboutP1;$('aboutP2').textContent=D.aboutP2;
   $('aboutSub').textContent=D.aboutSub||'';$('volSub').textContent=D.volSub;
   $('emailBtn').href='mailto:'+D.email;
@@ -814,7 +813,6 @@ function goTab(id){
 function loadForms(){
   $('f-name').value=D.name;$('f-title').value=D.title;$('f-bio').value=D.bio;$('f-quote').value=D.quote;
   $('f-s1n').value=D.s1n;$('f-s1l').value=D.s1l;$('f-s2n').value=D.s2n;$('f-s2l').value=D.s2l;
-  $('f-s3n').value=D.s3n;$('f-s3l').value=D.s3l;$('f-s4n').value=D.s4n;$('f-s4l').value=D.s4l;
   $('f-aTitle').value=D.aboutTitle;$('f-aP1').value=D.aboutP1;$('f-aP2').value=D.aboutP2;
   $('f-aSub').value=D.aboutSub||'';$('f-vSub').value=D.volSub;
   $('f-phone').value=D.phone;$('f-email').value=D.email;$('f-li').value=D.linkedin;
@@ -832,7 +830,6 @@ async function saveAll(){
   try{
     D.name=$('f-name').value;D.title=$('f-title').value;D.bio=$('f-bio').value;D.quote=$('f-quote').value;
     D.s1n=$('f-s1n').value;D.s1l=$('f-s1l').value;D.s2n=$('f-s2n').value;D.s2l=$('f-s2l').value;
-    D.s3n=$('f-s3n').value;D.s3l=$('f-s3l').value;D.s4n=$('f-s4n').value;D.s4l=$('f-s4l').value;
     D.aboutTitle=$('f-aTitle').value;D.aboutP1=$('f-aP1').value;D.aboutP2=$('f-aP2').value;
     D.aboutSub=$('f-aSub').value;D.volSub=$('f-vSub').value;
     D.phone=$('f-phone').value;D.email=$('f-email').value;D.linkedin=$('f-li').value;
