@@ -549,8 +549,8 @@ footer{background:#08132a;padding:1.65rem 5%;text-align:center;border-top:1px so
 //  ضع بيانات Supabase هنا مرة واحدة فقط
 //  وبعدها يعمل من أي جهاز أو متصفح
 // ══════════════════════════════════════════
-const SB_URL = 'https://cufyaruypnpjwacivcmr.supabase.co';  // مثال: https://abcxyz.supabase.co
-const SB_KEY = 'sb_publishable_BbeeB0aixp9Lc6Yfxz6VZw_8aZcQU--';    // مثال: eyJhbGci...
+const SB_URL = 'https://cufyaruypnpjwacivcmr.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN1ZnlhcnV5cG5wandhY2l2Y21yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU5ODcwNTQsImV4cCI6MjA5MTU2MzA1NH0.nesl71DKdFs0n1VusDPrk8ufcTr-SoEKL1eZsZM6K8Y';
 const BUCKET = 'cv-assets';
 const PHOTO_PATH = 'profile/photo.jpg';
 const TABLE = 'cv_data';
@@ -701,13 +701,20 @@ async function sbDelPhoto(){
 //  INIT
 // ═══════════════════════════════════════════════════
 async function init(){
+  // إخفاء شاشة التحميل بعد 5 ثوانٍ على أقصى تقدير
+  const timeout = setTimeout(()=>{
+    document.getElementById('ls').classList.add('out');
+  }, 5000);
+
   try{
-    if(SB_URL !== 'https://cufyaruypnpjwacivcmr.supabase.co' && SB_KEY !== 'sb_publishable_BbeeB0aixp9Lc6Yfxz6VZw_8aZcQU--'){
+    if(SB_URL !== 'ضع_PROJECT_URL_هنا' && SB_KEY !== 'ضع_ANON_KEY_هنا'){
       const [rows, ph] = await Promise.all([sbGet(), sbGetPhoto()]);
       if(rows&&rows.length>0) D=rows[0].content;
       photoUrl=ph;
     }
   }catch(e){ console.warn('Supabase load failed:',e.message); }
+
+  clearTimeout(timeout);
   renderSite();
   document.getElementById('ls').classList.add('out');
 }
@@ -819,7 +826,7 @@ function loadForms(){
 
 // ═══ SAVE ALL ═══
 async function saveAll(){
-  if(SB_URL === 'https://cufyaruypnpjwacivcmr.supabase.co'){toast('⚠️ أضف بيانات Supabase في الكود أولاً',true);return;}
+  if(SB_URL === 'ضع_PROJECT_URL_هنا'){toast('⚠️ أضف بيانات Supabase في الكود أولاً',true);return;}
   const btn=$('saveBtn');btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
   setStat('load','⏳ جاري الحفظ...');
   try{
