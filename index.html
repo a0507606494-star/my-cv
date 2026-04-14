@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>عبد الرحمن الخليفي – السيرة الذاتية</title>
+<title>السيرة الذاتية</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 /* ══════════════════════════════════════
-   ⚙️ إعدادات Supabase — عدّلها فقط
+   ⚙️ CONFIG — عدّل هذين السطرين فقط
    ══════════════════════════════════════ */
-/* يتم تعريفها في JS أسفل الصفحة */
+/* يتم تعريفهما في JS */
 
 :root{
   --navy:#0f1f3d;--navy-mid:#1a2f52;--gold:#c9a84c;--gold-light:#e8c97a;
@@ -125,14 +125,34 @@ h2.st::after{content:'';position:absolute;bottom:0;right:50%;transform:translate
 .sk:hover{box-shadow:var(--shadow);transform:translateY(-3px)}
 .skt{display:flex;align-items:center;gap:.58rem;font-family:'Amiri',serif;font-size:1rem;color:var(--navy);margin-bottom:1.15rem;padding-bottom:.65rem;border-bottom:1px solid var(--border)}
 .ski{width:33px;height:33px;background:linear-gradient(135deg,var(--navy),#2d4f8a);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:.8rem}
+/* bars */
 .sbw{margin-bottom:.88rem}
 .sbl{display:flex;justify-content:space-between;font-size:.81rem;font-weight:500;color:var(--text-dark);margin-bottom:.36rem}
 .sbl span:last-child{color:var(--gold);font-weight:700}
 .sbt{height:7px;background:rgba(15,31,61,.08);border-radius:50px;overflow:hidden}
 .sbf{height:100%;background:linear-gradient(90deg,var(--navy),var(--gold));border-radius:50px;width:0;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+/* tags */
 .stags{display:flex;flex-wrap:wrap;gap:.42rem}
 .stag2{background:rgba(15,31,61,.06);color:var(--navy);font-size:.77rem;font-weight:600;padding:.26rem .68rem;border-radius:20px;border:1px solid var(--border);transition:all .2s}
 .stag2:hover{background:var(--navy);color:var(--gold)}
+/* circles */
+.scircles{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center}
+.scircle{text-align:center}
+.scircle-ring{width:70px;height:70px;border-radius:50%;background:conic-gradient(var(--gold) 0deg, rgba(15,31,61,.1) 0deg);display:flex;align-items:center;justify-content:center;margin:0 auto .4rem;position:relative;box-shadow:inset 0 0 0 5px rgba(15,31,61,.06)}
+.scircle-inner{width:52px;height:52px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:var(--navy)}
+.scircle-label{font-size:.72rem;color:var(--text-mid);font-weight:500;max-width:70px}
+/* stars */
+.sstars-list{display:flex;flex-direction:column;gap:.65rem}
+.sstar-item{display:flex;align-items:center;justify-content:space-between}
+.sstar-label{font-size:.83rem;color:var(--text-dark);font-weight:500}
+.sstar-dots{display:flex;gap:.3rem}
+.sstar-dot{width:12px;height:12px;border-radius:50%;background:rgba(15,31,61,.1)}
+.sstar-dot.on{background:var(--gold)}
+/* icon list */
+.siconlist{display:flex;flex-direction:column;gap:.7rem}
+.sicon-item{display:flex;align-items:center;gap:.75rem}
+.sicon-ic{width:32px;height:32px;min-width:32px;background:linear-gradient(135deg,var(--navy),#2d4f8a);border-radius:7px;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:.78rem}
+.sicon-label{font-size:.85rem;font-weight:600;color:var(--text-dark)}
 
 /* CERTS */
 .cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:1rem}
@@ -164,6 +184,10 @@ h2.st::after{content:'';position:absolute;bottom:0;right:50%;transform:translate
 .acht{margin-top:.7rem;background:rgba(201,168,76,.09);border:1px solid rgba(201,168,76,.2);border-radius:6px;padding:.5rem .8rem;font-size:.76rem;color:var(--navy);display:flex;align-items:center;gap:.42rem}
 .acht i{color:var(--gold)}
 
+/* PUBLICATIONS */
+.pub-empty{text-align:center;padding:3rem;color:var(--text-light)}
+.pub-empty i{font-size:2.5rem;color:var(--border);margin-bottom:1rem;display:block}
+
 /* CONTACT */
 .con-sec{background:linear-gradient(135deg,var(--navy),var(--navy-mid));padding:80px 5%}
 .con-in{max-width:860px;margin:0 auto}
@@ -188,7 +212,7 @@ footer{background:#08132a;padding:1.65rem 5%;text-align:center;border-top:1px so
 @keyframes fD{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fL{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:translateX(0)}}
 
-/* ══ ADMIN LOGIN ══ */
+/* ADMIN LOGIN */
 #adminOv{display:none;position:fixed;inset:0;z-index:9999;background:rgba(8,19,42,.97);backdrop-filter:blur(16px);align-items:center;justify-content:center}
 #adminOv.on{display:flex}
 .lbox{background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.25);border-radius:20px;padding:2.5rem 2rem;width:100%;max-width:360px;text-align:center;position:relative}
@@ -201,10 +225,10 @@ footer{background:#08132a;padding:1.65rem 5%;text-align:center;border-top:1px so
 .pins input.err{border-color:#ef4444!important;animation:shk .4s ease}
 @keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 .lerr{color:#ef4444;font-size:.8rem;margin-bottom:.85rem;min-height:1.2rem}
-.lclose{position:absolute;top:1rem;left:1rem;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+.lclose{position:absolute;top:1rem;left:1rem;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;cursor:pointer}
 .lclose:hover{background:rgba(239,68,68,.2);color:#ef4444}
 
-/* ══ ADMIN PANEL ══ */
+/* ADMIN PANEL */
 #adminPn{display:none;position:fixed;inset:0;z-index:9998;background:#0d1b33;overflow:hidden;flex-direction:column}
 #adminPn.on{display:flex}
 .aph{background:rgba(15,31,61,.95);border-bottom:1px solid rgba(201,168,76,.2);padding:.85rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
@@ -215,14 +239,19 @@ footer{background:#08132a;padding:1.65rem 5%;text-align:center;border-top:1px so
 .absv{background:var(--gold);color:var(--navy)}.absv:hover{background:var(--gold-light)}.absv:disabled{opacity:.5;cursor:not-allowed}
 .abcl{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1)}.abcl:hover{background:rgba(239,68,68,.2);color:#ef4444}
 .apbody{display:flex;flex:1;overflow:hidden}
-.apside{width:195px;min-width:195px;background:rgba(8,19,42,.8);border-left:1px solid rgba(201,168,76,.1);padding:1rem 0;overflow-y:auto;flex-shrink:0}
+.apside{width:200px;min-width:200px;background:rgba(8,19,42,.8);border-left:1px solid rgba(201,168,76,.1);padding:1rem 0;overflow-y:auto;flex-shrink:0}
 .apmi{padding:.7rem 1.2rem;color:rgba(255,255,255,.5);font-size:.82rem;font-weight:500;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.6rem;border-right:3px solid transparent}
 .apmi:hover{color:rgba(255,255,255,.85);background:rgba(201,168,76,.05)}
 .apmi.on{color:var(--gold);background:rgba(201,168,76,.08);border-right-color:var(--gold)}
 .apmi i{width:16px;text-align:center;font-size:.8rem}
 .apcont{flex:1;overflow-y:auto;padding:1.5rem}
 .apsec{display:none}.apsec.on{display:block}
-.apsec h3{font-family:'Amiri',serif;color:var(--gold);font-size:1.1rem;margin-bottom:1.2rem;padding-bottom:.55rem;border-bottom:1px solid rgba(201,168,76,.15);display:flex;align-items:center;gap:.5rem}
+.apsec h3{font-family:'Amiri',serif;color:var(--gold);font-size:1.1rem;margin-bottom:1.2rem;padding-bottom:.55rem;border-bottom:1px solid rgba(201,168,76,.15);display:flex;align-items:center;justify-content:space-between}
+
+/* SECTION TOGGLE */
+.sec-toggle{display:flex;align-items:center;gap:.5rem;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.6);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:.3rem .8rem;border-radius:20px;cursor:pointer;transition:all .2s;user-select:none}
+.sec-toggle.active{background:rgba(34,197,94,.15);border-color:rgba(34,197,94,.3);color:#22c55e}
+.sec-toggle i{font-size:.75rem}
 
 /* FORM */
 .fg{margin-bottom:.95rem}
@@ -242,13 +271,18 @@ footer{background:#08132a;padding:1.65rem 5%;text-align:center;border-top:1px so
 .addbtn{width:100%;padding:.65rem;border:1.5px dashed rgba(201,168,76,.3);border-radius:10px;background:transparent;color:var(--gold);font-family:'Tajawal',sans-serif;font-size:.83rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.5rem;margin-top:.25rem}
 .addbtn:hover{background:rgba(201,168,76,.06);border-color:var(--gold)}
 
-/* PHOTO UPLOAD */
+/* PHOTO */
 .pharea{border:2px dashed rgba(201,168,76,.4);border-radius:14px;padding:1.75rem;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:.75rem}
 .pharea:hover{border-color:var(--gold);background:rgba(201,168,76,.04)}
 #apPrev{width:110px;height:110px;border-radius:50%;object-fit:cover;border:3px solid var(--gold);margin:0 auto .85rem;display:none}
 .phicon{font-size:2.8rem;color:rgba(201,168,76,.4);margin-bottom:.65rem}
 .pharea p{color:rgba(255,255,255,.35);font-size:.78rem}
 .pharea strong{color:var(--gold);font-size:.83rem}
+
+/* SKILL TYPE SELECTOR */
+.skill-type-btns{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.85rem}
+.skill-type-btn{padding:.3rem .75rem;border-radius:6px;font-family:'Tajawal',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:rgba(255,255,255,.6);transition:all .2s}
+.skill-type-btn.on{background:rgba(201,168,76,.2);border-color:var(--gold);color:var(--gold)}
 
 /* STATUS */
 .sstat{display:inline-flex;align-items:center;gap:.4rem;font-size:.78rem;padding:.3rem .7rem;border-radius:6px}
@@ -260,17 +294,6 @@ footer{background:#08132a;padding:1.65rem 5%;text-align:center;border-top:1px so
 #toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:#0f2d0f;border:1px solid #22c55e;color:#22c55e;padding:.65rem 1.5rem;border-radius:8px;font-size:.85rem;display:flex;align-items:center;gap:.5rem;z-index:99999;opacity:0;transition:all .35s;pointer-events:none;white-space:nowrap}
 #toast.e{background:#2d0f0f;border-color:#ef4444;color:#ef4444}
 #toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* INFO */
-.ibox{background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.2);border-radius:10px;padding:.9rem 1rem;margin-bottom:1.1rem;font-size:.81rem;color:rgba(255,255,255,.5);line-height:1.8}
-.ibox i{color:var(--gold)}
-
-/* CONFIG PANEL */
-.cfgbox{background:rgba(255,165,0,.06);border:2px solid rgba(255,165,0,.4);border-radius:12px;padding:1.25rem;margin-bottom:1.5rem}
-.cfgbox h4{color:#fbbf24;font-size:.95rem;margin-bottom:1rem;display:flex;align-items:center;gap:.4rem}
-.cfg-status{display:inline-flex;align-items:center;gap:.4rem;font-size:.76rem;padding:.25rem .65rem;border-radius:5px;margin-top:.5rem}
-.cfg-ok{background:rgba(34,197,94,.12);color:#22c55e}
-.cfg-no{background:rgba(239,68,68,.12);color:#ef4444}
 
 /* RESPONSIVE */
 @media(max-width:900px){.hg{grid-template-columns:1fr}.hpw{order:-1}.ag{grid-template-columns:1fr}.sg{grid-template-columns:1fr}.apside{width:160px;min-width:160px}}
@@ -291,14 +314,14 @@ footer{background:#08132a;padding:1.65rem 5%;text-align:center;border-top:1px so
 <nav id="navbar">
   <div class="nav-brand">✦ <span id="navName">السيرة الذاتية</span></div>
   <ul class="nav-links" id="navLinks">
-    <li><a href="#about">نبذة</a></li>
-    <li><a href="#education">التعليم</a></li>
-    <li><a href="#experience">الخبرات</a></li>
-    <li><a href="#skills">المهارات</a></li>
-    <li><a href="#certs">الدورات</a></li>
-    <li><a href="#volunteer">التطوع</a></li>
-    <li><a href="#achievements">الإنجازات</a></li>
-    <li><a href="#publications">الأبحاث</a></li>
+    <li id="nav-about"><a href="#about">نبذة</a></li>
+    <li id="nav-education"><a href="#education">التعليم</a></li>
+    <li id="nav-experience"><a href="#experience">الخبرات</a></li>
+    <li id="nav-skills"><a href="#skills">المهارات</a></li>
+    <li id="nav-certs"><a href="#certs">الدورات</a></li>
+    <li id="nav-volunteer"><a href="#volunteer">التطوع</a></li>
+    <li id="nav-achievements"><a href="#achievements">الإنجازات</a></li>
+    <li id="nav-publications"><a href="#publications">الأبحاث</a></li>
     <li><a href="#contact">تواصل</a></li>
     <li><a href="#" class="abn" onclick="openLogin(event)"><i class="fas fa-lock"></i> إدارة</a></li>
   </ul>
@@ -318,10 +341,7 @@ footer{background:#08132a;padding:1.65rem 5%;text-align:center;border-top:1px so
         <a href="#" class="bo" id="emailBtn"><i class="fas fa-paper-plane"></i> البريد الإلكتروني</a>
         <a href="#experience" class="bo"><i class="fas fa-briefcase"></i> الخبرات</a>
       </div>
-      <div class="hst">
-        <div class="si"><span class="sn" id="s1n"></span><span class="sl" id="s1l"></span></div>
-        <div class="si"><span class="sn" id="s2n"></span><span class="sl" id="s2l"></span></div>
-      </div>
+      <div class="hst" id="statsRow"></div>
     </div>
     <div class="hpw">
       <img id="hPhoto" src="" alt="الصورة الشخصية">
@@ -370,12 +390,7 @@ footer{background:#08132a;padding:1.65rem 5%;text-align:center;border-top:1px so
 
 <div id="publications" class="bgc"><div class="sw">
   <div class="sh rv"><span class="stag">البحث العلمي</span><h2 class="st">الأبحاث والمقالات</h2><p class="ssub">إسهامات أكاديمية في مجال القيادة التربوية والإدارة التعليمية</p></div>
-  <div id="pubGrid" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:180px">
-    <div style="text-align:center;color:var(--text-light)">
-      <i class="fas fa-flask" style="font-size:2.5rem;color:var(--border);margin-bottom:1rem;display:block"></i>
-      <p style="font-size:.95rem">قريباً — سيتم إضافة الأبحاث والمقالات المنشورة في هذا القسم</p>
-    </div>
-  </div>
+  <div class="pub-empty"><i class="fas fa-flask"></i><p>قريباً — سيتم إضافة الأبحاث والمقالات المنشورة في هذا القسم</p></div>
 </div></div>
 
 <div id="contact" class="con-sec"><div class="con-in">
@@ -408,7 +423,7 @@ footer{background:#08132a;padding:1.65rem 5%;text-align:center;border-top:1px so
     </div>
     <div class="lerr" id="loginErr"></div>
     <button class="bp" onclick="doLogin()" style="width:100%;justify-content:center"><i class="fas fa-unlock-alt"></i> دخول</button>
-    <p style="margin-top:1rem;font-size:.7rem;color:rgba(255,255,255,.2)">الرمز الافتراضي: 1234 — غيّره من الإعدادات</p>
+    <p style="margin-top:1rem;font-size:.7rem;color:rgba(255,255,255,.2)">الرمز الافتراضي: 1234</p>
   </div>
 </div>
 
@@ -434,6 +449,7 @@ footer{background:#08132a;padding:1.65rem 5%;text-align:center;border-top:1px so
       <div class="apmi" onclick="goTab('t-vol')" data-t="t-vol"><i class="fas fa-hands-helping"></i><span>التطوع</span></div>
       <div class="apmi" onclick="goTab('t-ach')" data-t="t-ach"><i class="fas fa-trophy"></i><span>الإنجازات</span></div>
       <div class="apmi" onclick="goTab('t-con')" data-t="t-con"><i class="fas fa-address-card"></i><span>تواصل</span></div>
+      <div class="apmi" onclick="goTab('t-vis')" data-t="t-vis"><i class="fas fa-eye"></i><span>الأقسام</span></div>
       <div class="apmi" onclick="goTab('t-set')" data-t="t-set"><i class="fas fa-cog"></i><span>الإعدادات</span></div>
     </div>
     <div class="apcont">
@@ -448,14 +464,11 @@ footer{background:#08132a;padding:1.65rem 5%;text-align:center;border-top:1px so
         <h3 style="margin-top:1.5rem"><i class="fas fa-chart-bar"></i> الإحصائيات</h3>
         <div class="fr"><div class="fg"><label>رقم ١</label><input id="f-s1n"></div><div class="fg"><label>تسمية ١</label><input id="f-s1l"></div></div>
         <div class="fr"><div class="fg"><label>رقم ٢</label><input id="f-s2n"></div><div class="fg"><label>تسمية ٢</label><input id="f-s2l"></div></div>
-        <div class="fr"><div class="fg"><label>رقم ٣</label><input id="f-s3n"></div><div class="fg"><label>تسمية ٣</label><input id="f-s3l"></div></div>
-        <div class="fr"><div class="fg"><label>رقم ٤</label><input id="f-s4n"></div><div class="fg"><label>تسمية ٤</label><input id="f-s4l"></div></div>
       </div>
 
       <!-- PHOTO -->
       <div class="apsec" id="t-photo">
         <h3><i class="fas fa-camera"></i> الصورة الشخصية</h3>
-        <div class="ibox"><i class="fas fa-info-circle"></i> الصورة تُرفع إلى Supabase Storage وتظهر لجميع الزوار.</div>
         <div class="pharea" onclick="document.getElementById('phInput').click()">
           <img id="apPrev" src="" alt="">
           <div id="phPh"><div class="phicon"><i class="fas fa-cloud-upload-alt"></i></div><strong>اضغط لاختيار صورة</strong><p style="margin-top:.4rem">JPG أو PNG · يُفضل مربعة</p></div>
@@ -474,7 +487,7 @@ footer{background:#08132a;padding:1.65rem 5%;text-align:center;border-top:1px so
         <div class="fg"><label>النص التوضيحي (التطوع)</label><textarea id="f-vSub" rows="2"></textarea></div>
         <h3 style="margin-top:1.5rem"><i class="fas fa-heart"></i> الاهتمامات</h3>
         <div id="inAdm"></div><button class="addbtn" onclick="addInt()"><i class="fas fa-plus"></i> إضافة اهتمام</button>
-        <h3 style="margin-top:1.5rem"><i class="fas fa-star"></i> المبادئ والأهداف</h3>
+        <h3 style="margin-top:1.5rem"><i class="fas fa-star"></i> المبادئ والقيم</h3>
         <div id="valAdm"></div><button class="addbtn" onclick="addVal()"><i class="fas fa-plus"></i> إضافة مبدأ</button>
       </div>
 
@@ -522,6 +535,15 @@ footer{background:#08132a;padding:1.65rem 5%;text-align:center;border-top:1px so
         <div class="fr"><div class="fg"><label>واتساب (رقم كامل)</label><input id="f-wa"></div><div class="fg"><label>تويتر / X (اختياري)</label><input id="f-tw"></div></div>
       </div>
 
+      <!-- VISIBILITY -->
+      <div class="apsec" id="t-vis">
+        <h3><i class="fas fa-eye"></i> إظهار / إخفاء الأقسام</h3>
+        <div style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.2);border-radius:10px;padding:.9rem 1rem;margin-bottom:1.2rem;font-size:.81rem;color:rgba(255,255,255,.5)">
+          <i class="fas fa-info-circle" style="color:var(--gold)"></i> فعّل أو أوقف ظهور أي قسم على الموقع. التغييرات تُطبَّق بعد الحفظ.
+        </div>
+        <div id="visToggles"></div>
+      </div>
+
       <!-- SETTINGS -->
       <div class="apsec" id="t-set">
         <h3><i class="fas fa-cog"></i> الإعدادات</h3>
@@ -532,7 +554,6 @@ footer{background:#08132a;padding:1.65rem 5%;text-align:center;border-top:1px so
           <div id="pinMsg" style="font-size:.8rem;min-height:1rem;margin-bottom:.75rem"></div>
           <button class="abtn absv" onclick="changePin()"><i class="fas fa-key"></i> تغيير الرمز</button>
         </div>
-        <button class="addbtn" style="border-color:rgba(239,68,68,.3);color:#ef4444" onclick="resetData()"><i class="fas fa-undo"></i> إعادة ضبط البيانات الافتراضية</button>
       </div>
 
     </div>
@@ -542,12 +563,8 @@ footer{background:#08132a;padding:1.65rem 5%;text-align:center;border-top:1px so
 <div id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg"></span></div>
 
 <script>
-// ═══════════════════════════════════════════════════
-//  ⚙️ CONFIG — يُعدَّل من لوحة التحكم (الإعداد)
-// ═══════════════════════════════════════════════════
 // ══════════════════════════════════════════
-//  ضع بيانات Supabase هنا مرة واحدة فقط
-//  وبعدها يعمل من أي جهاز أو متصفح
+//  ⚙️ بيانات Supabase
 // ══════════════════════════════════════════
 const SB_URL = 'https://cufyaruypnpjwacivcmr.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN1ZnlhcnV5cG5wandhY2l2Y21yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU5ODcwNTQsImV4cCI6MjA5MTU2MzA1NH0.nesl71DKdFs0n1VusDPrk8ufcTr-SoEKL1eZsZM6K8Y';
@@ -555,133 +572,59 @@ const BUCKET = 'cv-assets';
 const PHOTO_PATH = 'profile/photo.jpg';
 const TABLE = 'cv_data';
 
-// ═══════════════════════════════════════════════════
-//  DEFAULT DATA
-// ═══════════════════════════════════════════════════
-const DEF = {
-  pin:'1234',
-  name:'عبد الرحمن بن محمد\nبن سعود الخليفي',
-  title:'باحث في القيادة التربوية | مدرب معتمد (TOT) | قائد كشفي (مفوض)',
-  bio:'قائد تربوي وباحث أكاديمي، أمتلك خبرة ميدانية في التدريس والتدريب وإدارة البرامج التربوية والكشفية. أحمل رخصة مدرب معتمد (TOT) وشهادة مفوض تدريب في مجال تنمية القيادات من جمعية الكشافة العربية السعودية، وأسعى إلى توظيف هذه الخبرات في البحث الأكاديمي وتطوير المؤسسات التعليمية.',
-  quote:'"أؤمن أن القائد الحقيقي هو من يبني العقول قبل أن يقود الفرق — وأن العلم الذي لا يُترجَم أثراً في الإنسان لم يبلغ غايته"',
-  s1n:'+1500',s1l:'ساعة تطوعية',s2n:'+350',s2l:'ساعة تدريبية',
-  s3n:'',s3l:'',s4n:'',s4l:'',
-  aboutTitle:'بين العلم والتعلم',aboutSub:'نظرة شاملة على مساري المهني وأبرز اهتماماتي',
-  aboutP1:'أحمل شغفاً حقيقياً بالتعليم والتمهير، ورحلتي المهنية بدأت في الفصل الدراسي وامتدت لتشمل الميدان الكشفي والتدريبي والقيادي.',
-  aboutP2:'أؤمن بأن خدمة المجتمع وتنمية الشباب هي أشرف الغايات، وأن الأثر الحقيقي يُبنى بالتراكمات الميدانية من خبرات معرفية ومبادرات مجتمعية وممارسات أكاديمية.',
-  interests:[
-    {icon:'fas fa-microscope',label:'الأبحاث القيادية والتربوية'},
-    {icon:'fas fa-hands-helping',label:'الخدمة المجتمعية'},
-    {icon:'fas fa-microphone-alt',label:'الإلقاء والتقديم'},
-    {icon:'fas fa-feather-alt',label:'الشعر والأدب'},
-    {icon:'fas fa-book-open',label:'التاريخ والقراءة'},
-    {icon:'fas fa-chess',label:'الشطرنج'}
-  ],
-  values:[
-    {title:'التعليم رسالة لا وظيفة',desc:'كل مساراتي تدور حول بناء الإنسان وتنمية قدراته'},
-    {title:'القيادة تُكتسب بالممارسة',desc:'الخبرة الميدانية هي الأساس الذي تقوم عليه القيادة الحقيقية'},
-    {title:'العطاء مسؤولية',desc:'الخدمة المجتمعية التزام راسخ لا فعل موسمي'},
-    {title:'التطوير المستمر واجب',desc:'البناء الذاتي مسيرة لا تتوقف'}
-  ],
-  education:[
-    {badge:'ماجستير – جارٍ',icon:'fas fa-graduation-cap',title:'الإدارة والتخطيط التربوي',spec:'مسار: القيادة التربوية',inst:'جامعة الإمام محمد بن سعود الإسلامية',loc:'الرياض',date:'متوقع التخرج 2026م',notes:'أوراق بحثية في: القيادة التعليمية، التخطيط الاستراتيجي، الاتجاهات الحديثة في الإدارة التربوية\nالحصول على شهادة مفوض تنمية القيادات من جمعية الكشافة العربية السعودية (1444هـ)'},
-    {badge:'بكالوريوس',icon:'fas fa-book',title:'معلم صفوف أولية',spec:'كلية التربية',inst:'جامعة الإمام عبد الرحمن بن فيصل',loc:'الدمام – المنطقة الشرقية',date:'2016 – 2020م',notes:'المركز الأول في مسابقة الإلقاء والخطابة على مستوى الجامعة (1441هـ)\nالشارة الخشبية في مجال تنمية المراحل – الكشافة السعودية (1441هـ)\nتمثيل المملكة في المؤتمر الكشفي العالمي – جمهورية أذربيجان (2017م)'}
-  ],
-  experience:[
-    {role:'وكيل شؤون الطلاب',period:'1446هـ – الآن',org:'مدارس التربية الإسلامية (قسم الدبلوما الأمريكية) – الرياض',tasks:'إدارة الانضباط والسجلات الطلابية وتطوير قنوات التواصل مع أولياء الأمور\nتنظيم الفعاليات الطلابية والإشراف على الأنشطة الصفية واللاصفية\nتصميم أدوات متابعة ساعدت على رفع دقة الرصد وتقليل الأخطاء الإدارية'},
-    {role:'معلم تربية إسلامية',period:'1445هـ',org:'شركة معارف التعليمية – الرياض',tasks:'تدريس المناهج بأساليب تفاعلية عززت مشاركة الطلاب\nابتكار أنشطة إثرائية دعمت قيم التعاون والانضباط'},
-    {role:'معلم لغة عربية',period:'1445هـ',org:'أكاديمية الحصان العالمية – الخبر',tasks:'توظيف استراتيجيات تعلم نشط ساهمت في تحسين مستويات الطلاب\nدمج الأنشطة الصفية بالوسائل التقنية'},
-    {role:'رائد نشاط',period:'1443 – 1444هـ',org:'مدارس الأحساء النموذجية الأهلية – الأحساء',tasks:'قيادة وتنفيذ برامج طلابية لأكثر من 300 طالب\nتنظيم مسابقات ومبادرات مجتمعية'},
-    {role:'موجه طلابي',period:'1442 – 1443هـ',org:'مدارس الأنجال الأهلية – الأحساء',tasks:'متابعة السلوكيات الطلابية ووضع خطط علاجية\nتقديم جلسات إرشادية فردية وجماعية'},
-    {role:'إداري وحكم شطرنج',period:'2022 – 2023م',org:'نادي الطرف الرياضي / الاتحاد السعودي للشطرنج',tasks:'تنظيم البطولات المحلية وإدارة الفعاليات\nالتحكيم على البطولات الرسمية بصفة حكم محلي معتمد'}
-  ],
-  skills:[
-    {title:'المهارات الإدارية والتربوية',icon:'fas fa-tasks',type:'bars',bars:[
-      {label:'إدارة شؤون الطلاب والأنشطة',val:92},
-      {label:'تخطيط البرامج والفعاليات',val:90},
-      {label:'الإرشاد والتوجيه الطلابي',val:88},
-      {label:'قيادة الفرق والعمل الجماعي',val:94}
-    ]},
-    {title:'المهارات الشخصية',icon:'fas fa-brain',type:'bars',bars:[
-      {label:'الإلقاء والتواصل الفعّال',val:96},
-      {label:'حل المشكلات واتخاذ القرار',val:88},
-      {label:'المرونة والتكيف',val:90},
-      {label:'التجديد والابتكار',val:86}
-    ]},
-    {title:'المهارات التقنية',icon:'fas fa-laptop-code',type:'tags',tags:['Microsoft Word','Microsoft Excel','PowerPoint','الأنظمة التعليمية','الأنظمة الإدارية','إعداد التقارير','المتابعة الإلكترونية']}
-  ],
-  certs:[
-    {icon:'fas fa-running',title:'إدارة الفعاليات الرياضية',org:'معهد إعداد القادة · أغسطس 2024'},
-    {icon:'fas fa-award',title:'رخصة إعداد وتدريب المدربين (TOT)',org:'مركز عرفاء القيم للتدريب · مايو 2023'},
-    {icon:'fas fa-shield-alt',title:'شهادة مساعد مفوض تنمية القيادات',org:'جمعية الكشافة العربية السعودية · مايو 2023'},
-    {icon:'fas fa-users',title:'قيادة فرق العمل',org:'مركز دار الرؤى للتدريب · أغسطس 2023'},
-    {icon:'fas fa-project-diagram',title:'أساسيات إدارة المشاريع الاحترافية',org:'مركز دار الرؤى للتدريب · أغسطس 2023'},
-    {icon:'fas fa-comments',title:'مهارات الحوار الشبابي',org:'وزارة الرياضة – فرع المنطقة الشرقية · سبتمبر 2022'},
-    {icon:'fas fa-chess',title:'رخصة حكم شطرنج محلي',org:'الاتحاد السعودي للشطرنج · 2022'},
-    {icon:'fas fa-chart-line',title:'التخطيط الاستراتيجي',org:'وكالة الابتكار وريادة الأعمال – جامعة الإمام عبدالرحمن بن فيصل · مايو 2020'},
-    {icon:'fas fa-microphone-alt',title:'فن الخطابة والإلقاء',org:'وحدة التدريب والتطوير – جامعة الإمام عبدالرحمن بن فيصل · سبتمبر 2019'},
-    {icon:'fas fa-star',title:'العادات السبع للقادة الأكثر فعالية',org:'وحدة التدريب والتطوير – جامعة الإمام عبدالرحمن بن فيصل · مارس 2018'}
-  ],
-  volSub:'أكثر من 1500 ساعة تطوعية و350 ساعة تدريبية في مجالات تعليمية وكشفية وتنموية',
-  volunteer:[
-    {icon:'fas fa-campground',title:'قائد البرامج الثقافية والإثرائية',org:'معسكر منى الوادي الكشفي · 1446هـ',desc:'إدارة وتنفيذ البرامج الثقافية والإثرائية داخل المعسكر لـ 580 مشاركاً'},
-    {icon:'fas fa-medal',title:'قائد لجنة البرامج الثقافية والإثرائية',org:'معسكرات الخدمة العامة للحج · 1445هـ',desc:'إدارة برامج أثرَت أكثر من 4800 قائد وكشاف'},
-    {icon:'fas fa-clipboard-list',title:'قائد السكرتارية',org:'معسكر منى الوادي الكشفي · 1444هـ',desc:'قيادة فريق إداري لتنسيق أنشطة 580 مشاركاً'},
-    {icon:'fas fa-dove',title:'قائد تدريب',org:'التجمع الثالث للسلام – الرياض · 1440هـ',desc:'تصميم وتنفيذ ورش تدريبية لتعزيز قيم السلام والتعايش'},
-    {icon:'fas fa-globe-asia',title:'ممثل المملكة – الوفد الرسمي',org:'المؤتمر الكشفي العالمي · جمهورية أذربيجان 1438هـ',desc:'المشاركة ضمن الوفد السعودي الرسمي وتبادل الخبرات مع 160 دولة'},
-    {icon:'fas fa-kaaba',title:'خدمة ضيوف الرحمن',org:'معسكرات خدمة الحجيج · 1437 – 1446هـ',desc:'9 سنوات متواصلة من العمل التطوعي في تنظيم شؤون الحجاج'},
-    {icon:'fas fa-moon',title:'معسكرات الخدمة الرمضانية',org:'1438 – 1440هـ',desc:'قيادة أنشطة مجتمعية وخدمية لتعزيز روح التطوع'},
-    {icon:'fas fa-virus-slash',title:'مكافحة جائحة كورونا',org:'أعمال تطوعية متعددة · 1441 – 1442هـ',desc:'المشاركة في أعمال تطوعية لمواجهة الجائحة وخدمة المجتمع'}
-  ],
-  achievements:[
-    {num:'إنجاز ٠١',title:'ممثل المملكة في المؤتمر الكشفي العالمي',desc:'تمثيل المملكة ضمن الوفد السعودي الرسمي في المؤتمر الكشفي العالمي بجمهورية أذربيجان.',tag:'1438هـ – جمهورية أذربيجان',tagIcon:'fas fa-flag'},
-    {num:'إنجاز ٠٢',title:'المركز الأول في مسابقة الإلقاء والخطابة',desc:'المركز الأول في مسابقة الإلقاء والخطابة على مستوى جامعة الإمام عبد الرحمن بن فيصل.',tag:'1441هـ – مستوى الجامعة',tagIcon:'fas fa-trophy'},
-    {num:'إنجاز ٠٣',title:'الشارة الخشبية الكشفية',desc:'الحصول على الشارة الخشبية في مجال تنمية المراحل من جمعية الكشافة العربية السعودية.',tag:'1442هـ – الكشافة السعودية',tagIcon:'fas fa-medal'},
-    {num:'إنجاز ٠٤',title:'ضمن أفضل 20 رائد نشاط بالمملكة',desc:'الترشح ضمن أفضل 20 رائد نشاط على مستوى المملكة في مسابقة المهارات الثقافية – النسخة الأولى.',tag:'1444هـ – مستوى المملكة',tagIcon:'fas fa-star'},
-    {num:'إنجاز ٠٥',title:'الشارة الأهلية – مساعد مفوض تنمية القيادات',desc:'الشارة الأهلية (مساعد مفوض) في مجال تنمية القيادات من جمعية الكشافة العربية السعودية.',tag:'1444هـ – الكشافة السعودية',tagIcon:'fas fa-shield-alt'},
-    {num:'إنجاز ٠٦',title:'الشارة الدولية – مفوض تدريب تنمية القيادات',desc:'الشارة الدولية (مفوض تدريب) في مجال تنمية القيادات من جمعية الكشافة العربية السعودية.',tag:'1447هـ – الكشافة السعودية',tagIcon:'fas fa-globe'}
-  ],
-  phone:'+966 55 825 8022',email:'abd-ms@hotmail.com',linkedin:'ALKHULAYFI96',location:'الرياض، المملكة العربية السعودية',whatsapp:'966558258022',twitter:''
-};
-
-// ═══════════════════════════════════════════════════
-//  STATE
-// ═══════════════════════════════════════════════════
-let D = JSON.parse(JSON.stringify(DEF));
+// ══════════════════════════════════════════
+//  STATE — لا توجد بيانات افتراضية
+//  كل البيانات تأتي من Supabase فقط
+// ══════════════════════════════════════════
+let D = null;
 let pendingPhoto = null;
 let photoUrl = null;
 
-// لا يوجد localStorage — البيانات تُحمَّل مباشرة من Supabase
-
-// ═══════════════════════════════════════════════════
-//  SUPABASE HELPERS (anon key + RLS)
-// ═══════════════════════════════════════════════════
-async function sbFetch(method, path, body=null, extra={}){
-  if(!SB_URL||!SB_KEY) throw new Error('لم يتم إعداد Supabase بعد');
-  const r = await fetch(SB_URL+path, {
-    method,
-    headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=representation',...(extra.headers||{})},
-    body: body?JSON.stringify(body):undefined
-  });
-  const txt = await r.text();
-  return txt ? JSON.parse(txt) : null;
-}
-
-async function sbGet(){
-  return sbFetch('GET',`/rest/v1/${TABLE}?select=*&order=id.desc&limit=1`);
-}
-async function sbSave(content){
-  const rows = await sbGet();
-  if(rows&&rows.length>0){
-    return sbFetch('PATCH',`/rest/v1/${TABLE}?id=eq.${rows[0].id}`,{content,updated_at:new Date().toISOString()});
-  } else {
-    return sbFetch('POST',`/rest/v1/${TABLE}`,{content,updated_at:new Date().toISOString()});
+// القيم الهيكلية الفارغة (للإنشاء الأول فقط)
+const EMPTY = {
+  pin:'1234',
+  name:'',title:'',bio:'',quote:'',
+  s1n:'',s1l:'',s2n:'',s2l:'',
+  aboutTitle:'',aboutSub:'',aboutP1:'',aboutP2:'',volSub:'',
+  interests:[],values:[],education:[],experience:[],
+  skills:[],certs:[],volunteer:[],achievements:[],
+  phone:'',email:'',linkedin:'',location:'',whatsapp:'',twitter:'',
+  visibility:{
+    about:true,education:true,experience:true,skills:true,
+    certs:true,volunteer:true,achievements:true,publications:true
   }
+};
+
+// أسماء الأقسام
+const SEC_NAMES = {
+  about:'من أنا',education:'المؤهلات التعليمية',experience:'الخبرات العملية',
+  skills:'المهارات',certs:'الدورات والشهادات',volunteer:'العمل التطوعي',
+  achievements:'الإنجازات',publications:'الأبحاث والمقالات'
+};
+
+// ══════════════════════════════════════════
+//  SUPABASE
+// ══════════════════════════════════════════
+async function sbFetch(method,path,body=null,hdrs={}){
+  const r=await fetch(SB_URL+path,{
+    method,
+    headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=representation',...hdrs},
+    body:body?JSON.stringify(body):undefined
+  });
+  const t=await r.text();
+  if(!r.ok) throw new Error(t);
+  return t?JSON.parse(t):null;
+}
+async function sbGet(){return sbFetch('GET',`/rest/v1/${TABLE}?select=*&order=id.desc&limit=1`);}
+async function sbSave(content){
+  const rows=await sbGet();
+  if(rows&&rows.length>0) return sbFetch('PATCH',`/rest/v1/${TABLE}?id=eq.${rows[0].id}`,{content,updated_at:new Date().toISOString()});
+  return sbFetch('POST',`/rest/v1/${TABLE}`,{content,updated_at:new Date().toISOString()});
 }
 async function sbGetPhoto(){
   const url=`${SB_URL}/storage/v1/object/public/${BUCKET}/${PHOTO_PATH}`;
-  const r=await fetch(url,{method:'HEAD'});
-  return r.ok ? url+'?t='+Date.now() : null;
+  try{const r=await fetch(url,{method:'HEAD'});return r.ok?url+'?t='+Date.now():null;}
+  catch{return null;}
 }
 async function sbUploadPhoto(base64,mime){
   const buf=Uint8Array.from(atob(base64.replace(/^data:[^;]+;base64,/,'')),c=>c.charCodeAt(0));
@@ -690,74 +633,113 @@ async function sbUploadPhoto(base64,mime){
     headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':mime,'x-upsert':'true'},
     body:buf
   });
-  if(!r.ok) throw new Error(await r.text());
+  if(!r.ok)throw new Error(await r.text());
   return `${SB_URL}/storage/v1/object/public/${BUCKET}/${PHOTO_PATH}?t=`+Date.now();
 }
 async function sbDelPhoto(){
-  await fetch(`${SB_URL}/storage/v1/object/${BUCKET}/${PHOTO_PATH}`,{method:'DELETE',headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});
+  await fetch(`${SB_URL}/storage/v1/object/${BUCKET}/${PHOTO_PATH}`,
+    {method:'DELETE',headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});
 }
 
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════
 //  INIT
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════
 async function init(){
-  // إخفاء شاشة التحميل بعد 5 ثوانٍ على أقصى تقدير
-  const timeout = setTimeout(()=>{
+  const timer=setTimeout(()=>{
     document.getElementById('ls').classList.add('out');
-  }, 5000);
-
+    if(!D){D=JSON.parse(JSON.stringify(EMPTY));renderSite();}
+  },8000);
   try{
-    if(SB_URL !== 'ضع_PROJECT_URL_هنا' && SB_KEY !== 'ضع_ANON_KEY_هنا'){
-      const [rows, ph] = await Promise.all([sbGet(), sbGetPhoto()]);
-      if(rows&&rows.length>0) D=rows[0].content;
-      photoUrl=ph;
+    const[rows,ph]=await Promise.all([sbGet(),sbGetPhoto()]);
+    if(rows&&rows.length>0){
+      D=rows[0].content;
+      // تأكد من وجود visibility
+      if(!D.visibility) D.visibility=JSON.parse(JSON.stringify(EMPTY.visibility));
+    } else {
+      D=JSON.parse(JSON.stringify(EMPTY));
     }
-  }catch(e){ console.warn('Supabase load failed:',e.message); }
-
-  clearTimeout(timeout);
+    photoUrl=ph;
+  }catch(e){
+    console.warn('Supabase error:',e.message);
+    D=JSON.parse(JSON.stringify(EMPTY));
+  }
+  clearTimeout(timer);
   renderSite();
   document.getElementById('ls').classList.add('out');
 }
 
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════
 //  RENDER
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════
 function $(id){return document.getElementById(id)}
 function renderSite(){
-  $('heroName').innerHTML=D.name.replace(/\n/g,'<br>');
-  $('navName').textContent=D.name.replace(/\n/g,' ');
-  $('heroTitle').innerHTML=D.title.replace(/\n/g,'<br>');
-  $('heroBio').textContent=D.bio;
-  $('fQuote').textContent=D.quote;
-  $('fCopy').textContent='© 2025 جميع الحقوق محفوظة · '+D.name.replace(/\n/g,' ');
-  $('s1n').textContent=D.s1n;$('s1l').textContent=D.s1l;$('s2n').textContent=D.s2n;$('s2l').textContent=D.s2l;
-  $('aboutTitle').textContent=D.aboutTitle;$('aboutP1').textContent=D.aboutP1;$('aboutP2').textContent=D.aboutP2;
-  $('aboutSub').textContent=D.aboutSub||'';$('volSub').textContent=D.volSub;
-  $('emailBtn').href='mailto:'+D.email;
+  if(!D)return;
+  const vis=D.visibility||{};
+
+  // Hero
+  $('heroName').innerHTML=(D.name||'').replace(/\n/g,'<br>');
+  $('navName').textContent=(D.name||'').replace(/\n/g,' ');
+  $('heroTitle').innerHTML=(D.title||'').replace(/\n/g,'<br>');
+  $('heroBio').textContent=D.bio||'';
+  $('fQuote').textContent=D.quote||'';
+  $('fCopy').textContent='© 2025 جميع الحقوق محفوظة · '+(D.name||'').replace(/\n/g,' ');
+  $('emailBtn').href='mailto:'+(D.email||'');
+
+  // Stats
+  let statsHtml='';
+  if(D.s1n&&D.s1l) statsHtml+=`<div class="si"><span class="sn">${D.s1n}</span><span class="sl">${D.s1l}</span></div>`;
+  if(D.s2n&&D.s2l) statsHtml+=`<div class="si"><span class="sn">${D.s2n}</span><span class="sl">${D.s2l}</span></div>`;
+  $('statsRow').innerHTML=statsHtml;
 
   // Photo
   const img=$('hPhoto'),ph=$('hPhotoPh');
   if(photoUrl){img.src=photoUrl;img.style.cssText='width:210px;height:210px;border-radius:50%;border:3px solid var(--gold);box-shadow:0 0 0 8px rgba(201,168,76,.12),0 0 0 16px rgba(201,168,76,.06);object-fit:cover;display:block';ph.style.display='none';}
   else{img.style.display='none';ph.style.cssText='width:210px;height:210px;border-radius:50%;border:3px solid var(--gold);box-shadow:0 0 0 8px rgba(201,168,76,.12),0 0 0 16px rgba(201,168,76,.06);background:linear-gradient(135deg,#1e3a6e,#2d4f8a);display:flex;flex-direction:column;align-items:center;justify-content:center;color:rgba(201,168,76,.7);font-size:3.8rem';}
 
+  // About
+  $('aboutTitle').textContent=D.aboutTitle||'';
+  $('aboutP1').textContent=D.aboutP1||'';
+  $('aboutP2').textContent=D.aboutP2||'';
+  $('aboutSub').textContent=D.aboutSub||'';
+  $('volSub').textContent=D.volSub||'';
   const nums=['١','٢','٣','٤','٥','٦'];
-  $('intGrid').innerHTML=D.interests.map(i=>`<div class="ic"><div class="ii"><i class="${i.icon}"></i></div><span class="il">${i.label}</span></div>`).join('');
-  $('valsCont').innerHTML=D.values.map((v,i)=>`<div class="vi"><div class="vn">${nums[i]||i+1}</div><div class="vt"><strong>${v.title}</strong><span>${v.desc}</span></div></div>`).join('');
-  $('eduGrid').innerHTML=D.education.map(e=>`<div class="ec rv"><div class="edb"><i class="${e.icon}"></i> ${e.badge}</div><h3>${e.title}</h3><p class="esp">${e.spec}</p><p class="ei"><i class="fas fa-university"></i> ${e.inst}</p><p class="ei"><i class="fas fa-map-marker-alt"></i> ${e.loc}</p><p class="ed2"><i class="fas fa-calendar-alt"></i> ${e.date}</p>${e.notes?`<ul class="en">${e.notes.split('\n').filter(n=>n.trim()).map(n=>`<li>${n}</li>`).join('')}</ul>`:''}</div>`).join('');
-  $('expTl').innerHTML=D.experience.map(e=>`<div class="ti"><div class="tdot"></div><div class="tc"><div class="th2"><span class="tr2">${e.role}</span><span class="tp">${e.period}</span></div><p class="to"><i class="fas fa-school"></i> ${e.org}</p><ul class="tt">${e.tasks.split('\n').filter(t=>t.trim()).map(t=>`<li>${t}</li>`).join('')}</ul></div></div>`).join('');
-  $('skillsGrid').innerHTML=D.skills.map(s=>s.type==='bars'
-    ?`<div class="sk rv"><div class="skt"><div class="ski"><i class="${s.icon}"></i></div>${s.title}</div>${s.bars.map(b=>`<div class="sbw"><div class="sbl"><span>${b.label}</span><span>${b.val}%</span></div><div class="sbt"><div class="sbf" data-width="${b.val}"></div></div></div>`).join('')}</div>`
-    :`<div class="sk rv"><div class="skt"><div class="ski"><i class="${s.icon}"></i></div>${s.title}</div><div class="stags">${(s.tags||[]).map(t=>`<span class="stag2">${t}</span>`).join('')}</div></div>`
-  ).join('');
-  $('certsGrid').innerHTML=D.certs.map(c=>`<div class="cc rv"><div class="ci"><i class="${c.icon}"></i></div><div class="ci2"><h4>${c.title}</h4><span>${c.org}</span></div></div>`).join('');
-  $('volGrid').innerHTML=D.volunteer.map(v=>`<div class="vc rv"><div class="vch"><div class="vci"><i class="${v.icon}"></i></div><div><h4>${v.title}</h4><div class="vco">${v.org}</div></div></div><p class="vcd">${v.desc}</p></div>`).join('');
-  $('achGrid').innerHTML=D.achievements.map(a=>`<div class="ach rv"><div class="achh"><div class="achn">${a.num}</div><h3>${a.title}</h3></div><div class="achb"><p>${a.desc}</p><div class="acht"><i class="${a.tagIcon}"></i>${a.tag}</div></div></div>`).join('');
-  $('conCards').innerHTML=`<a href="tel:${D.phone.replace(/\s/g,'')}" class="con-card"><i class="fas fa-phone-alt"></i><span class="ccl">الجوال</span><span class="ccv">${D.phone}</span></a><a href="mailto:${D.email}" class="con-card"><i class="fas fa-envelope"></i><span class="ccl">البريد الإلكتروني</span><span class="ccv">${D.email}</span></a><a href="https://linkedin.com/in/${D.linkedin}" target="_blank" class="con-card"><i class="fab fa-linkedin-in"></i><span class="ccl">لينكدإن</span><span class="ccv">${D.linkedin}</span></a><div class="con-card"><i class="fas fa-map-marker-alt"></i><span class="ccl">الموقع</span><span class="ccv">${D.location}</span></div>`;
-  let soc=`<a href="https://linkedin.com/in/${D.linkedin}" target="_blank" class="sb2"><i class="fab fa-linkedin-in"></i></a><a href="mailto:${D.email}" class="sb2"><i class="fas fa-envelope"></i></a>`;
-  if(D.whatsapp)soc+=`<a href="https://wa.me/${D.whatsapp}" target="_blank" class="sb2"><i class="fab fa-whatsapp"></i></a>`;
-  if(D.twitter)soc+=`<a href="https://twitter.com/${D.twitter}" target="_blank" class="sb2"><i class="fa-brands fa-x-twitter"></i></a>`;
+  $('intGrid').innerHTML=(D.interests||[]).map(i=>`<div class="ic"><div class="ii"><i class="${i.icon}"></i></div><span class="il">${i.label}</span></div>`).join('');
+  $('valsCont').innerHTML=(D.values||[]).map((v,i)=>`<div class="vi"><div class="vn">${nums[i]||i+1}</div><div class="vt"><strong>${v.title}</strong><span>${v.desc}</span></div></div>`).join('');
+
+  // Education
+  $('eduGrid').innerHTML=(D.education||[]).map(e=>`<div class="ec rv"><div class="edb"><i class="${e.icon||'fas fa-book'}"></i> ${e.badge}</div><h3>${e.title}</h3><p class="esp">${e.spec}</p><p class="ei"><i class="fas fa-university"></i> ${e.inst}</p><p class="ei"><i class="fas fa-map-marker-alt"></i> ${e.loc}</p><p class="ed2"><i class="fas fa-calendar-alt"></i> ${e.date}</p>${e.notes?`<ul class="en">${e.notes.split('\n').filter(n=>n.trim()).map(n=>`<li>${n}</li>`).join('')}</ul>`:''}</div>`).join('');
+
+  // Experience
+  $('expTl').innerHTML=(D.experience||[]).map(e=>`<div class="ti"><div class="tdot"></div><div class="tc"><div class="th2"><span class="tr2">${e.role}</span><span class="tp">${e.period}</span></div><p class="to"><i class="fas fa-school"></i> ${e.org}</p><ul class="tt">${e.tasks.split('\n').filter(t=>t.trim()).map(t=>`<li>${t}</li>`).join('')}</ul></div></div>`).join('');
+
+  // Skills
+  $('skillsGrid').innerHTML=(D.skills||[]).map(s=>renderSkillGroup(s)).join('');
+
+  // Certs
+  $('certsGrid').innerHTML=(D.certs||[]).map(c=>`<div class="cc rv"><div class="ci"><i class="${c.icon}"></i></div><div class="ci2"><h4>${c.title}</h4><span>${c.org}</span></div></div>`).join('');
+
+  // Volunteer
+  $('volGrid').innerHTML=(D.volunteer||[]).map(v=>`<div class="vc rv"><div class="vch"><div class="vci"><i class="${v.icon}"></i></div><div><h4>${v.title}</h4><div class="vco">${v.org}</div></div></div><p class="vcd">${v.desc}</p></div>`).join('');
+
+  // Achievements
+  $('achGrid').innerHTML=(D.achievements||[]).map(a=>`<div class="ach rv"><div class="achh"><div class="achn">${a.num}</div><h3>${a.title}</h3></div><div class="achb"><p>${a.desc}</p><div class="acht"><i class="${a.tagIcon}"></i>${a.tag}</div></div></div>`).join('');
+
+  // Contact
+  $('conCards').innerHTML=`
+    <a href="tel:${(D.phone||'').replace(/\s/g,'')}" class="con-card"><i class="fas fa-phone-alt"></i><span class="ccl">الجوال</span><span class="ccv">${D.phone||''}</span></a>
+    <a href="mailto:${D.email||''}" class="con-card"><i class="fas fa-envelope"></i><span class="ccl">البريد الإلكتروني</span><span class="ccv">${D.email||''}</span></a>
+    <a href="https://linkedin.com/in/${D.linkedin||''}" target="_blank" class="con-card"><i class="fab fa-linkedin-in"></i><span class="ccl">لينكدإن</span><span class="ccv">${D.linkedin||''}</span></a>
+    <div class="con-card"><i class="fas fa-map-marker-alt"></i><span class="ccl">الموقع</span><span class="ccv">${D.location||''}</span></div>`;
+  let soc=`<a href="https://linkedin.com/in/${D.linkedin||''}" target="_blank" class="sb2"><i class="fab fa-linkedin-in"></i></a>`;
+  soc+=`<a href="mailto:${D.email||''}" class="sb2"><i class="fas fa-envelope"></i></a>`;
+  if(D.whatsapp) soc+=`<a href="https://wa.me/${D.whatsapp}" target="_blank" class="sb2"><i class="fab fa-whatsapp"></i></a>`;
+  if(D.twitter) soc+=`<a href="https://twitter.com/${D.twitter}" target="_blank" class="sb2"><i class="fa-brands fa-x-twitter"></i></a>`;
   $('socLinks').innerHTML=soc;
 
+  // Visibility
+  applyVisibility();
+
+  // Observers
   setTimeout(()=>{
     document.querySelectorAll('.rv').forEach(el=>{el.classList.remove('vis');ro.observe(el)});
     document.querySelectorAll('.ti').forEach((el,i)=>{el.classList.remove('vis');el.style.transitionDelay=(i*.08)+'s';tlo.observe(el)});
@@ -765,17 +747,83 @@ function renderSite(){
   },100);
 }
 
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════
+//  SKILL RENDER — 5 أشكال
+// ══════════════════════════════════════════
+function renderSkillGroup(s){
+  const header=`<div class="sk rv"><div class="skt"><div class="ski"><i class="${s.icon||'fas fa-star'}"></i></div>${s.title}</div>`;
+  const type=s.type||'bars';
+  let body='';
+
+  if(type==='bars'){
+    body=(s.bars||[]).map(b=>`<div class="sbw"><div class="sbl"><span>${b.label}</span><span>${b.val}%</span></div><div class="sbt"><div class="sbf" data-width="${b.val}"></div></div></div>`).join('');
+  } else if(type==='tags'){
+    body=`<div class="stags">${(s.tags||[]).map(t=>`<span class="stag2">${t}</span>`).join('')}</div>`;
+  } else if(type==='circles'){
+    body=`<div class="scircles">${(s.bars||[]).map(b=>{
+      const deg=Math.round(b.val*3.6);
+      return`<div class="scircle"><div class="scircle-ring" style="background:conic-gradient(var(--gold) ${deg}deg,rgba(15,31,61,.08) ${deg}deg)"><div class="scircle-inner">${b.val}%</div></div><div class="scircle-label">${b.label}</div></div>`;
+    }).join('')}</div>`;
+  } else if(type==='stars'){
+    body=`<div class="sstars-list">${(s.bars||[]).map(b=>{
+      const filled=Math.round(b.val/20);
+      const dots=Array.from({length:5},(_,i)=>`<div class="sstar-dot${i<filled?' on':''}"></div>`).join('');
+      return`<div class="sstar-item"><span class="sstar-label">${b.label}</span><div class="sstar-dots">${dots}</div></div>`;
+    }).join('')}</div>`;
+  } else if(type==='iconlist'){
+    body=`<div class="siconlist">${(s.bars||[]).map(b=>`<div class="sicon-item"><div class="sicon-ic"><i class="${b.icon||'fas fa-check'}"></i></div><span class="sicon-label">${b.label}</span></div>`).join('')}</div>`;
+  }
+
+  return header+body+'</div>';
+}
+
+// ══════════════════════════════════════════
+//  VISIBILITY
+// ══════════════════════════════════════════
+function applyVisibility(){
+  const vis=D.visibility||{};
+  Object.keys(SEC_NAMES).forEach(sec=>{
+    const el=document.getElementById(sec);
+    const nav=document.getElementById('nav-'+sec);
+    const show=vis[sec]!==false;
+    if(el) el.style.display=show?'':'none';
+    if(nav) nav.style.display=show?'':'none';
+  });
+}
+
+function renderVisToggles(){
+  const vis=D.visibility||{};
+  $('visToggles').innerHTML=Object.entries(SEC_NAMES).map(([key,name])=>{
+    const on=vis[key]!==false;
+    return`<div style="display:flex;align-items:center;justify-content:space-between;padding:.85rem 1rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;margin-bottom:.65rem">
+      <span style="color:rgba(255,255,255,.8);font-size:.88rem;font-weight:600">${name}</span>
+      <div class="sec-toggle${on?' active':''}" onclick="toggleSec('${key}',this)">
+        <i class="fas ${on?'fa-eye':'fa-eye-slash'}"></i>
+        ${on?'ظاهر':'مخفي'}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleSec(key,el){
+  if(!D.visibility) D.visibility={};
+  D.visibility[key]=!(D.visibility[key]!==false);
+  const on=D.visibility[key];
+  el.className='sec-toggle'+(on?' active':'');
+  el.innerHTML=`<i class="fas ${on?'fa-eye':'fa-eye-slash'}"></i>${on?'ظاهر':'مخفي'}`;
+}
+
+// ══════════════════════════════════════════
 //  OBSERVERS
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════
 const ro=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('vis');ro.unobserve(x.target)}})},{threshold:.1});
 const tlo=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')})},{threshold:.1});
 const sko=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.querySelectorAll('.sbf').forEach(b=>setTimeout(()=>b.style.width=b.getAttribute('data-width')+'%',200));sko.unobserve(x.target)}})},{threshold:.3});
 
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════
 //  LOGIN
-// ═══════════════════════════════════════════════════
-function getPin(){return localStorage.getItem('cv_pin')||D.pin||'1234'}
+// ══════════════════════════════════════════
+function getPin(){return localStorage.getItem('cv_pin')||D?.pin||'1234'}
 function openLogin(e){if(e)e.preventDefault();$('adminOv').classList.add('on');clearPins();}
 function closeLogin(){$('adminOv').classList.remove('on')}
 function clearPins(){document.querySelectorAll('#pinInputs input').forEach(i=>{i.value='';i.classList.remove('err')});document.querySelector('#pinInputs input').focus();$('loginErr').textContent='';}
@@ -794,14 +842,10 @@ document.querySelectorAll('#pinInputs input').forEach((inp,i,arr)=>{
   inp.addEventListener('keydown',e=>{if(e.key==='Backspace'&&!inp.value&&arr[i-1])arr[i-1].focus();if(e.key==='Enter')doLogin();});
 });
 
-// ═══════════════════════════════════════════════════
-//  ADMIN PANEL
-// ═══════════════════════════════════════════════════
-function openAdmin(){
-  $('adminPn').classList.add('on');
-  document.body.style.overflow='hidden';
-  loadForms();
-}
+// ══════════════════════════════════════════
+//  ADMIN
+// ══════════════════════════════════════════
+function openAdmin(){$('adminPn').classList.add('on');document.body.style.overflow='hidden';loadForms();}
 function closeAdmin(){$('adminPn').classList.remove('on');document.body.style.overflow='';}
 function goTab(id){
   document.querySelectorAll('.apsec').forEach(s=>s.classList.remove('on'));
@@ -811,20 +855,19 @@ function goTab(id){
 }
 
 function loadForms(){
-  $('f-name').value=D.name;$('f-title').value=D.title;$('f-bio').value=D.bio;$('f-quote').value=D.quote;
-  $('f-s1n').value=D.s1n;$('f-s1l').value=D.s1l;$('f-s2n').value=D.s2n;$('f-s2l').value=D.s2l;
-  $('f-aTitle').value=D.aboutTitle;$('f-aP1').value=D.aboutP1;$('f-aP2').value=D.aboutP2;
-  $('f-aSub').value=D.aboutSub||'';$('f-vSub').value=D.volSub;
-  $('f-phone').value=D.phone;$('f-email').value=D.email;$('f-li').value=D.linkedin;
-  $('f-loc').value=D.location;$('f-wa').value=D.whatsapp;$('f-tw').value=D.twitter||'';
+  if(!D)return;
+  $('f-name').value=D.name||'';$('f-title').value=D.title||'';$('f-bio').value=D.bio||'';$('f-quote').value=D.quote||'';
+  $('f-s1n').value=D.s1n||'';$('f-s1l').value=D.s1l||'';$('f-s2n').value=D.s2n||'';$('f-s2l').value=D.s2l||'';
+  $('f-aTitle').value=D.aboutTitle||'';$('f-aP1').value=D.aboutP1||'';$('f-aP2').value=D.aboutP2||'';
+  $('f-aSub').value=D.aboutSub||'';$('f-vSub').value=D.volSub||'';
+  $('f-phone').value=D.phone||'';$('f-email').value=D.email||'';$('f-li').value=D.linkedin||'';
+  $('f-loc').value=D.location||'';$('f-wa').value=D.whatsapp||'';$('f-tw').value=D.twitter||'';
   if(pendingPhoto||photoUrl){$('apPrev').src=pendingPhoto||photoUrl;$('apPrev').style.display='block';$('phPh').style.display='none';}
   else{$('apPrev').style.display='none';$('phPh').style.display='block';}
-  rInt();rVal();rEdu();rExp();rSk();rCerts();rVol();rAch();
+  rInt();rVal();rEdu();rExp();rSk();rCerts();rVol();rAch();renderVisToggles();
 }
 
-// ═══ SAVE ALL ═══
 async function saveAll(){
-  if(SB_URL === 'ضع_PROJECT_URL_هنا'){toast('⚠️ أضف بيانات Supabase في الكود أولاً',true);return;}
   const btn=$('saveBtn');btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
   setStat('load','⏳ جاري الحفظ...');
   try{
@@ -836,6 +879,7 @@ async function saveAll(){
     D.location=$('f-loc').value;D.whatsapp=$('f-wa').value;D.twitter=$('f-tw').value;
     D.interests=cInt();D.values=cVal();D.education=cEdu();D.experience=cExp();
     D.certs=cCerts();D.volunteer=cVol();D.achievements=cAch();
+    // visibility محفوظة مباشرة عند الضغط على toggleSec
 
     if(pendingPhoto){
       const mime=pendingPhoto.match(/data:([^;]+)/)?.[1]||'image/jpeg';
@@ -843,72 +887,84 @@ async function saveAll(){
       photoUrl=url;pendingPhoto=null;
     }
     await sbSave(D);
-    setStat('ok','✓ تم الحفظ في Supabase');
+    setStat('ok','✓ تم الحفظ');
     toast('تم الحفظ وتطبيق التعديلات لجميع الزوار ✓');
     renderSite();
   }catch(e){setStat('err','✗ '+e.message);toast('خطأ: '+e.message,true);}
   finally{btn.disabled=false;btn.innerHTML='<i class="fas fa-save"></i> حفظ وتطبيق';}
 }
-function v(id){return $(id).value}
-function setStat(type,msg){const el=$('saveStatus');el.className='sstat s'+type;el.textContent=msg;}
-function toast(msg,err=false){const t=$('toast');$('toastMsg').textContent=msg;t.className=(err?'e ':' ')+'on';setTimeout(()=>t.className='',3000);}
 
-// ═══ PHOTO ═══
+function v(id){return $(id)?.value||''}
+function setStat(type,msg){const el=$('saveStatus');el.className='sstat s'+type;el.textContent=msg;}
+function toast(msg,err=false){const t=$('toast');$('toastMsg').textContent=msg;t.className=(err?'e ':'')+' on';setTimeout(()=>t.className='',3000);}
+
+// PHOTO
 function onPhoto(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{pendingPhoto=ev.target.result;$('apPrev').src=pendingPhoto;$('apPrev').style.display='block';$('phPh').style.display='none';};r.readAsDataURL(f);}
 async function delPhoto(){if(!confirm('هل تريد حذف الصورة؟'))return;try{await sbDelPhoto();}catch(e){}photoUrl=null;pendingPhoto=null;$('apPrev').style.display='none';$('phPh').style.display='block';$('phInput').value='';renderSite();}
 
 // ═══ DYNAMIC SECTIONS ═══
-function rInt(){$('inAdm').innerHTML=D.interests.map((it,i)=>`<div class="acard"><div class="acardh"><span class="acardt">اهتمام ${i+1}</span><div class="acarddel" onclick="D.interests.splice(${i},1);rInt()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>أيقونة FA</label><input type="text" value="${it.icon}" oninput="D.interests[${i}].icon=this.value"></div><div class="fg"><label>التسمية</label><input type="text" value="${it.label}" oninput="D.interests[${i}].label=this.value"></div></div></div>`).join('');}
-function addInt(){D.interests.push({icon:'fas fa-star',label:'اهتمام جديد'});rInt();}
+function rInt(){$('inAdm').innerHTML=(D.interests||[]).map((it,i)=>`<div class="acard"><div class="acardh"><span class="acardt">اهتمام ${i+1}</span><div class="acarddel" onclick="D.interests.splice(${i},1);rInt()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>أيقونة FA</label><input type="text" value="${it.icon}" oninput="D.interests[${i}].icon=this.value"></div><div class="fg"><label>التسمية</label><input type="text" value="${it.label}" oninput="D.interests[${i}].label=this.value"></div></div></div>`).join('');}
+function addInt(){if(!D.interests)D.interests=[];D.interests.push({icon:'fas fa-star',label:'اهتمام جديد'});rInt();}
 function cInt(){return Array.from(document.querySelectorAll('#inAdm .acard')).map(c=>{const ins=c.querySelectorAll('input');return{icon:ins[0].value,label:ins[1].value}});}
 
-function rVal(){const ns=['١','٢','٣','٤','٥','٦'];$('valAdm').innerHTML=D.values.map((v,i)=>`<div class="acard"><div class="acardh"><span class="acardt">مبدأ ${ns[i]||i+1}</span><div class="acarddel" onclick="D.values.splice(${i},1);rVal()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>العنوان</label><input type="text" value="${v.title}" oninput="D.values[${i}].title=this.value"></div><div class="fg"><label>الوصف</label><input type="text" value="${v.desc}" oninput="D.values[${i}].desc=this.value"></div></div></div>`).join('');}
-function addVal(){D.values.push({title:'مبدأ جديد',desc:'وصف المبدأ'});rVal();}
+function rVal(){const ns=['١','٢','٣','٤','٥','٦'];$('valAdm').innerHTML=(D.values||[]).map((v,i)=>`<div class="acard"><div class="acardh"><span class="acardt">مبدأ ${ns[i]||i+1}</span><div class="acarddel" onclick="D.values.splice(${i},1);rVal()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>العنوان</label><input type="text" value="${v.title}" oninput="D.values[${i}].title=this.value"></div><div class="fg"><label>الوصف</label><input type="text" value="${v.desc}" oninput="D.values[${i}].desc=this.value"></div></div></div>`).join('');}
+function addVal(){if(!D.values)D.values=[];D.values.push({title:'مبدأ جديد',desc:'وصف المبدأ'});rVal();}
 function cVal(){return Array.from(document.querySelectorAll('#valAdm .acard')).map(c=>{const ins=c.querySelectorAll('input');return{title:ins[0].value,desc:ins[1].value}});}
 
-function rEdu(){$('eduAdm').innerHTML=D.education.map((e,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${e.title}</span><div class="acarddel" onclick="D.education.splice(${i},1);rEdu()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>الدرجة</label><input type="text" value="${e.badge}"></div><div class="fg"><label>التخصص</label><input type="text" value="${e.title}"></div></div><div class="fr"><div class="fg"><label>التخصص الفرعي</label><input type="text" value="${e.spec}"></div><div class="fg"><label>المؤسسة</label><input type="text" value="${e.inst}"></div></div><div class="fr"><div class="fg"><label>الموقع</label><input type="text" value="${e.loc}"></div><div class="fg"><label>الفترة</label><input type="text" value="${e.date}"></div></div><div class="fg"><label>ملاحظات (سطر لكل إنجاز)</label><textarea rows="3">${e.notes||''}</textarea></div></div>`).join('');}
-function addEdu(){D.education.push({badge:'بكالوريوس',icon:'fas fa-book',title:'التخصص',spec:'الكلية',inst:'الجامعة',loc:'المدينة',date:'السنة',notes:''});rEdu();}
+function rEdu(){$('eduAdm').innerHTML=(D.education||[]).map((e,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${e.title}</span><div class="acarddel" onclick="D.education.splice(${i},1);rEdu()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>الدرجة</label><input type="text" value="${e.badge}"></div><div class="fg"><label>التخصص</label><input type="text" value="${e.title}"></div></div><div class="fr"><div class="fg"><label>التخصص الفرعي</label><input type="text" value="${e.spec}"></div><div class="fg"><label>المؤسسة</label><input type="text" value="${e.inst}"></div></div><div class="fr"><div class="fg"><label>الموقع</label><input type="text" value="${e.loc}"></div><div class="fg"><label>الفترة</label><input type="text" value="${e.date}"></div></div><div class="fg"><label>ملاحظات (سطر لكل إنجاز)</label><textarea rows="3">${e.notes||''}</textarea></div></div>`).join('');}
+function addEdu(){if(!D.education)D.education=[];D.education.push({badge:'بكالوريوس',icon:'fas fa-book',title:'التخصص',spec:'الكلية',inst:'الجامعة',loc:'المدينة',date:'السنة',notes:''});rEdu();}
 function cEdu(){return Array.from(document.querySelectorAll('#eduAdm .acard')).map((c,i)=>{const ins=c.querySelectorAll('input'),ta=c.querySelector('textarea');return{badge:ins[0].value,icon:'fas fa-book',title:ins[1].value,spec:ins[2].value,inst:ins[3].value,loc:ins[4].value,date:ins[5].value,notes:ta?ta.value:''}});}
 
-function rExp(){$('expAdm').innerHTML=D.experience.map((e,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${e.role}</span><div class="acarddel" onclick="D.experience.splice(${i},1);rExp()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>المسمى</label><input type="text" value="${e.role}"></div><div class="fg"><label>الفترة</label><input type="text" value="${e.period}"></div></div><div class="fg"><label>الجهة</label><input type="text" value="${e.org}"></div><div class="fg"><label>المهام (سطر لكل مهمة)</label><textarea rows="3">${e.tasks}</textarea></div></div>`).join('');}
-function addExp(){D.experience.push({role:'المسمى الوظيفي',period:'السنة',org:'المؤسسة',tasks:'المهمة الأولى\nالمهمة الثانية'});rExp();}
+function rExp(){$('expAdm').innerHTML=(D.experience||[]).map((e,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${e.role}</span><div class="acarddel" onclick="D.experience.splice(${i},1);rExp()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>المسمى</label><input type="text" value="${e.role}"></div><div class="fg"><label>الفترة</label><input type="text" value="${e.period}"></div></div><div class="fg"><label>الجهة</label><input type="text" value="${e.org}"></div><div class="fg"><label>المهام (سطر لكل مهمة)</label><textarea rows="3">${e.tasks}</textarea></div></div>`).join('');}
+function addExp(){if(!D.experience)D.experience=[];D.experience.push({role:'المسمى الوظيفي',period:'السنة',org:'المؤسسة',tasks:'المهمة الأولى\nالمهمة الثانية'});rExp();}
 function cExp(){return Array.from(document.querySelectorAll('#expAdm .acard')).map(c=>{const ins=c.querySelectorAll('input'),ta=c.querySelector('textarea');return{role:ins[0].value,period:ins[1].value,org:ins[2].value,tasks:ta.value}});}
 
-function rSk(){$('skAdm').innerHTML=D.skills.map((s,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${s.title}</span><div class="acarddel" onclick="D.skills.splice(${i},1);rSk()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>الاسم</label><input type="text" value="${s.title}" oninput="D.skills[${i}].title=this.value"></div><div class="fg"><label>النوع</label><select onchange="D.skills[${i}].type=this.value;rSk()"><option value="bars"${s.type==='bars'?' selected':''}>أشرطة</option><option value="tags"${s.type==='tags'?' selected':''}>بطاقات</option></select></div></div>${s.type==='bars'?`${s.bars.map((b,j)=>`<div class="fr" style="margin-bottom:.4rem"><div class="fg" style="margin:0"><input type="text" value="${b.label}" oninput="D.skills[${i}].bars[${j}].label=this.value"></div><div class="fg" style="margin:0;max-width:75px"><input type="number" value="${b.val}" min="0" max="100" oninput="D.skills[${i}].bars[${j}].val=+this.value"></div><div class="acarddel" style="align-self:center;flex-shrink:0" onclick="D.skills[${i}].bars.splice(${j},1);rSk()"><i class="fas fa-times"></i></div></div>`).join('')}<button class="addbtn" style="margin-top:.3rem" onclick="D.skills[${i}].bars.push({label:'مهارة',val:80});rSk()"><i class="fas fa-plus"></i> مهارة</button>`:`<div class="fg"><label>المهارات (فاصلة)</label><textarea rows="2" oninput="D.skills[${i}].tags=this.value.split(',').map(t=>t.trim()).filter(t=>t)">${(s.tags||[]).join(',')}</textarea></div>`}</div>`).join('');}
-function addSk(){D.skills.push({title:'مجموعة جديدة',icon:'fas fa-star',type:'tags',bars:[],tags:[]});rSk();}
+function rSk(){
+  const typeLabels={bars:'أشرطة تقدم',tags:'بطاقات نصية',circles:'دوائر نسبية',stars:'نجوم تقييم',iconlist:'قائمة بأيقونات'};
+  $('skAdm').innerHTML=(D.skills||[]).map((s,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${s.title}</span><div class="acarddel" onclick="D.skills.splice(${i},1);rSk()"><i class="fas fa-times"></i></div></div>
+  <div class="fr"><div class="fg"><label>الاسم</label><input type="text" value="${s.title}" oninput="D.skills[${i}].title=this.value"></div><div class="fg"><label>أيقونة FA</label><input type="text" value="${s.icon||'fas fa-star'}" oninput="D.skills[${i}].icon=this.value"></div></div>
+  <div class="fg"><label>شكل العرض</label>
+  <div class="skill-type-btns">${Object.entries(typeLabels).map(([k,v])=>`<button class="skill-type-btn${s.type===k?' on':''}" onclick="D.skills[${i}].type='${k}';rSk()">${v}</button>`).join('')}</div></div>
+  ${(s.type==='tags')?`<div class="fg"><label>المهارات (فاصلة)</label><textarea rows="2" oninput="D.skills[${i}].tags=this.value.split(',').map(t=>t.trim()).filter(t=>t)">${(s.tags||[]).join(',')}</textarea></div>`
+  :`${(s.bars||[]).map((b,j)=>`<div class="fr" style="margin-bottom:.4rem"><div class="fg" style="margin:0"><input type="text" value="${b.label}" placeholder="اسم المهارة" oninput="D.skills[${i}].bars[${j}].label=this.value"></div>
+  ${s.type==='iconlist'?`<div class="fg" style="margin:0"><input type="text" value="${b.icon||'fas fa-check'}" placeholder="أيقونة" oninput="D.skills[${i}].bars[${j}].icon=this.value"></div>`
+  :`<div class="fg" style="margin:0;max-width:75px"><input type="number" value="${b.val}" min="0" max="100" oninput="D.skills[${i}].bars[${j}].val=+this.value"></div>`}
+  <div class="acarddel" style="align-self:center;flex-shrink:0" onclick="D.skills[${i}].bars.splice(${j},1);rSk()"><i class="fas fa-times"></i></div></div>`).join('')}
+  <button class="addbtn" style="margin-top:.3rem" onclick="D.skills[${i}].bars.push({label:'مهارة',val:80,icon:'fas fa-check'});rSk()"><i class="fas fa-plus"></i> إضافة مهارة</button>`}
+  </div>`).join('');
+}
+function addSk(){if(!D.skills)D.skills=[];D.skills.push({title:'مجموعة جديدة',icon:'fas fa-star',type:'tags',bars:[],tags:[]});rSk();}
 
-function rCerts(){$('certsAdm').innerHTML=D.certs.map((c,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${c.title}</span><div class="acarddel" onclick="D.certs.splice(${i},1);rCerts()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>الاسم</label><input type="text" value="${c.title}"></div><div class="fg"><label>الجهة والتاريخ</label><input type="text" value="${c.org}"></div></div></div>`).join('');}
-function addCert(){D.certs.push({icon:'fas fa-certificate',title:'اسم الدورة',org:'الجهة · التاريخ'});rCerts();}
+function rCerts(){$('certsAdm').innerHTML=(D.certs||[]).map((c,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${c.title}</span><div class="acarddel" onclick="D.certs.splice(${i},1);rCerts()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>الاسم</label><input type="text" value="${c.title}"></div><div class="fg"><label>الجهة والتاريخ</label><input type="text" value="${c.org}"></div></div></div>`).join('');}
+function addCert(){if(!D.certs)D.certs=[];D.certs.push({icon:'fas fa-certificate',title:'اسم الدورة',org:'الجهة · التاريخ'});rCerts();}
 function cCerts(){return Array.from(document.querySelectorAll('#certsAdm .acard')).map((c,i)=>{const ins=c.querySelectorAll('input');return{icon:D.certs[i]?.icon||'fas fa-certificate',title:ins[0].value,org:ins[1].value}});}
 
-function rVol(){$('volAdm').innerHTML=D.volunteer.map((v,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${v.title}</span><div class="acarddel" onclick="D.volunteer.splice(${i},1);rVol()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>العنوان</label><input type="text" value="${v.title}"></div><div class="fg"><label>الجهة</label><input type="text" value="${v.org}"></div></div><div class="fg"><label>الوصف</label><textarea rows="2">${v.desc}</textarea></div></div>`).join('');}
-function addVol(){D.volunteer.push({icon:'fas fa-hands-helping',title:'النشاط التطوعي',org:'الجهة · التاريخ',desc:'وصف النشاط'});rVol();}
+function rVol(){$('volAdm').innerHTML=(D.volunteer||[]).map((v,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${v.title}</span><div class="acarddel" onclick="D.volunteer.splice(${i},1);rVol()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>العنوان</label><input type="text" value="${v.title}"></div><div class="fg"><label>الجهة</label><input type="text" value="${v.org}"></div></div><div class="fg"><label>الوصف</label><textarea rows="2">${v.desc}</textarea></div></div>`).join('');}
+function addVol(){if(!D.volunteer)D.volunteer=[];D.volunteer.push({icon:'fas fa-hands-helping',title:'النشاط التطوعي',org:'الجهة · التاريخ',desc:'وصف النشاط'});rVol();}
 function cVol(){return Array.from(document.querySelectorAll('#volAdm .acard')).map((c,i)=>{const ins=c.querySelectorAll('input'),ta=c.querySelector('textarea');return{icon:D.volunteer[i]?.icon||'fas fa-hands-helping',title:ins[0].value,org:ins[1].value,desc:ta.value}});}
 
-function rAch(){$('achAdm').innerHTML=D.achievements.map((a,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${a.title}</span><div class="acarddel" onclick="D.achievements.splice(${i},1);rAch()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>الرقم</label><input type="text" value="${a.num}"></div><div class="fg"><label>العنوان</label><input type="text" value="${a.title}"></div></div><div class="fg"><label>الوصف</label><textarea rows="2">${a.desc}</textarea></div><div class="fg"><label>نص الوسم</label><input type="text" value="${a.tag}"></div></div>`).join('');}
-function addAch(){D.achievements.push({num:'إنجاز جديد',title:'عنوان الإنجاز',desc:'وصف الإنجاز',tag:'التاريخ والجهة',tagIcon:'fas fa-trophy'});rAch();}
+function rAch(){$('achAdm').innerHTML=(D.achievements||[]).map((a,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${a.title}</span><div class="acarddel" onclick="D.achievements.splice(${i},1);rAch()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>الرقم</label><input type="text" value="${a.num}"></div><div class="fg"><label>العنوان</label><input type="text" value="${a.title}"></div></div><div class="fg"><label>الوصف</label><textarea rows="2">${a.desc}</textarea></div><div class="fg"><label>نص الوسم</label><input type="text" value="${a.tag}"></div></div>`).join('');}
+function addAch(){if(!D.achievements)D.achievements=[];D.achievements.push({num:'إنجاز جديد',title:'عنوان الإنجاز',desc:'وصف الإنجاز',tag:'التاريخ والجهة',tagIcon:'fas fa-trophy'});rAch();}
 function cAch(){return Array.from(document.querySelectorAll('#achAdm .acard')).map((c,i)=>{const ins=c.querySelectorAll('input'),ta=c.querySelector('textarea');return{num:ins[0].value,title:ins[1].value,desc:ta.value,tag:ins[2].value,tagIcon:D.achievements[i]?.tagIcon||'fas fa-trophy'}});}
 
-// ═══ PIN CHANGE ═══
+// PIN
 function changePin(){
   const old=$('f-oldp').value,n=$('f-newp').value,c=$('f-conp').value,msg=$('pinMsg');
   if(old!==getPin()){msg.style.color='#ef4444';msg.textContent='الرمز الحالي غير صحيح';return;}
-  if(!/^\d{4}$/.test(n)){msg.style.color='#ef4444';msg.textContent='الرمز الجديد يجب أن يكون 4 أرقام';return;}
+  if(!/^\d{4}$/.test(n)){msg.style.color='#ef4444';msg.textContent='الرمز يجب أن يكون 4 أرقام';return;}
   if(n!==c){msg.style.color='#ef4444';msg.textContent='الرمزان غير متطابقين';return;}
-  localStorage.setItem('cv_pin',n);
-  D.pin=n;
-  msg.style.color='#22c55e';msg.textContent='✓ تم تغيير الرمز بنجاح';
+  localStorage.setItem('cv_pin',n);D.pin=n;
+  msg.style.color='#22c55e';msg.textContent='✓ تم تغيير الرمز';
   $('f-oldp').value='';$('f-newp').value='';$('f-conp').value='';
   setTimeout(()=>msg.textContent='',3000);
 }
-function resetData(){if(!confirm('هل أنت متأكد؟ سيتم حذف جميع التعديلات.'))return;D=JSON.parse(JSON.stringify(DEF));loadForms();renderSite();toast('تم إعادة الضبط للبيانات الافتراضية');}
 
-// ═══ NAV ═══
+// NAV
 function toggleMenu(){$('navLinks').classList.toggle('open');}
 document.querySelectorAll('.nav-links a:not(.abn)').forEach(a=>a.addEventListener('click',()=>$('navLinks').classList.remove('open')));
 window.addEventListener('scroll',()=>{const n=$('navbar');n.style.height=window.scrollY>60?'56px':'64px';n.style.boxShadow=window.scrollY>60?'0 2px 20px rgba(0,0,0,.25)':'none';});
 
-// ═══ START ═══
+// START
 init();
 </script>
 </body>
