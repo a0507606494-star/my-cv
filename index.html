@@ -424,55 +424,23 @@ body.en footer{direction:ltr;text-align:left}
 
 /* ══ PRINT STYLES ══ */
 @media print{
-  /* إخفاء عناصر لا تُطبع */
-  nav,#ls,#adminOv,#adminPn,#toast,.hbg,.abn,.cv-dl-wrap{display:none!important}
-
-  /* إعادة ضبط الخلفيات للطباعة */
-  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  body{background:#fff!important;color:#000!important;font-size:11pt;direction:rtl}
-
-  /* كل قسم يبدأ في صفحة جديدة */
-  #hero,#about,#education,#experience,#skills,#certs,#volunteer,#achievements,#publications,#contact{
-    page-break-before:always;
-    page-break-inside:avoid;
+  /* إخفاء كل شيء عدا modal السيرة */
+  body > *:not(#cvPrintModal){display:none!important}
+  #cvPrintModal{display:block!important;position:static!important;background:transparent!important;overflow:visible!important}
+  .cpm-bar{display:none!important}
+  .cpm-content{padding:0!important;gap:0!important}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  .cvp{
+    width:210mm!important;
+    height:297mm!important;
+    margin:0!important;
+    box-shadow:none!important;
+    page-break-after:always!important;
+    page-break-inside:avoid!important;
+    overflow:hidden!important;
   }
-  #hero{page-break-before:auto}
-
-  /* منع القطع داخل البطاقات */
-  .ec,.tc,.cc,.vc,.ach,.sk,.ic,.vi{
-    page-break-inside:avoid;
-    break-inside:avoid;
-  }
-
-  /* منع القطع داخل Timeline */
-  .ti{page-break-inside:avoid;break-inside:avoid}
-
-  /* ضبط الهوامش للطباعة */
-  .sw{padding:20px 5%!important;max-width:100%!important}
-
-  /* Hero section — تصغير للطباعة */
-  #hero{min-height:auto!important;padding:40px 5%!important}
-  .hg{grid-template-columns:1fr 180px!important;gap:1.5rem!important}
-  h1.hn{font-size:1.8rem!important}
-  .ht{font-size:.85rem!important}
-  .hb{font-size:.82rem!important}
-  #hPhotoPh,#hPhoto{width:150px!important;height:150px!important}
-
-  /* شبكات البطاقات */
-  .eg,.cg,.achg,.vg{grid-template-columns:repeat(2,1fr)!important}
-  .sg{grid-template-columns:repeat(2,1fr)!important}
-  .ag{grid-template-columns:1fr 1fr!important;gap:1.5rem!important}
-  .ig{grid-template-columns:1fr 1fr!important}
-
-  /* Contact section */
-  .con-sec{background:#0f1f3d!important;padding:30px 5%!important}
-  .con-cards{grid-template-columns:repeat(2,1fr)!important}
-
-  /* Footer */
-  footer{padding:15px 5%!important}
-
-  /* حجم الصفحة A4 */
-  @page{size:A4 portrait;margin:15mm 10mm}
+  .cvp:last-child{page-break-after:auto!important}
+  @page{size:210mm 297mm;margin:0}
 }
 </style>
 </head>
@@ -490,16 +458,16 @@ body.en footer{direction:ltr;text-align:left}
 <nav id="navbar">
   <div class="nav-brand">✦ <span id="navName">السيرة الذاتية</span></div>
   <ul class="nav-links" id="navLinks">
-    <li id="nav-about"><a href="#about">نبذة</a></li>
-    <li id="nav-education"><a href="#education">التعليم</a></li>
-    <li id="nav-experience"><a href="#experience">الخبرات</a></li>
-    <li id="nav-skills"><a href="#skills">المهارات</a></li>
-    <li id="nav-certs"><a href="#certs">الدورات</a></li>
-    <li id="nav-volunteer"><a href="#volunteer">التطوع</a></li>
-    <li id="nav-achievements"><a href="#achievements">الإنجازات</a></li>
-    <li id="nav-publications"><a href="#publications">الأبحاث</a></li>
-    <li><a href="#contact">تواصل</a></li>
-    <li><a href="#" class="abn" onclick="openLogin(event)"><i class="fas fa-lock"></i> إدارة</a></li>
+    <li id="nav-about"><a href="#about" id="nl-about">نبذة</a></li>
+    <li id="nav-education"><a href="#education" id="nl-education">التعليم</a></li>
+    <li id="nav-experience"><a href="#experience" id="nl-experience">الخبرات</a></li>
+    <li id="nav-skills"><a href="#skills" id="nl-skills">المهارات</a></li>
+    <li id="nav-certs"><a href="#certs" id="nl-certs">الدورات</a></li>
+    <li id="nav-volunteer"><a href="#volunteer" id="nl-volunteer">التطوع</a></li>
+    <li id="nav-achievements"><a href="#achievements" id="nl-achievements">الإنجازات</a></li>
+    <li id="nav-publications"><a href="#publications" id="nl-publications">الأبحاث</a></li>
+    <li><a href="#contact" id="nl-contact">تواصل</a></li>
+    <li><a href="#" class="abn" onclick="openLogin(event)"><i class="fas fa-lock"></i> <span id="nl-admin">إدارة</span></a></li>
     <li><button class="lang-btn" onclick="toggleLang()" id="langBtn"><span class="lang-flag">🇬🇧</span> EN</button></li>
   </ul>
   <div class="hbg" onclick="toggleMenu()"><span></span><span></span><span></span></div>
@@ -509,14 +477,14 @@ body.en footer{direction:ltr;text-align:left}
 <section id="hero">
   <div class="hg">
     <div>
-      <div class="hbadge"><i class="fas fa-star"></i> مرحباً بكم في صفحتي الشخصية</div>
+      <div class="hbadge"><i class="fas fa-star"></i> <span id="heroBadge">مرحباً بكم في صفحتي الشخصية</span></div>
       <h1 class="hn" id="heroName">جاري التحميل...</h1>
       <p class="ht" id="heroTitle"></p>
       <p class="hb" id="heroBio"></p>
       <div class="hbtns">
-        <a href="#contact" class="bp"><i class="fas fa-envelope"></i> تواصل معي</a>
-        <a href="#" class="bo" id="emailBtn"><i class="fas fa-paper-plane"></i> البريد الإلكتروني</a>
-        <a href="#experience" class="bo"><i class="fas fa-briefcase"></i> الخبرات</a>
+        <a href="#contact" class="bp"><i class="fas fa-envelope"></i> <span id="btn-contact">تواصل معي</span></a>
+        <a href="#" class="bo" id="emailBtn"><i class="fas fa-paper-plane"></i> <span id="btn-email">البريد الإلكتروني</span></a>
+        <a href="#experience" class="bo"><i class="fas fa-briefcase"></i> <span id="btn-exp">الخبرات</span></a>
         <div class="cv-dl-wrap">
           <button class="bp" onclick="toggleCvMenu(event)" style="background:rgba(201,168,76,.15);border:1.5px solid rgba(201,168,76,.6);color:var(--gold-light)">
             <i class="fas fa-download"></i> <span id="dlBtnLabel">تحميل السيرة الذاتية</span> <i class="fas fa-chevron-down" style="font-size:.7rem"></i>
@@ -537,59 +505,59 @@ body.en footer{direction:ltr;text-align:left}
     </div>
     <div class="hpw">
       <img id="hPhoto" src="" alt="الصورة الشخصية">
-      <div id="hPhotoPh"><i class="fas fa-user-tie"></i><span style="font-size:.7rem;color:rgba(201,168,76,.45);margin-top:.4rem;font-weight:600">صورتك هنا</span></div>
+      <div id="hPhotoPh"><i class="fas fa-user-tie"></i><span style="font-size:.7rem;color:rgba(201,168,76,.45);margin-top:.4rem;font-weight:600" id="photoPlaceholderTxt">صورتك هنا</span></div>
     </div>
   </div>
 </section>
 
 <div id="about" class="bgw"><div class="sw">
-  <div class="sh rv"><span class="stag">التعريف بالشخصية</span><h2 class="st">من أنا</h2><p class="ssub" id="aboutSub"></p></div>
+  <div class="sh rv"><span class="stag" id="sec-about-tag">التعريف بالشخصية</span><h2 class="st" id="sec-about-title">من أنا</h2><p class="ssub" id="aboutSub"></p></div>
   <div class="ag">
     <div class="at rv"><h3 id="aboutTitle"></h3><p id="aboutP1"></p><p id="aboutP2"></p><div class="ig" id="intGrid"></div></div>
-    <div class="rv"><div class="vb"><h4>✦ مبادئي وقيمي</h4><div id="valsCont"></div></div></div>
+    <div class="rv"><div class="vb"><h4>✦ <span id="valuesTitle">مبادئي وقيمي</span></h4><div id="valsCont"></div></div></div>
   </div>
 </div></div>
 
 <div id="education" class="bgc"><div class="sw">
-  <div class="sh rv"><span class="stag">المسيرة الأكاديمية</span><h2 class="st">المؤهلات التعليمية</h2><p class="ssub">شهادات أكاديمية من مؤسسات وطنية معترف بها</p></div>
+  <div class="sh rv"><span class="stag" id="sec-edu-tag">المسيرة الأكاديمية</span><h2 class="st" id="sec-edu-title">المؤهلات التعليمية</h2><p class="ssub" id="sec-edu-sub">شهادات أكاديمية من مؤسسات وطنية معترف بها</p></div>
   <div class="eg" id="eduGrid"></div>
 </div></div>
 
 <div id="experience" class="bgw"><div class="sw">
-  <div class="sh rv"><span class="stag">المسيرة المهنية</span><h2 class="st">الخبرات العملية</h2><p class="ssub">مراحل مهنية متنوعة في التعليم والإرشاد الطلابي</p></div>
+  <div class="sh rv"><span class="stag" id="sec-exp-tag">المسيرة المهنية</span><h2 class="st" id="sec-exp-title">الخبرات العملية</h2><p class="ssub" id="sec-exp-sub">مراحل مهنية متنوعة في التعليم والإرشاد الطلابي</p></div>
   <div class="tl" id="expTl"></div>
 </div></div>
 
 <div id="skills" class="bgc"><div class="sw">
-  <div class="sh rv"><span class="stag">الكفاءات والقدرات</span><h2 class="st">المهارات</h2><p class="ssub">مجموعة متكاملة من المهارات الإدارية والشخصية والتقنية</p></div>
+  <div class="sh rv"><span class="stag" id="sec-sk-tag">الكفاءات والقدرات</span><h2 class="st" id="sec-sk-title">المهارات</h2><p class="ssub" id="sec-sk-sub">مجموعة متكاملة من المهارات الإدارية والشخصية والتقنية</p></div>
   <div class="sg" id="skillsGrid"></div>
 </div></div>
 
 <div id="certs" class="bgw"><div class="sw">
-  <div class="sh rv"><span class="stag">التطوير المهني</span><h2 class="st">الدورات والشهادات</h2><p class="ssub">برامج تدريبية معتمدة تعزز الكفاءة المهنية</p></div>
+  <div class="sh rv"><span class="stag" id="sec-cert-tag">التطوير المهني</span><h2 class="st" id="sec-cert-title">الدورات والشهادات</h2><p class="ssub" id="sec-cert-sub">برامج تدريبية معتمدة تعزز الكفاءة المهنية</p></div>
   <div class="cg" id="certsGrid"></div>
 </div></div>
 
 <div id="volunteer" class="bgc"><div class="sw">
-  <div class="sh rv"><span class="stag">العطاء والقيادة</span><h2 class="st">العمل التطوعي والقيادي</h2><p class="ssub" id="volSub"></p></div>
+  <div class="sh rv"><span class="stag" id="sec-vol-tag">العطاء والقيادة</span><h2 class="st" id="sec-vol-title">العمل التطوعي والقيادي</h2><p class="ssub" id="volSub"></p></div>
   <div class="vg" id="volGrid"></div>
 </div></div>
 
 <div id="achievements" class="bgw"><div class="sw">
-  <div class="sh rv"><span class="stag">الإنجازات والتميز</span><h2 class="st">الإنجازات والمشاركات</h2><p class="ssub">أبرز الإنجازات والتكريمات خلال مسيرتي</p></div>
+  <div class="sh rv"><span class="stag" id="sec-ach-tag">الإنجازات والتميز</span><h2 class="st" id="sec-ach-title">الإنجازات والمشاركات</h2><p class="ssub" id="sec-ach-sub">أبرز الإنجازات والتكريمات خلال مسيرتي</p></div>
   <div class="achg" id="achGrid"></div>
 </div></div>
 
 <div id="publications" class="bgc"><div class="sw">
-  <div class="sh rv"><span class="stag">البحث العلمي</span><h2 class="st">الأبحاث والمقالات</h2><p class="ssub">إسهامات أكاديمية في مجال القيادة التربوية والإدارة التعليمية</p></div>
-  <div class="pub-empty"><i class="fas fa-flask"></i><p>قريباً — سيتم إضافة الأبحاث والمقالات المنشورة في هذا القسم</p></div>
+  <div class="sh rv"><span class="stag" id="sec-pub-tag">البحث العلمي</span><h2 class="st" id="sec-pub-title">الأبحاث والمقالات</h2><p class="ssub" id="sec-pub-sub">إسهامات أكاديمية في مجال القيادة التربوية والإدارة التعليمية</p></div>
+  <div class="pub-empty"><i class="fas fa-flask"></i><p id="sec-pub-empty">قريباً — سيتم إضافة الأبحاث والمقالات المنشورة في هذا القسم</p></div>
 </div></div>
 
 <div id="contact" class="con-sec"><div class="con-in">
   <div class="sh rv" style="margin-bottom:2.75rem">
-    <span class="stag" style="color:var(--gold)">تواصل معي</span>
-    <h2 class="st" style="color:#fff">وسائل التواصل</h2>
-    <p class="ssub" style="color:rgba(255,255,255,.5)">يسعدني التواصل معك لأي سؤال أو فرصة تعاون</p>
+    <span class="stag" style="color:var(--gold)" id="sec-con-tag">تواصل معي</span>
+    <h2 class="st" style="color:#fff" id="sec-con-title">وسائل التواصل</h2>
+    <p class="ssub" style="color:rgba(255,255,255,.5)" id="sec-con-sub">يسعدني التواصل معك لأي سؤال أو فرصة تعاون</p>
   </div>
   <div class="con-cards" id="conCards"></div>
   <div class="srow" id="socLinks"></div>
@@ -1238,7 +1206,62 @@ function toggleLang(){
     document.documentElement.setAttribute('dir','rtl');
     document.documentElement.setAttribute('lang','ar');
   }
+  updateStaticLabels();
   renderSite();
+}
+
+function updateStaticLabels(){
+  const en = LANG==='en';
+  const s=(id,ar,enT)=>{const el=$(id);if(el)el.textContent=en?enT:ar;};
+
+  // Nav
+  s('nl-about','نبذة','About');
+  s('nl-education','التعليم','Education');
+  s('nl-experience','الخبرات','Experience');
+  s('nl-skills','المهارات','Skills');
+  s('nl-certs','الدورات','Courses');
+  s('nl-volunteer','التطوع','Volunteering');
+  s('nl-achievements','الإنجازات','Achievements');
+  s('nl-publications','الأبحاث','Research');
+  s('nl-contact','تواصل','Contact');
+  s('nl-admin','إدارة','Admin');
+
+  // Hero
+  s('heroBadge','مرحباً بكم في صفحتي الشخصية','Welcome to my personal page');
+  s('btn-contact','تواصل معي','Contact Me');
+  s('btn-email','البريد الإلكتروني','Email Me');
+  s('btn-exp','الخبرات','Experience');
+  s('dlBtnLabel','تحميل السيرة الذاتية','Download CV');
+  s('photoPlaceholderTxt','صورتك هنا','Photo here');
+
+  // Section titles
+  s('sec-about-tag','التعريف بالشخصية','About Me');
+  s('sec-about-title','من أنا','Who I Am');
+  s('valuesTitle','مبادئي وقيمي','My Principles & Values');
+  s('sec-edu-tag','المسيرة الأكاديمية','Academic Journey');
+  s('sec-edu-title','المؤهلات التعليمية','Education');
+  s('sec-edu-sub','شهادات أكاديمية من مؤسسات وطنية معترف بها','Academic degrees from recognized national institutions');
+  s('sec-exp-tag','المسيرة المهنية','Professional Journey');
+  s('sec-exp-title','الخبرات العملية','Professional Experience');
+  s('sec-exp-sub','مراحل مهنية متنوعة في التعليم والإرشاد الطلابي','Diverse professional stages in education and student guidance');
+  s('sec-sk-tag','الكفاءات والقدرات','Competencies');
+  s('sec-sk-title','المهارات','Skills');
+  s('sec-sk-sub','مجموعة متكاملة من المهارات الإدارية والشخصية والتقنية','A comprehensive set of administrative, personal, and technical skills');
+  s('sec-cert-tag','التطوير المهني','Professional Development');
+  s('sec-cert-title','الدورات والشهادات','Courses & Certifications');
+  s('sec-cert-sub','برامج تدريبية معتمدة تعزز الكفاءة المهنية','Accredited training programs that enhance professional competency');
+  s('sec-vol-tag','العطاء والقيادة','Giving & Leadership');
+  s('sec-vol-title','العمل التطوعي والقيادي','Volunteering & Leadership');
+  s('sec-ach-tag','الإنجازات والتميز','Achievements & Excellence');
+  s('sec-ach-title','الإنجازات والمشاركات','Achievements & Distinctions');
+  s('sec-ach-sub','أبرز الإنجازات والتكريمات خلال مسيرتي','Key achievements and recognitions throughout my career');
+  s('sec-pub-tag','البحث العلمي','Academic Research');
+  s('sec-pub-title','الأبحاث والمقالات','Research & Articles');
+  s('sec-pub-sub','إسهامات أكاديمية في مجال القيادة التربوية','Academic contributions in educational leadership');
+  s('sec-con-tag','تواصل معي','Contact Me');
+  s('sec-con-title','وسائل التواصل','Contact Information');
+  s('sec-con-sub','يسعدني التواصل معك لأي سؤال أو فرصة تعاون','I would be happy to connect for any inquiry or collaboration opportunity');
+  s('sec-pub-empty','قريباً — سيتم إضافة الأبحاث والمقالات المنشورة في هذا القسم','Coming soon — published research and articles will be added to this section');
 }
 
 // ══════════════════════════════════════════
