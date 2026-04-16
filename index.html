@@ -240,6 +240,9 @@ footer{background:#08132a;padding:1.65rem 5%;text-align:center;border-top:1px so
 .abcl{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1)}.abcl:hover{background:rgba(239,68,68,.2);color:#ef4444}
 .apbody{display:flex;flex:1;overflow:hidden}
 .apside{width:200px;min-width:200px;background:rgba(8,19,42,.8);border-left:1px solid rgba(201,168,76,.1);padding:1rem 0;overflow-y:auto;flex-shrink:0}
+body.en .apside{border-left:none;border-right:1px solid rgba(201,168,76,.1)}
+body.en .apmi{border-right:none;border-left:3px solid transparent}
+body.en .apmi.on{border-left-color:var(--gold)}
 .apmi{padding:.7rem 1.2rem;color:rgba(255,255,255,.5);font-size:.82rem;font-weight:500;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.6rem;border-right:3px solid transparent}
 .apmi:hover{color:rgba(255,255,255,.85);background:rgba(201,168,76,.05)}
 .apmi.on{color:var(--gold);background:rgba(201,168,76,.08);border-right-color:var(--gold)}
@@ -404,14 +407,57 @@ body.en footer{direction:ltr;text-align:left}
 
 /* CV DOWNLOAD MENU */
 .cv-dl-wrap{position:relative;display:inline-block}
-.cv-dl-menu{display:none;position:absolute;top:calc(100% + .5rem);right:0;background:rgba(15,31,61,.98);border:1px solid rgba(201,168,76,.3);border-radius:10px;min-width:220px;overflow:hidden;z-index:999;box-shadow:0 8px 32px rgba(0,0,0,.3);backdrop-filter:blur(12px)}
+.cv-dl-menu{display:none;position:absolute;top:calc(100% + .5rem);right:0;background:rgba(15,31,61,.98);border:1px solid rgba(201,168,76,.3);border-radius:10px;min-width:240px;overflow:hidden;z-index:999;box-shadow:0 8px 32px rgba(0,0,0,.3);backdrop-filter:blur(12px)}
 .cv-dl-menu.open{display:block;animation:fD .2s ease}
-.cv-dl-item{display:flex;align-items:center;gap:.85rem;padding:.9rem 1.1rem;text-decoration:none;transition:background .2s;border-bottom:1px solid rgba(255,255,255,.06)}
+.cv-dl-item{display:flex;align-items:center;gap:.85rem;padding:1rem 1.2rem;text-decoration:none;transition:background .2s;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer;width:100%}
 .cv-dl-item:last-child{border-bottom:none}
-.cv-dl-item:hover{background:rgba(201,168,76,.12)}
-.cv-dl-item i{font-size:1.2rem;color:var(--gold);min-width:20px;text-align:center}
-.cv-dl-item strong{display:block;font-size:.88rem;color:#fff;font-weight:700}
-.cv-dl-item span{font-size:.72rem;color:rgba(255,255,255,.45)}
+.cv-dl-item:hover{background:rgba(201,168,76,.15)}
+.cv-dl-item i{font-size:1.3rem;color:var(--gold);min-width:22px;text-align:center;flex-shrink:0}
+.cv-dl-item div{flex:1;pointer-events:none}
+.cv-dl-item strong{display:block;font-size:.9rem;color:#fff;font-weight:700}
+.cv-dl-item span{font-size:.74rem;color:rgba(255,255,255,.45)}
+
+/* ══ THEMES ══ */
+body.theme-navy{--navy:#0f1f3d;--navy-mid:#1a2f52;--gold:#c9a84c;--gold-light:#e8c97a;--cream:#f5f0e8;--off-white:#faf8f4}
+body.theme-emerald{--navy:#0d2b1e;--navy-mid:#1a4a32;--gold:#4cad7a;--gold-light:#7ecf9e;--cream:#edf5f0;--off-white:#f4faf7}
+body.theme-burgundy{--navy:#2b0d1a;--navy-mid:#4a1a2e;--gold:#c9614c;--gold-light:#e89080;--cream:#f5ece8;--off-white:#faf4f2}
+body.theme-slate{--navy:#1a1f2e;--navy-mid:#252c42;--gold:#7b93c9;--gold-light:#a8badc;--cream:#eef0f5;--off-white:#f4f5f9}
+body.theme-gold{--navy:#2b2000;--navy-mid:#4a3800;--gold:#d4a017;--gold-light:#e8c050;--cream:#faf5e4;--off-white:#fffdf4}
+
+/* ══ DATE PICKER ══ */
+.dp-wrap{position:relative}
+.dp-input{width:100%;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:8px;padding:.58rem .82rem;color:#fff;font-family:'Tajawal',sans-serif;font-size:.87rem;outline:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:all .2s}
+.dp-input:hover,.dp-input:focus-within{border-color:var(--gold);background:rgba(201,168,76,.06)}
+.dp-input span{flex:1}
+.dp-input i{color:var(--gold);font-size:.8rem;margin-right:.5rem}
+.dp-cal{display:none;position:absolute;top:calc(100% + 4px);right:0;left:0;background:#0d1b33;border:1px solid rgba(201,168,76,.3);border-radius:10px;padding:.75rem;z-index:999;box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.dp-cal.open{display:block}
+.dp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.65rem}
+.dp-nav{background:none;border:none;color:var(--gold);font-size:.9rem;cursor:pointer;padding:.2rem .5rem;border-radius:4px}
+.dp-nav:hover{background:rgba(201,168,76,.1)}
+.dp-month-yr{color:#fff;font-size:.85rem;font-weight:600}
+.dp-days-hd{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px}
+.dp-days-hd span{text-align:center;font-size:.65rem;color:rgba(255,255,255,.4);padding:2px}
+.dp-days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.dp-day{text-align:center;font-size:.78rem;padding:.3rem .15rem;border-radius:4px;cursor:pointer;color:rgba(255,255,255,.7);border:none;background:none}
+.dp-day:hover{background:rgba(201,168,76,.15);color:#fff}
+.dp-day.today{border:1px solid rgba(201,168,76,.4)}
+.dp-day.sel{background:var(--gold);color:var(--navy);font-weight:700}
+.dp-day.empty{cursor:default}
+.dp-footer{display:flex;gap:.5rem;margin-top:.65rem}
+.dp-clr{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);border-radius:6px;padding:.35rem;font-family:'Tajawal',sans-serif;font-size:.75rem;cursor:pointer}
+.dp-clr:hover{background:rgba(255,255,255,.1)}
+.dp-today-btn{flex:1;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);color:var(--gold);border-radius:6px;padding:.35rem;font-family:'Tajawal',sans-serif;font-size:.75rem;cursor:pointer}
+.dp-today-btn:hover{background:rgba(201,168,76,.25)}
+
+/* ══ THEME SWATCHES ══ */
+.theme-grid{display:flex;gap:.65rem;flex-wrap:wrap}
+.theme-swatch{width:48px;height:48px;border-radius:10px;cursor:pointer;border:2px solid transparent;transition:all .2s;position:relative;overflow:hidden}
+.theme-swatch.active{border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.2)}
+.theme-swatch:hover{transform:scale(1.08)}
+.theme-swatch-inner{width:100%;height:100%;display:flex;flex-direction:column}
+.theme-swatch-top{flex:2}
+.theme-swatch-bot{flex:1}
 
 /* TOAST */
 #toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:#0f2d0f;border:1px solid #22c55e;color:#22c55e;padding:.65rem 1.5rem;border-radius:8px;font-size:.85rem;display:flex;align-items:center;gap:.5rem;z-index:99999;opacity:0;transition:all .35s;pointer-events:none;white-space:nowrap}
@@ -420,7 +466,24 @@ body.en footer{direction:ltr;text-align:left}
 
 /* RESPONSIVE */
 @media(max-width:900px){.hg{grid-template-columns:1fr}.hpw{order:-1}.ag{grid-template-columns:1fr}.sg{grid-template-columns:1fr}.apside{width:160px;min-width:160px}}
-@media(max-width:640px){.nav-links{display:none}.hbg{display:flex}.nav-links.open{display:flex;flex-direction:column;position:fixed;top:64px;right:0;left:0;background:rgba(15,31,61,.98);padding:1.5rem;gap:1.3rem;border-bottom:1px solid rgba(201,168,76,.2)}.sw{padding:60px 5%}.hbtns{flex-direction:column;align-items:flex-start}.con-cards{grid-template-columns:1fr 1fr}.fr{grid-template-columns:1fr}.apside{width:52px;min-width:52px}.apmi span{display:none}}
+@media(max-width:640px){
+  .nav-links{display:none}
+  .hbg{display:flex}
+  .nav-links.open{display:flex;flex-direction:column;position:fixed;top:64px;right:0;left:0;background:rgba(15,31,61,.98);padding:1.5rem;gap:1.3rem;border-bottom:1px solid rgba(201,168,76,.2)}
+  .sw{padding:60px 5%}
+  .hbtns{flex-direction:column;align-items:flex-start}
+  .con-cards{grid-template-columns:1fr 1fr}
+  .fr{grid-template-columns:1fr}
+  /* القائمة الجانبية تبقى جانبية دائماً */
+  .apside{width:52px;min-width:52px;flex-shrink:0}
+  .apmi span{display:none}
+  /* في الإنجليزية — القائمة على اليسار */
+  body.en .apside{order:0}
+  body.en .apcont{order:1}
+  /* إصلاح اتجاه القائمة المنسدلة في الإنجليزية */
+  body.en .nav-links.open{right:0;left:0;text-align:left;direction:ltr}
+  body.en .cv-dl-menu{right:auto;left:0}
+}
 
 /* ══ PRINT STYLES ══ */
 @media print{
@@ -595,7 +658,6 @@ body.en footer{direction:ltr;text-align:left}
     </div>
     <div class="lerr" id="loginErr"></div>
     <button class="bp" onclick="doLogin()" style="width:100%;justify-content:center"><i class="fas fa-unlock-alt"></i> دخول</button>
-    <p style="margin-top:1rem;font-size:.7rem;color:rgba(255,255,255,.2)"></p>
   </div>
 </div>
 
@@ -624,13 +686,15 @@ body.en footer{direction:ltr;text-align:left}
       <div class="apmi" onclick="goTab('t-vis')" data-t="t-vis"><i class="fas fa-eye"></i><span>الأقسام</span></div>
       <div class="apmi" onclick="goTab('t-set')" data-t="t-set"><i class="fas fa-cog"></i><span>الإعدادات</span></div>
       <div class="apmi" onclick="goTab('t-trans')" data-t="t-trans"><i class="fas fa-language"></i><span>الترجمة</span></div>
+      <div class="apmi" onclick="goTab('t-theme')" data-t="t-theme"><i class="fas fa-palette"></i><span>الألوان</span></div>
     </div>
     <div class="apcont">
 
       <!-- HERO -->
       <div class="apsec on" id="t-hero">
         <h3><i class="fas fa-home"></i> قسم البداية</h3>
-        <div class="fg"><label>الاسم الكامل</label><input id="f-name" type="text"></div>
+        <div class="fg"><label>الاسم الكامل (عربي)</label><input id="f-name" type="text"></div>
+        <div class="fg"><label>الاسم الكامل (إنجليزي) — يظهر في النسخة الإنجليزية فقط</label><input id="f-nameEn" type="text" placeholder="Abdulrahman M. Alkhulayfi"></div>
         <div class="fg"><label>المسمى الوظيفي</label><textarea id="f-title" rows="2"></textarea></div>
         <div class="fg"><label>النبذة الشخصية</label><textarea id="f-bio" rows="4"></textarea></div>
         <div class="fg"><label>الاقتباس في التذييل</label><textarea id="f-quote" rows="2"></textarea></div>
@@ -761,6 +825,30 @@ body.en footer{direction:ltr;text-align:left}
         </div>
       </div>
 
+      <!-- THEME TAB -->
+      <div class="apsec" id="t-theme">
+        <h3><i class="fas fa-palette"></i> نمط الألوان</h3>
+        <div class="ibox"><i class="fas fa-info-circle"></i> اختر نمط الألوان المناسب. التغيير فوري ويُحفظ مع البيانات.</div>
+        <div class="theme-grid" id="themeGrid"></div>
+        <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.08)">
+          <div style="color:rgba(255,255,255,.5);font-size:.78rem;margin-bottom:.75rem">معاينة النمط الحالي</div>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+            <div style="flex:1;min-width:80px;background:var(--navy);border-radius:8px;padding:.75rem;text-align:center">
+              <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-bottom:.3rem">الخلفية</div>
+              <div style="width:24px;height:24px;background:var(--navy);border-radius:4px;margin:0 auto;border:1px solid rgba(255,255,255,.2)"></div>
+            </div>
+            <div style="flex:1;min-width:80px;background:var(--navy);border-radius:8px;padding:.75rem;text-align:center">
+              <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-bottom:.3rem">اللون الذهبي</div>
+              <div style="width:24px;height:24px;background:var(--gold);border-radius:4px;margin:0 auto"></div>
+            </div>
+            <div style="flex:1;min-width:80px;background:var(--cream);border-radius:8px;padding:.75rem;text-align:center">
+              <div style="font-size:.7rem;color:var(--text-mid);margin-bottom:.3rem">الكريمي</div>
+              <div style="width:24px;height:24px;background:var(--cream);border-radius:4px;margin:0 auto;border:1px solid rgba(0,0,0,.1)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -870,6 +958,7 @@ async function init(){
   }
   clearTimeout(timer);
   try {
+    initTheme();
     renderSite();
   } catch(renderErr) {
     console.error('خطأ في عرض البيانات:', renderErr);
@@ -889,12 +978,13 @@ function renderSite(){
   const g = (ar,en) => (E&&en) ? en : (ar||'');
 
   // Hero
-  $('heroName').innerHTML=g(D.name,'').replace(/\n/g, LANG==='en'?' ':'<br>') || (D.name||'').replace(/\n/g,'<br>');
-  $('navName').textContent=(D.name||'').replace(/\n/g,' ');
+  const displayName = LANG==='en' && D.nameEn ? D.nameEn : (D.name||'');
+  $('heroName').innerHTML = LANG==='en' ? displayName : displayName.replace(/\n/g,'<br>');
+  $('navName').textContent = displayName.replace(/\n/g,' ');
   $('heroTitle').innerHTML=g(D.title,E?.title||'').replace(/\n/g,'<br>');
   $('heroBio').textContent=g(D.bio,E?.bio||'');
   $('fQuote').textContent=g(D.quote,E?.quote||'');
-  $('fCopy').textContent=(LANG==='en'?'© 2025 All rights reserved · ':'© 2025 جميع الحقوق محفوظة · ')+(D.name||'').replace(/\n/g,' ');
+  $('fCopy').textContent=(LANG==='en'?'© 2026 All rights reserved · ':'© 2026 جميع الحقوق محفوظة · ')+(LANG==='en'&&D.nameEn ? D.nameEn : (D.name||'').replace(/\n/g,' '));
   $('emailBtn').href='mailto:'+(D.email||'');
   if($('dlBtnLabel')) $('dlBtnLabel').textContent = LANG==='en' ? 'Download CV' : 'تحميل السيرة الذاتية';
 
@@ -1071,7 +1161,7 @@ document.querySelectorAll('#pinInputs input').forEach((inp,i,arr)=>{
 // ══════════════════════════════════════════
 //  ADMIN
 // ══════════════════════════════════════════
-function openAdmin(){$('adminPn').classList.add('on');document.body.style.overflow='hidden';loadForms();}
+function openAdmin(){$('adminPn').classList.add('on');document.body.style.overflow='hidden';loadForms();renderThemeGrid();}
 function closeAdmin(){$('adminPn').classList.remove('on');document.body.style.overflow='';}
 function goTab(id){
   document.querySelectorAll('.apsec').forEach(s=>s.classList.remove('on'));
@@ -1082,7 +1172,7 @@ function goTab(id){
 
 function loadForms(){
   if(!D)return;
-  $('f-name').value=D.name||'';$('f-title').value=D.title||'';$('f-bio').value=D.bio||'';$('f-quote').value=D.quote||'';
+  $('f-name').value=D.name||'';$('f-nameEn').value=D.nameEn||'';$('f-title').value=D.title||'';$('f-bio').value=D.bio||'';$('f-quote').value=D.quote||'';
   $('f-s1n').value=D.s1n||'';$('f-s1l').value=D.s1l||'';$('f-s2n').value=D.s2n||'';$('f-s2l').value=D.s2l||'';
   $('f-aTitle').value=D.aboutTitle||'';$('f-aP1').value=D.aboutP1||'';$('f-aP2').value=D.aboutP2||'';
   $('f-aSub').value=D.aboutSub||'';$('f-vSub').value=D.volSub||'';
@@ -1097,7 +1187,7 @@ async function saveAll(){
   const btn=$('saveBtn');btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
   setStat('load','⏳ جاري الحفظ...');
   try{
-    D.name=$('f-name').value;D.title=$('f-title').value;D.bio=$('f-bio').value;D.quote=$('f-quote').value;
+    D.name=$('f-name').value;D.nameEn=$('f-nameEn').value;D.title=$('f-title').value;D.bio=$('f-bio').value;D.quote=$('f-quote').value;
     D.s1n=$('f-s1n').value;D.s1l=$('f-s1l').value;D.s2n=$('f-s2n').value;D.s2l=$('f-s2l').value;
     D.aboutTitle=$('f-aTitle').value;D.aboutP1=$('f-aP1').value;D.aboutP2=$('f-aP2').value;
     D.aboutSub=$('f-aSub').value;D.volSub=$('f-vSub').value;
@@ -1137,11 +1227,11 @@ function rVal(){const ns=['١','٢','٣','٤','٥','٦'];$('valAdm').innerHTML=(
 function addVal(){if(!D.values)D.values=[];D.values.push({title:'مبدأ جديد',desc:'وصف المبدأ'});rVal();}
 function cVal(){return Array.from(document.querySelectorAll('#valAdm .acard')).map(c=>{const ins=c.querySelectorAll('input');return{title:ins[0].value,desc:ins[1].value}});}
 
-function rEdu(){$('eduAdm').innerHTML=(D.education||[]).map((e,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${e.title}</span><div class="acarddel" onclick="D.education.splice(${i},1);rEdu()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>الدرجة</label><input type="text" value="${e.badge}"></div><div class="fg"><label>التخصص</label><input type="text" value="${e.title}"></div></div><div class="fr"><div class="fg"><label>التخصص الفرعي</label><input type="text" value="${e.spec}"></div><div class="fg"><label>المؤسسة</label><input type="text" value="${e.inst}"></div></div><div class="fr"><div class="fg"><label>الموقع</label><input type="text" value="${e.loc}"></div><div class="fg"><label>الفترة</label><input type="text" value="${e.date}"></div></div><div class="fg"><label>ملاحظات (سطر لكل إنجاز)</label><textarea rows="3">${e.notes||''}</textarea></div></div>`).join('');}
+function rEdu(){$('eduAdm').innerHTML=(D.education||[]).map((e,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${e.title}</span><div class="acarddel" onclick="D.education.splice(${i},1);rEdu()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>الدرجة</label><input type="text" value="${e.badge}"></div><div class="fg"><label>التخصص</label><input type="text" value="${e.title}"></div></div><div class="fr"><div class="fg"><label>التخصص الفرعي</label><input type="text" value="${e.spec}"></div><div class="fg"><label>المؤسسة</label><input type="text" value="${e.inst}"></div></div><div class="fr"><div class="fg"><label>الموقع</label><input type="text" value="${e.loc}"></div><div class="fg"><label>تاريخ البداية</label>${makeDp('edu-s'+i,e.dateStart||'','D.education['+i+'].dateStart=this.value')}</div></div><div class="fr"><div class="fg"><label>تاريخ الانتهاء (أو اتركه فارغاً لـ "الآن")</label>${makeDp('edu-e'+i,e.dateEnd||'','D.education['+i+'].dateEnd=this.value')}</div><div class="fg"><label>نص الفترة (اختياري للعرض)</label><input type="text" value="${e.date||''}" placeholder="مثال: 2016 – 2020م"></div></div><div class="fg"><label>ملاحظات (سطر لكل إنجاز)</label><textarea rows="3">${e.notes||''}</textarea></div></div>`).join('');}
 function addEdu(){if(!D.education)D.education=[];D.education.push({badge:'بكالوريوس',icon:'fas fa-book',title:'التخصص',spec:'الكلية',inst:'الجامعة',loc:'المدينة',date:'السنة',notes:''});rEdu();}
 function cEdu(){return Array.from(document.querySelectorAll('#eduAdm .acard')).map((c,i)=>{const ins=c.querySelectorAll('input'),ta=c.querySelector('textarea');return{badge:ins[0].value,icon:'fas fa-book',title:ins[1].value,spec:ins[2].value,inst:ins[3].value,loc:ins[4].value,date:ins[5].value,notes:ta?ta.value:''}});}
 
-function rExp(){$('expAdm').innerHTML=(D.experience||[]).map((e,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${e.role}</span><div class="acarddel" onclick="D.experience.splice(${i},1);rExp()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>المسمى</label><input type="text" value="${e.role}"></div><div class="fg"><label>الفترة</label><input type="text" value="${e.period}"></div></div><div class="fg"><label>الجهة</label><input type="text" value="${e.org}"></div><div class="fg"><label>المهام (سطر لكل مهمة)</label><textarea rows="3">${e.tasks}</textarea></div></div>`).join('');}
+function rExp(){$('expAdm').innerHTML=(D.experience||[]).map((e,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${e.role}</span><div class="acarddel" onclick="D.experience.splice(${i},1);rExp()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>المسمى</label><input type="text" value="${e.role}"></div><div class="fg"><label>نص الفترة</label><input type="text" value="${e.period}" placeholder="مثال: 1446هـ – الآن"></div></div><div class="fr"><div class="fg"><label>تاريخ البداية</label>${makeDp('exp-s'+i,e.dateStart||'','D.experience['+i+'].dateStart=this.value')}</div><div class="fg"><label>تاريخ الانتهاء</label>${makeDp('exp-e'+i,e.dateEnd||'','D.experience['+i+'].dateEnd=this.value')}</div></div><div class="fg"><label>الجهة</label><input type="text" value="${e.org}"></div><div class="fg"><label>المهام (سطر لكل مهمة)</label><textarea rows="3">${e.tasks}</textarea></div></div>`).join('');}
 function addExp(){if(!D.experience)D.experience=[];D.experience.push({role:'المسمى الوظيفي',period:'السنة',org:'المؤسسة',tasks:'المهمة الأولى\nالمهمة الثانية'});rExp();}
 function cExp(){return Array.from(document.querySelectorAll('#expAdm .acard')).map(c=>{const ins=c.querySelectorAll('input'),ta=c.querySelector('textarea');return{role:ins[0].value,period:ins[1].value,org:ins[2].value,tasks:ta.value}});}
 
@@ -1393,7 +1483,7 @@ function openCvPrint(lang){
   const p2main = buildP2Main(d, isEn, mainDir);
   const p2side = buildP2Side(d, isEn, mainDir);
 
-  const nameDisplay = (d.name||'').replace(/\n/g, isEn?' ':'<br>');
+  const nameDisplay = isEn && D.nameEn ? D.nameEn : (d.name||'').replace(/\n/g, isEn?' ':'<br>');
   const titleDisplay = (d.title||'').replace(/\n/g,' | ');
   const quote = d.quote||'';
 
@@ -1545,6 +1635,168 @@ function buildP2Side(d, isEn, mainDir){
   }
   return h;
 }
+
+// ══════════════════════════════════════════
+//  THEME SYSTEM
+// ══════════════════════════════════════════
+const THEMES = {
+  navy:    {name:'كلاسيكي ذهبي', navy:'#0f1f3d', mid:'#1a2f52', gold:'#c9a84c', light:'#e8c97a', cream:'#f5f0e8', off:'#faf8f4'},
+  emerald: {name:'زمردي فاخر',   navy:'#0d2b1e', mid:'#1a4a32', gold:'#4cad7a', light:'#7ecf9e', cream:'#edf5f0', off:'#f4faf7'},
+  burgundy:{name:'خمري ملكي',    navy:'#2b0d1a', mid:'#4a1a2e', gold:'#c9614c', light:'#e89080', cream:'#f5ece8', off:'#faf4f2'},
+  slate:   {name:'رمادي أزرق',   navy:'#1a1f2e', mid:'#252c42', gold:'#7b93c9', light:'#a8badc', cream:'#eef0f5', off:'#f4f5f9'},
+  gold:    {name:'ذهبي ملكي',    navy:'#2b2000', mid:'#4a3800', gold:'#d4a017', light:'#e8c050', cream:'#faf5e4', off:'#fffdf4'},
+  charcoal:{name:'فحمي فضي',     navy:'#1c1c1c', mid:'#2d2d2d', gold:'#9e9e9e', light:'#c0c0c0', cream:'#f0f0f0', off:'#f8f8f8'},
+};
+
+function applyTheme(key){
+  const t=THEMES[key];if(!t)return;
+  const r=document.documentElement.style;
+  r.setProperty('--navy',t.navy);r.setProperty('--navy-mid',t.mid);
+  r.setProperty('--gold',t.gold);r.setProperty('--gold-light',t.light);
+  r.setProperty('--cream',t.cream);r.setProperty('--off-white',t.off);
+  // حفظ في D
+  if(D) D.theme=key;
+  localStorage.setItem('cv_theme',key);
+  renderThemeGrid();
+}
+
+function renderThemeGrid(){
+  const cur=(D?.theme)||localStorage.getItem('cv_theme')||'navy';
+  if(!$('themeGrid'))return;
+  $('themeGrid').innerHTML=Object.entries(THEMES).map(([key,t])=>`
+    <div class="theme-swatch${key===cur?' active':''}" onclick="applyTheme('${key}')" title="${t.name}">
+      <div class="theme-swatch-inner">
+        <div class="theme-swatch-top" style="background:${t.navy}"></div>
+        <div class="theme-swatch-bot" style="background:${t.gold}"></div>
+      </div>
+    </div>
+    <div style="font-size:.68rem;color:rgba(255,255,255,.5);text-align:center;margin-top:.25rem;width:48px">${t.name}</div>
+  `).join('');
+}
+
+function initTheme(){
+  const saved=(D?.theme)||localStorage.getItem('cv_theme')||'navy';
+  applyTheme(saved);
+}
+
+// ══════════════════════════════════════════
+//  DATE PICKER
+// ══════════════════════════════════════════
+let dpCurrent={year:new Date().getFullYear(),month:new Date().getMonth()};
+let dpActive=null; // {inputEl, displayEl, id}
+
+function dpOpen(id,inputEl,displayEl){
+  // إغلاق أي تقويم مفتوح
+  document.querySelectorAll('.dp-cal.open').forEach(c=>{
+    if(c.id!=='dp-'+id) c.classList.remove('open');
+  });
+  const cal=document.getElementById('dp-'+id);
+  if(!cal)return;
+  dpActive={id,inputEl,displayEl};
+  // اقرأ التاريخ الحالي
+  const val=inputEl.value;
+  if(val&&val.includes('-')){
+    const parts=val.split('-');
+    dpCurrent={year:parseInt(parts[0]),month:parseInt(parts[1])-1};
+  } else {
+    dpCurrent={year:new Date().getFullYear(),month:new Date().getMonth()};
+  }
+  dpRenderCal(id);
+  cal.classList.toggle('open');
+}
+
+function dpRenderCal(id){
+  const cal=document.getElementById('dp-'+id);if(!cal)return;
+  const months=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  const {year,month}=dpCurrent;
+  const today=new Date();
+  const selected=dpActive?.inputEl?.value;
+  const firstDay=new Date(year,month,1).getDay();
+  const daysInMonth=new Date(year,month+1,0).getDate();
+
+  // الأيام
+  let daysHtml='';
+  // فراغات قبل أول يوم (الأحد=0)
+  for(let i=0;i<firstDay;i++) daysHtml+=`<button class="dp-day empty" disabled></button>`;
+  for(let d=1;d<=daysInMonth;d++){
+    const dateStr=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday=d===today.getDate()&&month===today.getMonth()&&year===today.getFullYear();
+    const isSel=selected===dateStr;
+    daysHtml+=`<button class="dp-day${isToday?' today':''}${isSel?' sel':''}" onclick="dpSelect('${id}','${dateStr}')">${d}</button>`;
+  }
+
+  cal.innerHTML=`
+    <div class="dp-head">
+      <button class="dp-nav" onclick="dpMove('${id}',-1)">‹</button>
+      <span class="dp-month-yr">${months[month]} ${year}</span>
+      <button class="dp-nav" onclick="dpMove('${id}',1)">›</button>
+    </div>
+    <div class="dp-days-hd">${['أح','إث','ثل','أر','خم','جم','سب'].map(d=>`<span>${d}</span>`).join('')}</div>
+    <div class="dp-days">${daysHtml}</div>
+    <div class="dp-footer">
+      <button class="dp-clr" onclick="dpClear('${id}')">مسح</button>
+      <button class="dp-today-btn" onclick="dpSelectToday('${id}')">اليوم</button>
+    </div>`;
+}
+
+function dpMove(id,dir){
+  dpCurrent.month+=dir;
+  if(dpCurrent.month>11){dpCurrent.month=0;dpCurrent.year++;}
+  if(dpCurrent.month<0){dpCurrent.month=11;dpCurrent.year--;}
+  dpRenderCal(id);
+}
+
+function dpSelect(id,dateStr){
+  if(!dpActive)return;
+  dpActive.inputEl.value=dateStr;
+  // عرض بشكل مقروء
+  const [y,m,d]=dateStr.split('-');
+  const months=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  if(dpActive.displayEl) dpActive.displayEl.textContent=`${parseInt(d)} ${months[parseInt(m)-1]} ${y}`;
+  // trigger oninput لتحديث D
+  dpActive.inputEl.dispatchEvent(new Event('input'));
+  document.getElementById('dp-'+id)?.classList.remove('open');
+}
+
+function dpClear(id){
+  if(!dpActive)return;
+  dpActive.inputEl.value='';
+  if(dpActive.displayEl) dpActive.displayEl.textContent='اختر تاريخاً';
+  dpActive.inputEl.dispatchEvent(new Event('input'));
+  document.getElementById('dp-'+id)?.classList.remove('open');
+}
+
+function dpSelectToday(id){
+  const t=new Date();
+  const dateStr=`${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
+  dpSelect(id,dateStr);
+}
+
+// إنشاء حقل تقويم
+function makeDp(id,value,oninputFn){
+  const months=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  let display='اختر تاريخاً';
+  if(value&&value.includes('-')){
+    const [y,m,d]=value.split('-');
+    display=`${parseInt(d)} ${months[parseInt(m)-1]} ${y}`;
+  } else if(value){
+    display=value; // نص قديم
+  }
+  return `<div class="dp-wrap">
+    <div class="dp-input" onclick="dpOpen('${id}',this.parentNode.querySelector('input'),this.querySelector('span'))">
+      <span>${display}</span><i class="fas fa-calendar-alt"></i>
+    </div>
+    <input type="hidden" value="${value||''}" ${oninputFn?`oninput="${oninputFn}"`:''}/>
+    <div class="dp-cal" id="dp-${id}"></div>
+  </div>`;
+}
+
+// إغلاق التقويم عند النقر خارجه
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.dp-wrap')){
+    document.querySelectorAll('.dp-cal.open').forEach(c=>c.classList.remove('open'));
+  }
+});
 
 // NAV
 function toggleMenu(){$('navLinks').classList.toggle('open');}
