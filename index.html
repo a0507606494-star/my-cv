@@ -826,8 +826,8 @@ body.theme-gold{--navy:#2b2000;--navy-mid:#4a3800;--gold:#d4a017;--gold-light:#e
       <div class="apsec" id="t-set">
         <h3><i class="fas fa-cog"></i> الإعدادات</h3>
         <div style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.2);border-radius:10px;padding:1.1rem;margin-bottom:1.2rem">
-          <h4 style="color:var(--gold);font-size:.88rem;margin-bottom:.4rem"><i class="fas fa-sort"></i> ترتيب التعليم والخبرات حسب التاريخ</h4>
-          <p style="color:rgba(255,255,255,.4);font-size:.76rem;margin-bottom:.85rem">يُرتَّب القسمان تلقائياً حسب تاريخ البداية. اختر الاتجاه (يُطبَّق على الموقع وملف PDF):</p>
+          <h4 style="color:var(--gold);font-size:.88rem;margin-bottom:.4rem"><i class="fas fa-sort"></i> ترتيب الأقسام حسب التاريخ</h4>
+          <p style="color:rgba(255,255,255,.4);font-size:.76rem;margin-bottom:.85rem">تُرتَّب أقسام التعليم والخبرات والدورات والتطوع والإنجازات تلقائياً حسب التاريخ. اختر الاتجاه (يُطبَّق على الموقع وملف PDF):</p>
           <div id="sortBtns" style="display:flex;gap:.6rem;flex-wrap:wrap"></div>
         </div>
         <div style="background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:1.1rem;margin-bottom:1.2rem">
@@ -1058,15 +1058,15 @@ function renderSite(){
   $('skillsGrid').innerHTML=skls.map(s=>renderSkillGroup(s)).join('');
 
   // Certs
-  const crts = pick(E?.certs, D.certs);
+  const crts = sortByDate(pick(E?.certs, D.certs), D.sortOrder);
   $('certsGrid').innerHTML=crts.map(c=>`<div class="cc rv"><div class="ci"><i class="${c.icon}"></i></div><div class="ci2"><h4>${c.title}</h4><span>${c.org}</span></div></div>`).join('');
 
   // Volunteer
-  const vols = pick(E?.volunteer, D.volunteer);
+  const vols = sortByDate(pick(E?.volunteer, D.volunteer), D.sortOrder);
   $('volGrid').innerHTML=vols.map(v=>`<div class="vc rv"><div class="vch"><div class="vci"><i class="${v.icon}"></i></div><div><h4>${v.title}</h4><div class="vco">${v.org}</div></div></div><p class="vcd">${v.desc}</p></div>`).join('');
 
   // Achievements
-  const achs = pick(E?.achievements, D.achievements);
+  const achs = sortByDate(pick(E?.achievements, D.achievements), D.sortOrder);
   $('achGrid').innerHTML=achs.map((a,i)=>`<div class="ach rv"><div class="achh"><div class="achn">${fmtNum(i+1)}</div><h3>${a.title}</h3></div><div class="achb"><p>${a.desc}</p><div class="acht"><i class="${a.tagIcon}"></i>${a.tag}</div></div></div>`).join('');
 
   // Contact
@@ -1295,17 +1295,17 @@ function rSk(){
 }
 function addSk(){if(!D.skills)D.skills=[];D.skills.push({title:'مجموعة جديدة',icon:'fas fa-star',type:'tags',bars:[],tags:[]});rSk();}
 
-function rCerts(){$('certsAdm').innerHTML=(D.certs||[]).map((c,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${c.title}</span><div class="acarddel" onclick="D.certs.splice(${i},1);rCerts()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>الاسم</label><input type="text" value="${c.title||''}" oninput="D.certs[${i}].title=this.value"></div><div class="fg"><label>الجهة والتاريخ</label><input type="text" value="${c.org||''}" oninput="D.certs[${i}].org=this.value"></div></div></div>`).join('');}
-function addCert(){if(!D.certs)D.certs=[];D.certs.push({icon:'fas fa-certificate',title:'اسم الدورة',org:'الجهة · التاريخ'});rCerts();}
-function cCerts(){return Array.from(document.querySelectorAll('#certsAdm .acard')).map((c,i)=>{const ins=c.querySelectorAll('input');return{icon:D.certs[i]?.icon||'fas fa-certificate',title:ins[0].value,org:ins[1].value}});}
+function rCerts(){$('certsAdm').innerHTML=(D.certs||[]).map((c,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${c.title}</span><div class="acarddel" onclick="D.certs.splice(${i},1);rCerts()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>الاسم</label><input type="text" value="${c.title||''}" oninput="D.certs[${i}].title=this.value"></div><div class="fg"><label>الجهة</label><input type="text" value="${c.org||''}" oninput="D.certs[${i}].org=this.value"></div></div><div class="fg"><label>التاريخ (للترتيب — يكفي اختيار السنة)</label>${makeDp('cert-'+i,c.dateStart||'','D.certs['+i+'].dateStart=this.value')}</div></div>`).join('');}
+function addCert(){if(!D.certs)D.certs=[];D.certs.push({icon:'fas fa-certificate',title:'اسم الدورة',org:'الجهة',dateStart:''});rCerts();}
+function cCerts(){return Array.from(document.querySelectorAll('#certsAdm .acard')).map((c,i)=>{const ins=c.querySelectorAll('input[type=text]');return{icon:D.certs[i]?.icon||'fas fa-certificate',title:ins[0].value,org:ins[1].value,dateStart:D.certs[i]?.dateStart||''}});}
 
-function rVol(){$('volAdm').innerHTML=(D.volunteer||[]).map((v,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${v.title}</span><div class="acarddel" onclick="D.volunteer.splice(${i},1);rVol()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>العنوان</label><input type="text" value="${v.title||''}" oninput="D.volunteer[${i}].title=this.value"></div><div class="fg"><label>الجهة</label><input type="text" value="${v.org||''}" oninput="D.volunteer[${i}].org=this.value"></div></div><div class="fg"><label>الوصف</label><textarea rows="2" oninput="D.volunteer[${i}].desc=this.value">${v.desc||''}</textarea></div></div>`).join('');}
-function addVol(){if(!D.volunteer)D.volunteer=[];D.volunteer.push({icon:'fas fa-hands-helping',title:'النشاط التطوعي',org:'الجهة · التاريخ',desc:'وصف النشاط'});rVol();}
-function cVol(){return Array.from(document.querySelectorAll('#volAdm .acard')).map((c,i)=>{const ins=c.querySelectorAll('input'),ta=c.querySelector('textarea');return{icon:D.volunteer[i]?.icon||'fas fa-hands-helping',title:ins[0].value,org:ins[1].value,desc:ta.value}});}
+function rVol(){$('volAdm').innerHTML=(D.volunteer||[]).map((v,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${v.title}</span><div class="acarddel" onclick="D.volunteer.splice(${i},1);rVol()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>العنوان</label><input type="text" value="${v.title||''}" oninput="D.volunteer[${i}].title=this.value"></div><div class="fg"><label>الجهة</label><input type="text" value="${v.org||''}" oninput="D.volunteer[${i}].org=this.value"></div></div><div class="fg"><label>التاريخ (للترتيب — يكفي اختيار السنة)</label>${makeDp('vol-'+i,v.dateStart||'','D.volunteer['+i+'].dateStart=this.value')}</div><div class="fg"><label>الوصف</label><textarea rows="2" oninput="D.volunteer[${i}].desc=this.value">${v.desc||''}</textarea></div></div>`).join('');}
+function addVol(){if(!D.volunteer)D.volunteer=[];D.volunteer.push({icon:'fas fa-hands-helping',title:'النشاط التطوعي',org:'الجهة',desc:'وصف النشاط',dateStart:''});rVol();}
+function cVol(){return Array.from(document.querySelectorAll('#volAdm .acard')).map((c,i)=>{const ins=c.querySelectorAll('input[type=text]'),ta=c.querySelector('textarea');return{icon:D.volunteer[i]?.icon||'fas fa-hands-helping',title:ins[0].value,org:ins[1].value,desc:ta.value,dateStart:D.volunteer[i]?.dateStart||''}});}
 
-function rAch(){$('achAdm').innerHTML=(D.achievements||[]).map((a,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${fmtNum(i+1)} · ${a.title||'إنجاز'}</span><div class="acarddel" onclick="D.achievements.splice(${i},1);rAch()"><i class="fas fa-times"></i></div></div><div class="fg"><label>العنوان</label><input type="text" value="${a.title||''}" oninput="D.achievements[${i}].title=this.value"></div><div class="fg"><label>الوصف</label><textarea rows="2" oninput="D.achievements[${i}].desc=this.value">${a.desc||''}</textarea></div><div class="fg"><label>نص الوسم (التاريخ / الجهة)</label><input type="text" value="${a.tag||''}" oninput="D.achievements[${i}].tag=this.value"></div></div>`).join('');}
-function addAch(){if(!D.achievements)D.achievements=[];D.achievements.push({title:'عنوان الإنجاز',desc:'وصف الإنجاز',tag:'التاريخ والجهة',tagIcon:'fas fa-trophy'});rAch();}
-function cAch(){return Array.from(document.querySelectorAll('#achAdm .acard')).map((c,i)=>{const ins=c.querySelectorAll('input'),ta=c.querySelector('textarea');return{title:ins[0].value,desc:ta.value,tag:ins[1].value,tagIcon:D.achievements[i]?.tagIcon||'fas fa-trophy'}});}
+function rAch(){$('achAdm').innerHTML=(D.achievements||[]).map((a,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${fmtNum(i+1)} · ${a.title||'إنجاز'}</span><div class="acarddel" onclick="D.achievements.splice(${i},1);rAch()"><i class="fas fa-times"></i></div></div><div class="fg"><label>العنوان</label><input type="text" value="${a.title||''}" oninput="D.achievements[${i}].title=this.value"></div><div class="fg"><label>الوصف</label><textarea rows="2" oninput="D.achievements[${i}].desc=this.value">${a.desc||''}</textarea></div><div class="fr"><div class="fg"><label>نص الوسم (الجهة)</label><input type="text" value="${a.tag||''}" oninput="D.achievements[${i}].tag=this.value"></div><div class="fg"><label>التاريخ (للترتيب — يكفي السنة)</label>${makeDp('ach-'+i,a.dateStart||'','D.achievements['+i+'].dateStart=this.value')}</div></div></div>`).join('');}
+function addAch(){if(!D.achievements)D.achievements=[];D.achievements.push({title:'عنوان الإنجاز',desc:'وصف الإنجاز',tag:'الجهة',tagIcon:'fas fa-trophy',dateStart:''});rAch();}
+function cAch(){return Array.from(document.querySelectorAll('#achAdm .acard')).map((c,i)=>{const ins=c.querySelectorAll('input[type=text]'),ta=c.querySelector('textarea');return{title:ins[0].value,desc:ta.value,tag:ins[1].value,tagIcon:D.achievements[i]?.tagIcon||'fas fa-trophy',dateStart:D.achievements[i]?.dateStart||''}});}
 
 // PIN
 async function changePin(){
@@ -1647,14 +1647,14 @@ function buildP2Main(d, isEn, mainDir){
   const volLabel=isEn?'Leadership & Volunteering':'القيادة والعمل التطوعي';
 
   if((d.achievements||D.achievements||[]).length>0){
-    const achs=d.achievements||D.achievements||[];
+    const achs=sortByDate(d.achievements||D.achievements||[], D.sortOrder);
     h+=`<div class="cvp-sec"><div class="cvp-st"><i class="fas fa-trophy"></i> ${achLabel}</div>`;
     achs.forEach(a=>{h+=`<div class="cvp-ach"><div class="cvp-aico"><i class="${a.tagIcon||'fas fa-star'}"></i></div><div><div class="cvp-at">${a.title||''}</div><div class="cvp-ag">${a.tag||''}</div></div></div>`;});
     h+=`</div>`;
   }
 
   if((d.volunteer||D.volunteer||[]).length>0){
-    const vols=d.volunteer||D.volunteer||[];
+    const vols=sortByDate(d.volunteer||D.volunteer||[], D.sortOrder);
     h+=`<div class="cvp-sec"><div class="cvp-st"><i class="fas fa-hands-helping"></i> ${volLabel}</div>`;
     vols.forEach(v=>{h+=`<div class="cvp-vol"><div class="cvp-vt">${v.title||''}</div><div class="cvp-vo">${v.org||''}</div><div class="cvp-vd">${v.desc||''}</div></div>`;});
     h+=`</div>`;
@@ -1668,7 +1668,7 @@ function buildP2Side(d, isEn, mainDir){
   const valLabel=isEn?'Core Values':'المبادئ والقيم';
 
   if((d.certs||D.certs||[]).length>0){
-    const certs=d.certs||D.certs||[];
+    const certs=sortByDate(d.certs||D.certs||[], D.sortOrder);
     h+=`<div class="cvp-sec"><div class="cvp-st"><i class="fas fa-certificate"></i> ${certLabel}</div>`;
     certs.forEach(c=>{h+=`<div class="cvp-cert"><div class="cvp-cdot"></div><div><div class="cvp-cn">${c.title||''}</div><div class="cvp-co">${c.org||''}</div></div></div>`;});
     h+=`</div>`;
