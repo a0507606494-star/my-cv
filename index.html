@@ -433,10 +433,13 @@ body.theme-gold{--navy:#2b2000;--navy-mid:#4a3800;--gold:#d4a017;--gold-light:#e
 .dp-input i{color:var(--gold);font-size:.8rem;margin-right:.5rem}
 .dp-cal{display:none;position:absolute;top:calc(100% + 4px);right:0;left:0;background:#0d1b33;border:1px solid rgba(201,168,76,.3);border-radius:10px;padding:.75rem;z-index:999;box-shadow:0 8px 32px rgba(0,0,0,.4)}
 .dp-cal.open{display:block}
-.dp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.65rem}
+.dp-head{display:flex;align-items:center;justify-content:space-between;gap:.4rem;margin-bottom:.65rem}
 .dp-nav{background:none;border:none;color:var(--gold);font-size:.9rem;cursor:pointer;padding:.2rem .5rem;border-radius:4px}
 .dp-nav:hover{background:rgba(201,168,76,.1)}
 .dp-month-yr{color:#fff;font-size:.85rem;font-weight:600}
+.dp-sel{flex:1;min-width:0;background:rgba(255,255,255,.06);border:1px solid rgba(201,168,76,.3);color:#fff;border-radius:6px;padding:.4rem .3rem;font-family:'Tajawal',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;outline:none;text-align:center;text-align-last:center}
+.dp-sel:hover,.dp-sel:focus{border-color:var(--gold);background:rgba(201,168,76,.08)}
+.dp-sel option{background:#0d1b33;color:#fff}
 .dp-days-hd{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px}
 .dp-days-hd span{text-align:center;font-size:.65rem;color:rgba(255,255,255,.4);padding:2px}
 .dp-days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
@@ -1734,48 +1737,55 @@ function dpOpen(id,inputEl,displayEl){
   dpPosition(cal,triggerEl);
 }
 
-function dpRenderCal(id){
-  const cal=document.getElementById('dp-'+id);if(!cal)return;
-  const months=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+const DP_MONTHS=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+
+// شبكة الأيام فقط — تُحدَّث وحدها دون لمس القوائم المنسدلة
+function dpDaysHtml(id){
   const {year,month}=dpCurrent;
   const today=new Date();
   const selected=dpActive?.inputEl?.value;
   const firstDay=new Date(year,month,1).getDay();
   const daysInMonth=new Date(year,month+1,0).getDate();
-
-  // الأيام
-  let daysHtml='';
-  // فراغات قبل أول يوم (الأحد=0)
-  for(let i=0;i<firstDay;i++) daysHtml+=`<button class="dp-day empty" disabled></button>`;
+  let h='';
+  for(let i=0;i<firstDay;i++) h+=`<button class="dp-day empty" disabled></button>`;
   for(let d=1;d<=daysInMonth;d++){
     const dateStr=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const isToday=d===today.getDate()&&month===today.getMonth()&&year===today.getFullYear();
     const isSel=selected===dateStr;
-    daysHtml+=`<button class="dp-day${isToday?' today':''}${isSel?' sel':''}" onclick="dpSelect('${id}','${dateStr}')">${d}</button>`;
+    h+=`<button class="dp-day${isToday?' today':''}${isSel?' sel':''}" onclick="dpSelect('${id}','${dateStr}')">${d}</button>`;
   }
+  return h;
+}
 
+function dpRenderCal(id){
+  const cal=document.getElementById('dp-'+id);if(!cal)return;
+  const {year,month}=dpCurrent;
+  const nowY=new Date().getFullYear();
+  const monthOpts=DP_MONTHS.map((m,i)=>`<option value="${i}"${i===month?' selected':''}>${m}</option>`).join('');
+  let yearOpts='';
+  for(let y=nowY+5;y>=1970;y--) yearOpts+=`<option value="${y}"${y===year?' selected':''}>${y}</option>`;
   cal.innerHTML=`
     <div class="dp-head">
-      <button class="dp-nav" onclick="dpMove('${id}',-1)">‹</button>
-      <span class="dp-month-yr">${months[month]} ${year}</span>
-      <button class="dp-nav" onclick="dpMove('${id}',1)">›</button>
+      <select class="dp-sel" onchange="dpSetMonth('${id}',+this.value)" title="الشهر">${monthOpts}</select>
+      <select class="dp-sel" onchange="dpSetYear('${id}',+this.value)" title="السنة">${yearOpts}</select>
     </div>
     <div class="dp-days-hd">${['أح','إث','ثل','أر','خم','جم','سب'].map(d=>`<span>${d}</span>`).join('')}</div>
-    <div class="dp-days">${daysHtml}</div>
+    <div class="dp-days">${dpDaysHtml(id)}</div>
     <div class="dp-footer">
       <button class="dp-clr" onclick="dpClear('${id}')">مسح</button>
       <button class="dp-today-btn" onclick="dpSelectToday('${id}')">اليوم</button>
     </div>`;
 }
 
-function dpMove(id,dir){
-  dpCurrent.month+=dir;
-  if(dpCurrent.month>11){dpCurrent.month=0;dpCurrent.year++;}
-  if(dpCurrent.month<0){dpCurrent.month=11;dpCurrent.year--;}
-  dpRenderCal(id);
-  const cal=document.getElementById('dp-'+id);
-  if(cal&&dpActive) dpPosition(cal,dpActive.triggerEl);
+// تحديث شبكة الأيام فقط — يُبقي القوائم في مكانها فلا يُغلق التقويم
+function dpRefreshDays(id){
+  const cal=document.getElementById('dp-'+id);if(!cal)return;
+  const grid=cal.querySelector('.dp-days');
+  if(grid) grid.innerHTML=dpDaysHtml(id);
+  if(dpActive) dpPosition(cal,dpActive.triggerEl);
 }
+function dpSetMonth(id,m){ dpCurrent.month=m; dpRefreshDays(id); }
+function dpSetYear(id,y){ dpCurrent.year=y; dpRefreshDays(id); }
 
 function dpSelect(id,dateStr){
   if(!dpActive)return;
