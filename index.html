@@ -1692,14 +1692,35 @@ function initTheme(){
 let dpCurrent={year:new Date().getFullYear(),month:new Date().getMonth()};
 let dpActive=null; // {inputEl, displayEl, id}
 
+// تموضع التقويم بشكل ثابت بالنسبة للشاشة كي لا يُقصّ داخل اللوحة القابلة للتمرير
+function dpPosition(cal,triggerEl){
+  if(!cal||!triggerEl)return;
+  cal.style.position='fixed';
+  cal.style.right='auto';
+  cal.style.left='0px';
+  cal.style.top='0px';
+  const r=triggerEl.getBoundingClientRect();
+  const w=Math.max(r.width,240);
+  cal.style.width=w+'px';
+  const h=cal.offsetHeight||300;
+  let left=r.left;
+  if(left+w>window.innerWidth-8) left=window.innerWidth-w-8;
+  if(left<8) left=8;
+  let top=r.bottom+4;
+  if(top+h>window.innerHeight-8){ top=r.top-h-4; if(top<8) top=8; } // اقلبه فوق إذا لا مكان تحت
+  cal.style.left=left+'px';
+  cal.style.top=top+'px';
+}
+
 function dpOpen(id,inputEl,displayEl){
-  // إغلاق أي تقويم مفتوح
-  document.querySelectorAll('.dp-cal.open').forEach(c=>{
-    if(c.id!=='dp-'+id) c.classList.remove('open');
-  });
   const cal=document.getElementById('dp-'+id);
   if(!cal)return;
-  dpActive={id,inputEl,displayEl};
+  const triggerEl=displayEl?displayEl.closest('.dp-input'):cal.parentNode.querySelector('.dp-input');
+  const wasOpen=cal.classList.contains('open');
+  // إغلاق كل التقاويم المفتوحة (بما فيها هذا) ثم إعادة الفتح إن لم يكن مفتوحاً (toggle)
+  document.querySelectorAll('.dp-cal.open').forEach(c=>c.classList.remove('open'));
+  if(wasOpen) return;
+  dpActive={id,inputEl,displayEl,triggerEl};
   // اقرأ التاريخ الحالي
   const val=inputEl.value;
   if(val&&val.includes('-')){
@@ -1709,7 +1730,8 @@ function dpOpen(id,inputEl,displayEl){
     dpCurrent={year:new Date().getFullYear(),month:new Date().getMonth()};
   }
   dpRenderCal(id);
-  cal.classList.toggle('open');
+  cal.classList.add('open');
+  dpPosition(cal,triggerEl);
 }
 
 function dpRenderCal(id){
@@ -1751,6 +1773,8 @@ function dpMove(id,dir){
   if(dpCurrent.month>11){dpCurrent.month=0;dpCurrent.year++;}
   if(dpCurrent.month<0){dpCurrent.month=11;dpCurrent.year--;}
   dpRenderCal(id);
+  const cal=document.getElementById('dp-'+id);
+  if(cal&&dpActive) dpPosition(cal,dpActive.triggerEl);
 }
 
 function dpSelect(id,dateStr){
@@ -1803,6 +1827,10 @@ document.addEventListener('click',e=>{
   if(!e.target.closest('.dp-wrap')){
     document.querySelectorAll('.dp-cal.open').forEach(c=>c.classList.remove('open'));
   }
+});
+// إغلاق التقويم عند تمرير لوحة التحكم (لأن موضعه ثابت بالنسبة للشاشة)
+document.querySelector('.apcont')?.addEventListener('scroll',()=>{
+  document.querySelectorAll('.dp-cal.open').forEach(c=>c.classList.remove('open'));
 });
 
 // NAV
