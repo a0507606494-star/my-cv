@@ -1002,6 +1002,10 @@ function fmtNum(n){
   const s=String(n).padStart(2,'0');
   return LANG==='en' ? s : s.replace(/[0-9]/g,d=>'٠١٢٣٤٥٦٧٨٩'[+d]);
 }
+// استخراج السنة فقط من تاريخ مخزّن (YYYY-MM أو YYYY-MM-DD)
+function yearOf(d){ const m=(d||'').match(/^(\d{4})/); return m?m[1]:''; }
+// دمج نص مع السنة بفاصل أنيق دون فراغ إذا غاب أحدهما
+function withYear(txt,date){ const y=yearOf(date); return [txt,y].filter(Boolean).join(' · '); }
 
 function renderSite(){
   if(!D)return;
@@ -1059,15 +1063,15 @@ function renderSite(){
 
   // Certs
   const crts = sortByDate(pick(E?.certs, D.certs), D.sortOrder);
-  $('certsGrid').innerHTML=crts.map(c=>`<div class="cc rv"><div class="ci"><i class="${c.icon}"></i></div><div class="ci2"><h4>${c.title}</h4><span>${c.org}</span></div></div>`).join('');
+  $('certsGrid').innerHTML=crts.map(c=>`<div class="cc rv"><div class="ci"><i class="${c.icon}"></i></div><div class="ci2"><h4>${c.title}</h4><span>${withYear(c.org,c.dateStart)}</span></div></div>`).join('');
 
   // Volunteer
   const vols = sortByDate(pick(E?.volunteer, D.volunteer), D.sortOrder);
-  $('volGrid').innerHTML=vols.map(v=>`<div class="vc rv"><div class="vch"><div class="vci"><i class="${v.icon}"></i></div><div><h4>${v.title}</h4><div class="vco">${v.org}</div></div></div><p class="vcd">${v.desc}</p></div>`).join('');
+  $('volGrid').innerHTML=vols.map(v=>`<div class="vc rv"><div class="vch"><div class="vci"><i class="${v.icon}"></i></div><div><h4>${v.title}</h4><div class="vco">${withYear(v.org,v.dateStart)}</div></div></div><p class="vcd">${v.desc}</p></div>`).join('');
 
   // Achievements
   const achs = sortByDate(pick(E?.achievements, D.achievements), D.sortOrder);
-  $('achGrid').innerHTML=achs.map((a,i)=>`<div class="ach rv"><div class="achh"><div class="achn">${fmtNum(i+1)}</div><h3>${a.title}</h3></div><div class="achb"><p>${a.desc}</p><div class="acht"><i class="${a.tagIcon}"></i>${a.tag}</div></div></div>`).join('');
+  $('achGrid').innerHTML=achs.map((a,i)=>`<div class="ach rv"><div class="achh"><div class="achn">${fmtNum(i+1)}</div><h3>${a.title}</h3></div><div class="achb"><p>${a.desc}</p><div class="acht"><i class="${a.tagIcon}"></i>${withYear(a.tag,a.dateStart)}</div></div></div>`).join('');
 
   // Contact
   const loc = g(D.location,E?.location||'');
@@ -1649,14 +1653,14 @@ function buildP2Main(d, isEn, mainDir){
   if((d.achievements||D.achievements||[]).length>0){
     const achs=sortByDate(d.achievements||D.achievements||[], D.sortOrder);
     h+=`<div class="cvp-sec"><div class="cvp-st"><i class="fas fa-trophy"></i> ${achLabel}</div>`;
-    achs.forEach(a=>{h+=`<div class="cvp-ach"><div class="cvp-aico"><i class="${a.tagIcon||'fas fa-star'}"></i></div><div><div class="cvp-at">${a.title||''}</div><div class="cvp-ag">${a.tag||''}</div></div></div>`;});
+    achs.forEach(a=>{h+=`<div class="cvp-ach"><div class="cvp-aico"><i class="${a.tagIcon||'fas fa-star'}"></i></div><div><div class="cvp-at">${a.title||''}</div><div class="cvp-ag">${withYear(a.tag,a.dateStart)}</div></div></div>`;});
     h+=`</div>`;
   }
 
   if((d.volunteer||D.volunteer||[]).length>0){
     const vols=sortByDate(d.volunteer||D.volunteer||[], D.sortOrder);
     h+=`<div class="cvp-sec"><div class="cvp-st"><i class="fas fa-hands-helping"></i> ${volLabel}</div>`;
-    vols.forEach(v=>{h+=`<div class="cvp-vol"><div class="cvp-vt">${v.title||''}</div><div class="cvp-vo">${v.org||''}</div><div class="cvp-vd">${v.desc||''}</div></div>`;});
+    vols.forEach(v=>{h+=`<div class="cvp-vol"><div class="cvp-vt">${v.title||''}</div><div class="cvp-vo">${withYear(v.org,v.dateStart)}</div><div class="cvp-vd">${v.desc||''}</div></div>`;});
     h+=`</div>`;
   }
   return h;
@@ -1670,7 +1674,7 @@ function buildP2Side(d, isEn, mainDir){
   if((d.certs||D.certs||[]).length>0){
     const certs=sortByDate(d.certs||D.certs||[], D.sortOrder);
     h+=`<div class="cvp-sec"><div class="cvp-st"><i class="fas fa-certificate"></i> ${certLabel}</div>`;
-    certs.forEach(c=>{h+=`<div class="cvp-cert"><div class="cvp-cdot"></div><div><div class="cvp-cn">${c.title||''}</div><div class="cvp-co">${c.org||''}</div></div></div>`;});
+    certs.forEach(c=>{h+=`<div class="cvp-cert"><div class="cvp-cdot"></div><div><div class="cvp-cn">${c.title||''}</div><div class="cvp-co">${withYear(c.org,c.dateStart)}</div></div></div>`;});
     h+=`</div>`;
   }
 
@@ -1776,24 +1780,16 @@ function dpOpen(id,inputEl,displayEl){
 
 const DP_MONTHS=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
 
-// شبكة الأيام فقط — تُحدَّث وحدها دون لمس القوائم المنسدلة
-function dpDaysHtml(id){
-  const {year,month}=dpCurrent;
-  const today=new Date();
-  const selected=dpActive?.inputEl?.value;
-  const firstDay=new Date(year,month,1).getDay();
-  const daysInMonth=new Date(year,month+1,0).getDate();
-  let h='';
-  for(let i=0;i<firstDay;i++) h+=`<button class="dp-day empty" disabled></button>`;
-  for(let d=1;d<=daysInMonth;d++){
-    const dateStr=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const isToday=d===today.getDate()&&month===today.getMonth()&&year===today.getFullYear();
-    const isSel=selected===dateStr;
-    h+=`<button class="dp-day${isToday?' today':''}${isSel?' sel':''}" onclick="dpSelect('${id}','${dateStr}')">${d}</button>`;
+// عرض القيمة المخزّنة (YYYY-MM أو YYYY-MM-DD القديمة) كـ"شهر سنة"
+function dpLabel(value){
+  if(value&&value.includes('-')){
+    const [y,m]=value.split('-');
+    return `${DP_MONTHS[parseInt(m)-1]||''} ${y}`.trim();
   }
-  return h;
+  return value||'اختر شهراً وسنة';
 }
 
+// التقويم = شهر + سنة فقط (بدون يوم)
 function dpRenderCal(id){
   const cal=document.getElementById('dp-'+id);if(!cal)return;
   const {year,month}=dpCurrent;
@@ -1806,60 +1802,35 @@ function dpRenderCal(id){
       <select class="dp-sel" onchange="dpSetMonth('${id}',+this.value)" title="الشهر">${monthOpts}</select>
       <select class="dp-sel" onchange="dpSetYear('${id}',+this.value)" title="السنة">${yearOpts}</select>
     </div>
-    <div class="dp-days-hd">${['أح','إث','ثل','أر','خم','جم','سب'].map(d=>`<span>${d}</span>`).join('')}</div>
-    <div class="dp-days">${dpDaysHtml(id)}</div>
     <div class="dp-footer">
       <button class="dp-clr" onclick="dpClear('${id}')">مسح</button>
-      <button class="dp-today-btn" onclick="dpSelectToday('${id}')">اليوم</button>
+      <button class="dp-today-btn" onclick="dpClose('${id}')">تم</button>
     </div>`;
 }
 
-// تحديث شبكة الأيام فقط — يُبقي القوائم في مكانها فلا يُغلق التقويم
-function dpRefreshDays(id){
-  const cal=document.getElementById('dp-'+id);if(!cal)return;
-  const grid=cal.querySelector('.dp-days');
-  if(grid) grid.innerHTML=dpDaysHtml(id);
-  if(dpActive) dpPosition(cal,dpActive.triggerEl);
-}
-function dpSetMonth(id,m){ dpCurrent.month=m; dpRefreshDays(id); }
-function dpSetYear(id,y){ dpCurrent.year=y; dpRefreshDays(id); }
-
-function dpSelect(id,dateStr){
+// تخزين القيمة كـ"YYYY-MM" (شهر وسنة فقط) وتحديث العرض و D
+function dpCommit(id){
   if(!dpActive)return;
-  dpActive.inputEl.value=dateStr;
-  // عرض بشكل مقروء
-  const [y,m,d]=dateStr.split('-');
-  const months=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
-  if(dpActive.displayEl) dpActive.displayEl.textContent=`${parseInt(d)} ${months[parseInt(m)-1]} ${y}`;
-  // trigger oninput لتحديث D
+  const v=`${dpCurrent.year}-${String(dpCurrent.month+1).padStart(2,'0')}`;
+  dpActive.inputEl.value=v;
+  if(dpActive.displayEl) dpActive.displayEl.textContent=dpLabel(v);
   dpActive.inputEl.dispatchEvent(new Event('input'));
-  document.getElementById('dp-'+id)?.classList.remove('open');
 }
+function dpSetMonth(id,m){ dpCurrent.month=m; dpCommit(id); }
+function dpSetYear(id,y){ dpCurrent.year=y; dpCommit(id); }
+function dpClose(id){ dpCommit(id); document.getElementById('dp-'+id)?.classList.remove('open'); }
 
 function dpClear(id){
   if(!dpActive)return;
   dpActive.inputEl.value='';
-  if(dpActive.displayEl) dpActive.displayEl.textContent='اختر تاريخاً';
+  if(dpActive.displayEl) dpActive.displayEl.textContent='اختر شهراً وسنة';
   dpActive.inputEl.dispatchEvent(new Event('input'));
   document.getElementById('dp-'+id)?.classList.remove('open');
 }
 
-function dpSelectToday(id){
-  const t=new Date();
-  const dateStr=`${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
-  dpSelect(id,dateStr);
-}
-
-// إنشاء حقل تقويم
+// إنشاء حقل تقويم (شهر + سنة)
 function makeDp(id,value,oninputFn){
-  const months=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
-  let display='اختر تاريخاً';
-  if(value&&value.includes('-')){
-    const [y,m,d]=value.split('-');
-    display=`${parseInt(d)} ${months[parseInt(m)-1]} ${y}`;
-  } else if(value){
-    display=value; // نص قديم
-  }
+  const display=dpLabel(value);
   return `<div class="dp-wrap">
     <div class="dp-input" onclick="dpOpen('${id}',this.parentNode.querySelector('input'),this.querySelector('span'))">
       <span>${display}</span><i class="fas fa-calendar-alt"></i>
