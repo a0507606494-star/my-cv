@@ -1008,6 +1008,17 @@ function fmtNum(n){
 function yearOf(d){ const m=(d||'').match(/^(\d{4})/); return m?m[1]:''; }
 // دمج نص مع السنة بفاصل أنيق دون فراغ إذا غاب أحدهما
 function withYear(txt,date){ const y=yearOf(date); return [txt,y].filter(Boolean).join(' · '); }
+// نطاق سنوات من تاريخي البداية والنهاية (للتعليم والخبرات)
+function yearRange(start,end,en){
+  const ys=yearOf(start), ye=yearOf(end);
+  if(!ys && !ye) return '';
+  const now = en ? 'Present' : 'الآن';
+  if(ys && !ye) return `${ys} – ${now}`;
+  if(!ys && ye) return ye;
+  return ys===ye ? ys : `${ys} – ${ye}`;
+}
+// التاريخ المعروض: المنتقي أولاً (نطاق سنوات)، وإلا نص الفترة المكتوب
+function dateLabel(start,end,fallback,en){ return yearRange(start,end,en) || (fallback||''); }
 
 function renderSite(){
   if(!D)return;
@@ -1053,11 +1064,11 @@ function renderSite(){
 
   // Education
   const edus = sortByDate(pick(E?.education, D.education), D.sortOrder);
-  $('eduGrid').innerHTML=edus.map(e=>`<div class="ec rv"><div class="edb"><i class="${e.icon||'fas fa-book'}"></i> ${e.badge}</div><h3>${e.title}</h3><p class="esp">${e.spec}</p><p class="ei"><i class="fas fa-university"></i> ${e.inst}</p><p class="ei"><i class="fas fa-map-marker-alt"></i> ${e.loc}</p><p class="ed2"><i class="fas fa-calendar-alt"></i> ${e.date}</p>${e.notes?`<ul class="en">${e.notes.split('\n').filter(n=>n.trim()).map(n=>`<li>${n}</li>`).join('')}</ul>`:''}</div>`).join('');
+  $('eduGrid').innerHTML=edus.map(e=>`<div class="ec rv"><div class="edb"><i class="${e.icon||'fas fa-book'}"></i> ${e.badge}</div><h3>${e.title}</h3><p class="esp">${e.spec}</p><p class="ei"><i class="fas fa-university"></i> ${e.inst}</p><p class="ei"><i class="fas fa-map-marker-alt"></i> ${e.loc}</p><p class="ed2"><i class="fas fa-calendar-alt"></i> ${dateLabel(e.dateStart,e.dateEnd,e.date,LANG==='en')}</p>${e.notes?`<ul class="en">${e.notes.split('\n').filter(n=>n.trim()).map(n=>`<li>${n}</li>`).join('')}</ul>`:''}</div>`).join('');
 
   // Experience
   const exps = sortByDate(pick(E?.experience, D.experience), D.sortOrder);
-  $('expTl').innerHTML=exps.map(e=>`<div class="ti"><div class="tdot"></div><div class="tc"><div class="th2"><span class="tr2">${e.role||''}</span><span class="tp">${e.period||''}</span></div><p class="to"><i class="fas fa-school"></i> ${e.org||''}</p><ul class="tt">${(e.tasks||'').split('\n').filter(t=>t.trim()).map(t=>`<li>${t}</li>`).join('')}</ul></div></div>`).join('');
+  $('expTl').innerHTML=exps.map(e=>`<div class="ti"><div class="tdot"></div><div class="tc"><div class="th2"><span class="tr2">${e.role||''}</span><span class="tp">${dateLabel(e.dateStart,e.dateEnd,e.period,LANG==='en')}</span></div><p class="to"><i class="fas fa-school"></i> ${e.org||''}</p><ul class="tt">${(e.tasks||'').split('\n').filter(t=>t.trim()).map(t=>`<li>${t}</li>`).join('')}</ul></div></div>`).join('');
 
   // Skills
   const skls = pick(E?.skills, D.skills);
@@ -1572,13 +1583,13 @@ function openCvPrint(lang){
   const exps=sortByDate(d.experience||D.experience||[], D.sortOrder);
   if(exps.length) cvPushSection(main,'fas fa-briefcase',isEn?'Professional Experience':'الخبرات العملية', exps.map(e=>{
     const tasks=(e.tasks||'').split('\n').filter(t=>t.trim()).map(t=>`<li style="${tasksBullet};position:relative"><span style="position:absolute;${bulletPos};color:var(--gold);font-size:5.5pt;top:1.5mm">▪</span>${t}</li>`).join('');
-    return `<div class="cvp-exp"><div class="cvp-eh"><div class="cvp-er">${e.role||''}</div><div class="cvp-ep">${e.period||''}</div></div><div class="cvp-eo">${e.org||''}</div><ul class="cvp-tasks" style="list-style:none;padding:0">${tasks}</ul></div>`;
+    return `<div class="cvp-exp"><div class="cvp-eh"><div class="cvp-er">${e.role||''}</div><div class="cvp-ep">${dateLabel(e.dateStart,e.dateEnd,e.period,isEn)}</div></div><div class="cvp-eo">${e.org||''}</div><ul class="cvp-tasks" style="list-style:none;padding:0">${tasks}</ul></div>`;
   }));
 
   const edus=sortByDate(d.education||D.education||[], D.sortOrder);
   if(edus.length) cvPushSection(main,'fas fa-graduation-cap',isEn?'Education':'المسيرة الأكاديمية', edus.map(e=>{
     const notes=(e.notes||'').split('\n').filter(n=>n.trim()).map(n=>`<li style="${notesBullet};position:relative"><span style="position:absolute;${bulletPos};color:var(--gold);font-size:4.5pt;top:1.5mm">◆</span>${n}</li>`).join('');
-    return `<div class="cvp-edu"><div class="cvp-edeg">${[e.badge,e.title].filter(Boolean).join(' — ')}</div><div class="cvp-espec">${e.spec||''}</div><div class="cvp-einst">${[e.inst,e.loc].filter(Boolean).join(' — ')}</div><div class="cvp-einst">${e.date||''}</div>${notes?`<ul class="cvp-enotes" style="list-style:none;padding:0">${notes}</ul>`:''}</div>`;
+    return `<div class="cvp-edu"><div class="cvp-edeg">${[e.badge,e.title].filter(Boolean).join(' — ')}</div><div class="cvp-espec">${e.spec||''}</div><div class="cvp-einst">${[e.inst,e.loc].filter(Boolean).join(' — ')}</div><div class="cvp-einst">${dateLabel(e.dateStart,e.dateEnd,e.date,isEn)}</div>${notes?`<ul class="cvp-enotes" style="list-style:none;padding:0">${notes}</ul>`:''}</div>`;
   }));
 
   const achs=sortByDate(d.achievements||D.achievements||[], D.sortOrder);
