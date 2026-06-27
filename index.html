@@ -409,6 +409,7 @@ body.en footer{direction:ltr;text-align:left}
 .cv-dl-wrap{position:relative;display:inline-block}
 .cv-dl-menu{display:none;position:absolute;top:calc(100% + .5rem);right:0;background:rgba(15,31,61,.98);border:1px solid rgba(201,168,76,.3);border-radius:10px;min-width:240px;overflow:hidden;z-index:999;box-shadow:0 8px 32px rgba(0,0,0,.3);backdrop-filter:blur(12px)}
 .cv-dl-menu.open{display:block;animation:fD .2s ease}
+body.en .cv-dl-menu{right:auto;left:0}
 .cv-dl-item{display:flex;align-items:center;gap:.85rem;padding:1rem 1.2rem;text-decoration:none;transition:background .2s;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer;width:100%}
 .cv-dl-item:last-child{border-bottom:none}
 .cv-dl-item:hover{background:rgba(201,168,76,.15)}
@@ -557,7 +558,7 @@ body.theme-gold{--navy:#2b2000;--navy-mid:#4a3800;--gold:#d4a017;--gold-light:#e
               <i class="fas fa-file-pdf"></i>
               <div><strong>النسخة العربية</strong><span>PDF عربي — RTL</span></div>
             </a>
-            <a href="#" onclick="openCvPrint('en');return false" class="cv-dl-item">
+            <a href="#" id="enCvItem" onclick="openCvPrint('en');return false" class="cv-dl-item">
               <i class="fas fa-file-pdf"></i>
               <div><strong>English Version</strong><span>English PDF — LTR</span></div>
             </a>
@@ -930,8 +931,9 @@ async function sbUploadPhoto(base64,mime){
   return `${SB_URL}/storage/v1/object/public/${BUCKET}/${PHOTO_PATH}?t=`+Date.now();
 }
 async function sbDelPhoto(){
-  await fetch(`${SB_URL}/storage/v1/object/${BUCKET}/${PHOTO_PATH}`,
+  const r=await fetch(`${SB_URL}/storage/v1/object/${BUCKET}/${PHOTO_PATH}`,
     {method:'DELETE',headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});
+  if(!r.ok) throw new Error(await r.text());
 }
 
 // ══════════════════════════════════════════
@@ -939,8 +941,8 @@ async function sbDelPhoto(){
 // ══════════════════════════════════════════
 async function init(){
   const timer=setTimeout(()=>{
-    document.getElementById('ls').classList.add('out');
-    if(!D){D=JSON.parse(JSON.stringify(EMPTY));renderSite();}
+    // المؤقّت يُخفي شاشة التحميل فقط — لا يرسم بيانات فارغة كي لا يحدث رسم مزدوج
+    const ls=document.getElementById('ls'); if(ls) ls.classList.add('out');
   },8000);
   try{
     const[rows,ph]=await Promise.all([sbGet(),sbGetPhoto()]);
@@ -963,7 +965,7 @@ async function init(){
   } catch(renderErr) {
     console.error('خطأ في عرض البيانات:', renderErr);
   } finally {
-    document.getElementById('ls').classList.add('out');
+    const ls=document.getElementById('ls'); if(ls) ls.classList.add('out');
   }
 }
 
@@ -976,6 +978,7 @@ function renderSite(){
   const vis=D.visibility||{};
   const E = (LANG==='en' && D.en) ? D.en : null;
   const g = (ar,en) => (E&&en) ? en : (ar||'');
+  const pick = (en,ar) => (en && en.length) ? en : (ar||[]);
 
   // Hero
   const displayName = LANG==='en' && D.nameEn ? D.nameEn : (D.name||'');
@@ -987,6 +990,7 @@ function renderSite(){
   $('fCopy').textContent=(LANG==='en'?'© 2026 All rights reserved · ':'© 2026 جميع الحقوق محفوظة · ')+(LANG==='en'&&D.nameEn ? D.nameEn : (D.name||'').replace(/\n/g,' '));
   $('emailBtn').href='mailto:'+(D.email||'');
   if($('dlBtnLabel')) $('dlBtnLabel').textContent = LANG==='en' ? 'Download CV' : 'تحميل السيرة الذاتية';
+  if($('enCvItem')) $('enCvItem').style.display = (D&&D.en) ? 'flex' : 'none';
 
   // Stats
   let statsHtml='';
@@ -1006,33 +1010,33 @@ function renderSite(){
   $('aboutSub').textContent=g(D.aboutSub,E?.aboutSub||'');
   $('volSub').textContent=g(D.volSub,E?.volSub||'');
   const nums=['١','٢','٣','٤','٥','٦'];
-  const ints = (E?.interests||D.interests||[]);
+  const ints = pick(E?.interests, D.interests);
   $('intGrid').innerHTML=ints.map(i=>`<div class="ic"><div class="ii"><i class="${i.icon}"></i></div><span class="il">${i.label}</span></div>`).join('');
-  const vals = (E?.values||D.values||[]);
+  const vals = pick(E?.values, D.values);
   $('valsCont').innerHTML=vals.map((v,i)=>`<div class="vi"><div class="vn">${nums[i]||i+1}</div><div class="vt"><strong>${v.title}</strong><span>${v.desc}</span></div></div>`).join('');
 
   // Education
-  const edus = (E?.education||D.education||[]);
+  const edus = pick(E?.education, D.education);
   $('eduGrid').innerHTML=edus.map(e=>`<div class="ec rv"><div class="edb"><i class="${e.icon||'fas fa-book'}"></i> ${e.badge}</div><h3>${e.title}</h3><p class="esp">${e.spec}</p><p class="ei"><i class="fas fa-university"></i> ${e.inst}</p><p class="ei"><i class="fas fa-map-marker-alt"></i> ${e.loc}</p><p class="ed2"><i class="fas fa-calendar-alt"></i> ${e.date}</p>${e.notes?`<ul class="en">${e.notes.split('\n').filter(n=>n.trim()).map(n=>`<li>${n}</li>`).join('')}</ul>`:''}</div>`).join('');
 
   // Experience
-  const exps = (E?.experience||D.experience||[]);
+  const exps = pick(E?.experience, D.experience);
   $('expTl').innerHTML=exps.map(e=>`<div class="ti"><div class="tdot"></div><div class="tc"><div class="th2"><span class="tr2">${e.role||''}</span><span class="tp">${e.period||''}</span></div><p class="to"><i class="fas fa-school"></i> ${e.org||''}</p><ul class="tt">${(e.tasks||'').split('\n').filter(t=>t.trim()).map(t=>`<li>${t}</li>`).join('')}</ul></div></div>`).join('');
 
   // Skills
-  const skls = (E?.skills||D.skills||[]);
+  const skls = pick(E?.skills, D.skills);
   $('skillsGrid').innerHTML=skls.map(s=>renderSkillGroup(s)).join('');
 
   // Certs
-  const crts = (E?.certs||D.certs||[]);
+  const crts = pick(E?.certs, D.certs);
   $('certsGrid').innerHTML=crts.map(c=>`<div class="cc rv"><div class="ci"><i class="${c.icon}"></i></div><div class="ci2"><h4>${c.title}</h4><span>${c.org}</span></div></div>`).join('');
 
   // Volunteer
-  const vols = (E?.volunteer||D.volunteer||[]);
+  const vols = pick(E?.volunteer, D.volunteer);
   $('volGrid').innerHTML=vols.map(v=>`<div class="vc rv"><div class="vch"><div class="vci"><i class="${v.icon}"></i></div><div><h4>${v.title}</h4><div class="vco">${v.org}</div></div></div><p class="vcd">${v.desc}</p></div>`).join('');
 
   // Achievements
-  const achs = (E?.achievements||D.achievements||[]);
+  const achs = pick(E?.achievements, D.achievements);
   $('achGrid').innerHTML=achs.map(a=>`<div class="ach rv"><div class="achh"><div class="achn">${a.num||''}</div><h3>${a.title}</h3></div><div class="achb"><p>${a.desc}</p><div class="acht"><i class="${a.tagIcon}"></i>${a.tag}</div></div></div>`).join('');
 
   // Contact
@@ -1139,7 +1143,7 @@ const sko=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.targ
 // ══════════════════════════════════════════
 //  LOGIN
 // ══════════════════════════════════════════
-function getPin(){return localStorage.getItem('cv_pin')||D?.pin||'1234'}
+function getPin(){return (D&&D.pin)||localStorage.getItem('cv_pin')||'1234'}
 function openLogin(e){if(e)e.preventDefault();$('adminOv').classList.add('on');clearPins();}
 function closeLogin(){$('adminOv').classList.remove('on')}
 function clearPins(){document.querySelectorAll('#pinInputs input').forEach(i=>{i.value='';i.classList.remove('err')});document.querySelector('#pinInputs input').focus();$('loginErr').textContent='';}
@@ -1216,7 +1220,7 @@ function toast(msg,err=false){const t=$('toast');$('toastMsg').textContent=msg;t
 
 // PHOTO
 function onPhoto(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{pendingPhoto=ev.target.result;$('apPrev').src=pendingPhoto;$('apPrev').style.display='block';$('phPh').style.display='none';};r.readAsDataURL(f);}
-async function delPhoto(){if(!confirm('هل تريد حذف الصورة؟'))return;try{await sbDelPhoto();}catch(e){}photoUrl=null;pendingPhoto=null;$('apPrev').style.display='none';$('phPh').style.display='block';$('phInput').value='';renderSite();}
+async function delPhoto(){if(!confirm('هل تريد حذف الصورة؟'))return;try{await sbDelPhoto();}catch(e){toast('تعذّر حذف الصورة: '+e.message,true);return;}photoUrl=null;pendingPhoto=null;$('apPrev').style.display='none';$('phPh').style.display='block';$('phInput').value='';renderSite();}
 
 // ═══ DYNAMIC SECTIONS ═══
 function rInt(){$('inAdm').innerHTML=(D.interests||[]).map((it,i)=>`<div class="acard"><div class="acardh"><span class="acardt">اهتمام ${i+1}</span><div class="acarddel" onclick="D.interests.splice(${i},1);rInt()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>أيقونة FA</label><input type="text" value="${it.icon}" oninput="D.interests[${i}].icon=this.value"></div><div class="fg"><label>التسمية</label><input type="text" value="${it.label}" oninput="D.interests[${i}].label=this.value"></div></div></div>`).join('');}
@@ -1227,13 +1231,13 @@ function rVal(){const ns=['١','٢','٣','٤','٥','٦'];$('valAdm').innerHTML=(
 function addVal(){if(!D.values)D.values=[];D.values.push({title:'مبدأ جديد',desc:'وصف المبدأ'});rVal();}
 function cVal(){return Array.from(document.querySelectorAll('#valAdm .acard')).map(c=>{const ins=c.querySelectorAll('input');return{title:ins[0].value,desc:ins[1].value}});}
 
-function rEdu(){$('eduAdm').innerHTML=(D.education||[]).map((e,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${e.title}</span><div class="acarddel" onclick="D.education.splice(${i},1);rEdu()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>الدرجة</label><input type="text" value="${e.badge}"></div><div class="fg"><label>التخصص</label><input type="text" value="${e.title}"></div></div><div class="fr"><div class="fg"><label>التخصص الفرعي</label><input type="text" value="${e.spec}"></div><div class="fg"><label>المؤسسة</label><input type="text" value="${e.inst}"></div></div><div class="fr"><div class="fg"><label>الموقع</label><input type="text" value="${e.loc}"></div><div class="fg"><label>تاريخ البداية</label>${makeDp('edu-s'+i,e.dateStart||'','D.education['+i+'].dateStart=this.value')}</div></div><div class="fr"><div class="fg"><label>تاريخ الانتهاء (أو اتركه فارغاً لـ "الآن")</label>${makeDp('edu-e'+i,e.dateEnd||'','D.education['+i+'].dateEnd=this.value')}</div><div class="fg"><label>نص الفترة (اختياري للعرض)</label><input type="text" value="${e.date||''}" placeholder="مثال: 2016 – 2020م"></div></div><div class="fg"><label>ملاحظات (سطر لكل إنجاز)</label><textarea rows="3">${e.notes||''}</textarea></div></div>`).join('');}
+function rEdu(){$('eduAdm').innerHTML=(D.education||[]).map((e,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${e.title}</span><div class="acarddel" onclick="D.education.splice(${i},1);rEdu()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>الدرجة</label><input type="text" value="${e.badge||''}" oninput="D.education[${i}].badge=this.value"></div><div class="fg"><label>التخصص</label><input type="text" value="${e.title||''}" oninput="D.education[${i}].title=this.value"></div></div><div class="fr"><div class="fg"><label>التخصص الفرعي</label><input type="text" value="${e.spec||''}" oninput="D.education[${i}].spec=this.value"></div><div class="fg"><label>المؤسسة</label><input type="text" value="${e.inst||''}" oninput="D.education[${i}].inst=this.value"></div></div><div class="fr"><div class="fg"><label>الموقع</label><input type="text" value="${e.loc||''}" oninput="D.education[${i}].loc=this.value"></div><div class="fg"><label>تاريخ البداية</label>${makeDp('edu-s'+i,e.dateStart||'','D.education['+i+'].dateStart=this.value')}</div></div><div class="fr"><div class="fg"><label>تاريخ الانتهاء (أو اتركه فارغاً لـ "الآن")</label>${makeDp('edu-e'+i,e.dateEnd||'','D.education['+i+'].dateEnd=this.value')}</div><div class="fg"><label>نص الفترة (اختياري للعرض)</label><input type="text" value="${e.date||''}" placeholder="مثال: 2016 – 2020م" oninput="D.education[${i}].date=this.value"></div></div><div class="fg"><label>ملاحظات (سطر لكل إنجاز)</label><textarea rows="3" oninput="D.education[${i}].notes=this.value">${e.notes||''}</textarea></div></div>`).join('');}
 function addEdu(){if(!D.education)D.education=[];D.education.push({badge:'بكالوريوس',icon:'fas fa-book',title:'التخصص',spec:'الكلية',inst:'الجامعة',loc:'المدينة',date:'السنة',notes:''});rEdu();}
-function cEdu(){return Array.from(document.querySelectorAll('#eduAdm .acard')).map((c,i)=>{const ins=c.querySelectorAll('input'),ta=c.querySelector('textarea');return{badge:ins[0].value,icon:'fas fa-book',title:ins[1].value,spec:ins[2].value,inst:ins[3].value,loc:ins[4].value,date:ins[5].value,notes:ta?ta.value:''}});}
+function cEdu(){return Array.from(document.querySelectorAll('#eduAdm .acard')).map(c=>{const txt=c.querySelectorAll('input[type=text]'),hid=c.querySelectorAll('input[type=hidden]'),ta=c.querySelector('textarea');return{badge:txt[0].value,icon:'fas fa-book',title:txt[1].value,spec:txt[2].value,inst:txt[3].value,loc:txt[4].value,dateStart:hid[0]?hid[0].value:'',dateEnd:hid[1]?hid[1].value:'',date:txt[5].value,notes:ta?ta.value:''}});}
 
-function rExp(){$('expAdm').innerHTML=(D.experience||[]).map((e,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${e.role}</span><div class="acarddel" onclick="D.experience.splice(${i},1);rExp()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>المسمى</label><input type="text" value="${e.role}"></div><div class="fg"><label>نص الفترة</label><input type="text" value="${e.period}" placeholder="مثال: 1446هـ – الآن"></div></div><div class="fr"><div class="fg"><label>تاريخ البداية</label>${makeDp('exp-s'+i,e.dateStart||'','D.experience['+i+'].dateStart=this.value')}</div><div class="fg"><label>تاريخ الانتهاء</label>${makeDp('exp-e'+i,e.dateEnd||'','D.experience['+i+'].dateEnd=this.value')}</div></div><div class="fg"><label>الجهة</label><input type="text" value="${e.org}"></div><div class="fg"><label>المهام (سطر لكل مهمة)</label><textarea rows="3">${e.tasks}</textarea></div></div>`).join('');}
+function rExp(){$('expAdm').innerHTML=(D.experience||[]).map((e,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${e.role}</span><div class="acarddel" onclick="D.experience.splice(${i},1);rExp()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>المسمى</label><input type="text" value="${e.role||''}" oninput="D.experience[${i}].role=this.value"></div><div class="fg"><label>نص الفترة</label><input type="text" value="${e.period||''}" placeholder="مثال: 1446هـ – الآن" oninput="D.experience[${i}].period=this.value"></div></div><div class="fr"><div class="fg"><label>تاريخ البداية</label>${makeDp('exp-s'+i,e.dateStart||'','D.experience['+i+'].dateStart=this.value')}</div><div class="fg"><label>تاريخ الانتهاء</label>${makeDp('exp-e'+i,e.dateEnd||'','D.experience['+i+'].dateEnd=this.value')}</div></div><div class="fg"><label>الجهة</label><input type="text" value="${e.org||''}" oninput="D.experience[${i}].org=this.value"></div><div class="fg"><label>المهام (سطر لكل مهمة)</label><textarea rows="3" oninput="D.experience[${i}].tasks=this.value">${e.tasks||''}</textarea></div></div>`).join('');}
 function addExp(){if(!D.experience)D.experience=[];D.experience.push({role:'المسمى الوظيفي',period:'السنة',org:'المؤسسة',tasks:'المهمة الأولى\nالمهمة الثانية'});rExp();}
-function cExp(){return Array.from(document.querySelectorAll('#expAdm .acard')).map(c=>{const ins=c.querySelectorAll('input'),ta=c.querySelector('textarea');return{role:ins[0].value,period:ins[1].value,org:ins[2].value,tasks:ta.value}});}
+function cExp(){return Array.from(document.querySelectorAll('#expAdm .acard')).map(c=>{const txt=c.querySelectorAll('input[type=text]'),hid=c.querySelectorAll('input[type=hidden]'),ta=c.querySelector('textarea');return{role:txt[0].value,period:txt[1].value,dateStart:hid[0]?hid[0].value:'',dateEnd:hid[1]?hid[1].value:'',org:txt[2].value,tasks:ta.value}});}
 
 function rSk(){
   const typeLabels={bars:'أشرطة تقدم',tags:'بطاقات نصية',circles:'دوائر نسبية',stars:'نجوم تقييم',iconlist:'قائمة بأيقونات'};
@@ -1251,26 +1255,30 @@ function rSk(){
 }
 function addSk(){if(!D.skills)D.skills=[];D.skills.push({title:'مجموعة جديدة',icon:'fas fa-star',type:'tags',bars:[],tags:[]});rSk();}
 
-function rCerts(){$('certsAdm').innerHTML=(D.certs||[]).map((c,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${c.title}</span><div class="acarddel" onclick="D.certs.splice(${i},1);rCerts()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>الاسم</label><input type="text" value="${c.title}"></div><div class="fg"><label>الجهة والتاريخ</label><input type="text" value="${c.org}"></div></div></div>`).join('');}
+function rCerts(){$('certsAdm').innerHTML=(D.certs||[]).map((c,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${c.title}</span><div class="acarddel" onclick="D.certs.splice(${i},1);rCerts()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>الاسم</label><input type="text" value="${c.title||''}" oninput="D.certs[${i}].title=this.value"></div><div class="fg"><label>الجهة والتاريخ</label><input type="text" value="${c.org||''}" oninput="D.certs[${i}].org=this.value"></div></div></div>`).join('');}
 function addCert(){if(!D.certs)D.certs=[];D.certs.push({icon:'fas fa-certificate',title:'اسم الدورة',org:'الجهة · التاريخ'});rCerts();}
 function cCerts(){return Array.from(document.querySelectorAll('#certsAdm .acard')).map((c,i)=>{const ins=c.querySelectorAll('input');return{icon:D.certs[i]?.icon||'fas fa-certificate',title:ins[0].value,org:ins[1].value}});}
 
-function rVol(){$('volAdm').innerHTML=(D.volunteer||[]).map((v,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${v.title}</span><div class="acarddel" onclick="D.volunteer.splice(${i},1);rVol()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>العنوان</label><input type="text" value="${v.title}"></div><div class="fg"><label>الجهة</label><input type="text" value="${v.org}"></div></div><div class="fg"><label>الوصف</label><textarea rows="2">${v.desc}</textarea></div></div>`).join('');}
+function rVol(){$('volAdm').innerHTML=(D.volunteer||[]).map((v,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${v.title}</span><div class="acarddel" onclick="D.volunteer.splice(${i},1);rVol()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>العنوان</label><input type="text" value="${v.title||''}" oninput="D.volunteer[${i}].title=this.value"></div><div class="fg"><label>الجهة</label><input type="text" value="${v.org||''}" oninput="D.volunteer[${i}].org=this.value"></div></div><div class="fg"><label>الوصف</label><textarea rows="2" oninput="D.volunteer[${i}].desc=this.value">${v.desc||''}</textarea></div></div>`).join('');}
 function addVol(){if(!D.volunteer)D.volunteer=[];D.volunteer.push({icon:'fas fa-hands-helping',title:'النشاط التطوعي',org:'الجهة · التاريخ',desc:'وصف النشاط'});rVol();}
 function cVol(){return Array.from(document.querySelectorAll('#volAdm .acard')).map((c,i)=>{const ins=c.querySelectorAll('input'),ta=c.querySelector('textarea');return{icon:D.volunteer[i]?.icon||'fas fa-hands-helping',title:ins[0].value,org:ins[1].value,desc:ta.value}});}
 
-function rAch(){$('achAdm').innerHTML=(D.achievements||[]).map((a,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${a.title}</span><div class="acarddel" onclick="D.achievements.splice(${i},1);rAch()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>الرقم</label><input type="text" value="${a.num}"></div><div class="fg"><label>العنوان</label><input type="text" value="${a.title}"></div></div><div class="fg"><label>الوصف</label><textarea rows="2">${a.desc}</textarea></div><div class="fg"><label>نص الوسم</label><input type="text" value="${a.tag}"></div></div>`).join('');}
+function rAch(){$('achAdm').innerHTML=(D.achievements||[]).map((a,i)=>`<div class="acard"><div class="acardh"><span class="acardt">${a.title}</span><div class="acarddel" onclick="D.achievements.splice(${i},1);rAch()"><i class="fas fa-times"></i></div></div><div class="fr"><div class="fg"><label>الرقم</label><input type="text" value="${a.num||''}" oninput="D.achievements[${i}].num=this.value"></div><div class="fg"><label>العنوان</label><input type="text" value="${a.title||''}" oninput="D.achievements[${i}].title=this.value"></div></div><div class="fg"><label>الوصف</label><textarea rows="2" oninput="D.achievements[${i}].desc=this.value">${a.desc||''}</textarea></div><div class="fg"><label>نص الوسم</label><input type="text" value="${a.tag||''}" oninput="D.achievements[${i}].tag=this.value"></div></div>`).join('');}
 function addAch(){if(!D.achievements)D.achievements=[];D.achievements.push({num:'إنجاز جديد',title:'عنوان الإنجاز',desc:'وصف الإنجاز',tag:'التاريخ والجهة',tagIcon:'fas fa-trophy'});rAch();}
 function cAch(){return Array.from(document.querySelectorAll('#achAdm .acard')).map((c,i)=>{const ins=c.querySelectorAll('input'),ta=c.querySelector('textarea');return{num:ins[0].value,title:ins[1].value,desc:ta.value,tag:ins[2].value,tagIcon:D.achievements[i]?.tagIcon||'fas fa-trophy'}});}
 
 // PIN
-function changePin(){
+async function changePin(){
   const old=$('f-oldp').value,n=$('f-newp').value,c=$('f-conp').value,msg=$('pinMsg');
   if(old!==getPin()){msg.style.color='#ef4444';msg.textContent='الرمز الحالي غير صحيح';return;}
   if(!/^\d{4}$/.test(n)){msg.style.color='#ef4444';msg.textContent='الرمز يجب أن يكون 4 أرقام';return;}
   if(n!==c){msg.style.color='#ef4444';msg.textContent='الرمزان غير متطابقين';return;}
-  localStorage.setItem('cv_pin',n);D.pin=n;
-  msg.style.color='#22c55e';msg.textContent='✓ تم تغيير الرمز';
+  D.pin=n;
+  msg.style.color='var(--gold)';msg.textContent='⏳ جاري الحفظ في السحابة...';
+  try{ await sbSave(D); }
+  catch(e){ msg.style.color='#ef4444';msg.textContent='تعذّر حفظ الرمز في السحابة';return; }
+  localStorage.removeItem('cv_pin');
+  msg.style.color='#22c55e';msg.textContent='✓ تم تغيير الرمز لجميع الأجهزة';
   $('f-oldp').value='';$('f-newp').value='';$('f-conp').value='';
   setTimeout(()=>msg.textContent='',3000);
 }
@@ -1381,7 +1389,7 @@ async function translateAll(){
 
   try{
     setProgress(5,'ترجمة الملخص المهني...');
-    D.en.name = (D.name||'').replace(/\n/g,' ');
+    // الاسم الإنجليزي يُؤخذ من حقل "الاسم الكامل (إنجليزي)" يدوياً (D.nameEn) ولا يُترجَم آلياً
     D.en.title = await gTranslate(D.title||'');
     D.en.bio = await gTranslate(D.bio||'');
     D.en.quote = await gTranslate(D.quote||'');
@@ -1441,7 +1449,8 @@ async function translateAll(){
     status.style.color='#22c55e';
 
     // معاينة
-    $('transPreview').innerHTML=`<strong style="color:var(--gold)">${D.en.name}</strong><br><span style="color:rgba(255,255,255,.6)">${D.en.title}</span><br><span style="color:rgba(255,255,255,.4)">${D.en.bio?.substring(0,120)}...</span>`;
+    const previewName = D.nameEn || (D.name||'').replace(/\n/g,' ');
+    $('transPreview').innerHTML=`<strong style="color:var(--gold)">${previewName}</strong>${D.nameEn?'':' <span style="color:#f87171;font-size:.72rem">(لم تُدخِل الاسم الإنجليزي في قسم "البداية")</span>'}<br><span style="color:rgba(255,255,255,.6)">${D.en.title}</span><br><span style="color:rgba(255,255,255,.4)">${D.en.bio?.substring(0,120)}...</span>`;
 
     toast('✓ تمت الترجمة — اضغط "حفظ وتطبيق" لحفظها');
   }catch(e){
@@ -1457,6 +1466,7 @@ async function translateAll(){
 function openCvPrint(lang){
   $('cvDlMenu').classList.remove('open');
   const isEn = lang==='en';
+  if(isEn && !D.en){ toast('النسخة الإنجليزية غير متاحة — لم تُضَف الترجمة بعد', true); return; }
   const d = (isEn && D.en) ? D.en : D;
   const dir = isEn ? 'ltr' : 'rtl';
   const bodyDir = isEn ? 'ltr' : 'rtl';
@@ -1470,9 +1480,6 @@ function openCvPrint(lang){
   const summaryBorder = isEn ? 'border-left:3px solid var(--gold)' : 'border-right:3px solid var(--gold)';
 
   // photo
-  const photoHtml = photoUrl
-    ? `<div class="cvp-photo"><img src="${photoUrl}" alt=""></div>`
-    : `<div class="cvp-photo"><i class="fas fa-user-tie"></i></div>`;
   const photoSide = isEn ? `style="margin-left:8mm"` : `style="margin-right:8mm"`;
 
   // page 1 content
@@ -1520,7 +1527,7 @@ function openCvPrint(lang){
     <div class="cvp-header" style="padding:5mm 12mm">
       <div class="cvp-inner" style="${mainDir}">
         <div>
-          <div class="cvp-name" style="font-size:14pt">${(d.name||'').replace(/\n/g,' ')}</div>
+          <div class="cvp-name" style="font-size:14pt">${isEn && D.nameEn ? D.nameEn : (d.name||'').replace(/\n/g,' ')}</div>
           <div class="cvp-title" style="font-size:7.5pt;margin-bottom:0">${titleDisplay}</div>
         </div>
       </div>
@@ -1565,7 +1572,7 @@ function buildP1Main(d, isEn, mainDir, summaryBorder){
       if(i>0) h+=`<div class="cvp-divider"></div>`;
       const notesBullet = isEn ? 'padding-left:3mm' : 'padding-right:3mm';
       const notes=(e.notes||'').split('\n').filter(n=>n.trim()).map(n=>`<li style="${notesBullet};position:relative"><span style="position:absolute;${bulletPos};color:var(--gold);font-size:4.5pt;top:1.5mm">◆</span>${n}</li>`).join('');
-      h+=`<div class="cvp-edu"><div class="cvp-edeg">${e.badge||''} — ${e.title||''}</div><div class="cvp-espec">${e.spec||''}</div><div class="cvp-einst">${e.inst||''} — ${e.loc||''}</div><div class="cvp-einst">${e.date||''}</div>${notes?`<ul class="cvp-enotes" style="list-style:none;padding:0">${notes}</ul>`:''}</div>`;
+      h+=`<div class="cvp-edu"><div class="cvp-edeg">${[e.badge,e.title].filter(Boolean).join(' — ')}</div><div class="cvp-espec">${e.spec||''}</div><div class="cvp-einst">${[e.inst,e.loc].filter(Boolean).join(' — ')}</div><div class="cvp-einst">${e.date||''}</div>${notes?`<ul class="cvp-enotes" style="list-style:none;padding:0">${notes}</ul>`:''}</div>`;
     });
     h+=`</div>`;
   }
@@ -1806,7 +1813,7 @@ document.querySelectorAll('.nav-links a:not(.abn)').forEach(a=>a.addEventListene
 window.addEventListener('scroll',()=>{const n=$('navbar');n.style.height=window.scrollY>60?'56px':'64px';n.style.boxShadow=window.scrollY>60?'0 2px 20px rgba(0,0,0,.25)':'none';});
 
 // START
-init();
+init().catch(e=>console.error('init failed:',e));
 </script>
 </body>
 </html>
