@@ -1,0 +1,32 @@
+name: Supabase Keepalive
+
+# يمنع إيقاف قاعدة Supabase (الخطة المجانية توقف المشروع بعد 7 أيام بلا نشاط).
+# يرسل استعلام قراءة خفيف لجدول cv_data يومياً — نشاط حقيقي يُبقي القاعدة حيّة.
+
+on:
+  schedule:
+    # يومياً الساعة 05:23 بتوقيت UTC (وقت غير مضبوط على رأس الساعة لتقليل احتمال التأجيل)
+    - cron: '23 5 * * *'
+  workflow_dispatch: {}   # يسمح بالتشغيل اليدوي من تبويب Actions
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: نبضة قراءة إلى Supabase
+        env:
+          SB_URL: https://cufyaruypnpjwacivcmr.supabase.co
+          # مفتاح anon العام (نفسه الموجود في index.html) — ليس سرّاً
+          SB_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN1ZnlhcnV5cG5wandhY2l2Y21yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU5ODcwNTQsImV4cCI6MjA5MTU2MzA1NH0.nesl71DKdFs0n1VusDPrk8ufcTr-SoEKL1eZsZM6K8Y
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" \
+            "$SB_URL/rest/v1/cv_data?select=id&limit=1" \
+            -H "apikey: $SB_KEY" \
+            -H "Authorization: Bearer $SB_KEY")
+          echo "استجابة Supabase: HTTP $code"
+          if [ "$code" = "200" ]; then
+            echo "✓ نبضة ناجحة — القاعدة نشطة"
+          else
+            echo "✗ فشلت النبضة (HTTP $code)"
+            exit 1
+          fi
